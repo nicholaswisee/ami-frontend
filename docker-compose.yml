@@ -1,0 +1,12 @@
+services:
+  frontend:
+    image: ghcr.io/ami-2026/ami-frontend:latest
+    # build: .
+    container_name: ami-frontend
+    ports:
+      - "127.0.0.1:4141:80"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    restart: always
