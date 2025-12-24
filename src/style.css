@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Geologica";
+  src: url("./assets/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-style: oblique 0deg 12deg;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-optical-sizing: auto;
+}
+
+@font-face {
+  font-family: "Euskadi";
+  src: url("./assets/fonts/[HEADING] Euskadi-Regular.otf") format("opentype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Darker Grotesque";
+  src: url("./assets/fonts/[SUBHEADING BODY] DarkerGrotesque-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+}
