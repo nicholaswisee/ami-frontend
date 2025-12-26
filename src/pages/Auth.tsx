@@ -3,7 +3,7 @@ export default function AuthPage() {
     <section className="flex relative min-h-screen bg-cover bg-center bg-fixed w-full justify-center items-center" 
     style={{backgroundImage: "url('/oren-ijo.webp')", fontFamily:"Darker Grotesque"} }>
     <div className="relative rounded-2xl overflow-hidden shadow-xl w-120 ">
-        <div className="absolute inset-0 bg-linear-to-r from-[#AC166C] to-[#6F0E4E] opacity-70 backdrop-blur-md "></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[rgb(172,22,108)] to-[#6F0E4E] opacity-70 backdrop-blur-md "></div>
         
         {/* Content */}
         <div className="relative z-10 p-8 space-y-5 ">
