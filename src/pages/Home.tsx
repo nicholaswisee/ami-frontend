@@ -92,7 +92,7 @@ export default function HomePage() {
           <Parallax 
             speed={-8} 
             translateX={['-80px', '100px']}
-            className="absolute left-[-15%] md:left-[-5%] top-[-10%]md:top-[-20%] z-[12] pointer-events-none"
+            className="absolute left-[-15%] md:left-[-5%] top-[-10%]md:top-[-20%] z-[50] pointer-events-none"
           >
             <img 
               src="/tree-left-main.webp" 
@@ -125,7 +125,7 @@ export default function HomePage() {
         </div>
 
         {/* === FOURTH SECTION: Transition === */}
-        <div className="relative z-[20] top-[-100%] min-h-screen w-full">
+        <div className="relative z-[12] top-[-100%] min-h-screen w-full">
           {/* Transition Layer 1 - Mountains at top */}
           <img 
             src="/transition-1.webp" 
