@@ -3,6 +3,8 @@ export default function HomePage() {
     <section>
       <h1>Homepage</h1>
       {/* TODO: Isi konten landing page nanti ya. */}
+      {/* iyee son */}
+      
     </section>
   );
 }
