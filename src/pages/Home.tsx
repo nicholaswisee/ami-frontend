@@ -3,13 +3,26 @@ import { Parallax, ParallaxProvider } from 'react-scroll-parallax';
 export default function HomePage() {
   return (
     <ParallaxProvider>
-      <section className="relative min-h-[300vh] w-full overflow-hidden bg-[#1a1a3e]">
-        {/* Background Image - Scrolls normally */}
-        <div className="absolute inset-0 z-0">
+      <section className="relative w-full overflow-hidden bg-[#1a1a3e]">
+        {/* Background Image - First background (covers sections 1-3 + top half of transition) */}
+        <div className="absolute inset-0 z-0 h-[350vh]">
           <div 
             className="h-full w-full"
             style={{
               backgroundImage: 'url(/homepage-bg.webp)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'top center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+        </div>
+
+        {/* Background Image - Second background (starts at middle of transition section) */}
+        <div className="absolute top-[350vh] left-0 right-0 z-0 h-[350vh]">
+          <div 
+            className="h-full w-full"
+            style={{
+              backgroundImage: 'url(/homepage-bg-second.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'top center',
               backgroundRepeat: 'no-repeat',
@@ -42,7 +55,7 @@ export default function HomePage() {
             <img 
               src="/tree-right-main.webp" 
               alt="Tree Right"
-              className="h-[90vh] md:h-[110vh] lg:h-[130vh] w-auto object-contain"
+              className="h-[80vh] md:h-[110vh] w-auto object-contain"
             />
           </Parallax>
 
@@ -79,12 +92,12 @@ export default function HomePage() {
           <Parallax 
             speed={-8} 
             translateX={['-80px', '100px']}
-            className="absolute left-[-5%] md:left-[-5%] top-[-20%] z-[12] pointer-events-none"
+            className="absolute left-[-15%] md:left-[-5%] top-[-10%]md:top-[-20%] z-[12] pointer-events-none"
           >
             <img 
               src="/tree-left-main.webp" 
               alt="Tree Left"
-              className="h-[90vh] md:h-[110vh] lg:h-[130vh] w-auto object-contain"
+              className="h-[65vh] md:h-[110vh] w-auto object-contain"
             />
           </Parallax>
 
@@ -93,7 +106,7 @@ export default function HomePage() {
             <img 
               src="/ami-logo.webp" 
               alt="AMI Logo"
-              className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain drop-shadow-2xl"
+              className="w-32 h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain drop-shadow-2xl"
             />
           </Parallax>
 
@@ -101,15 +114,62 @@ export default function HomePage() {
           <Parallax 
             speed={-8} 
             translateX={['100px', '-20px']}
-            className="absolute right-[-10%] md:right-[0%] top-[50%] z-[12] pointer-events-none"
+            className="absolute right-[-5%] md:right-[0%] bottom-[10%] top-40% md:top-[40%] z-[30] pointer-events-none"
           >
             <img 
               src="/leaf-right-main.webp" 
               alt="leaf right"
-              className="h-[20vh] md:h-[40vh] lg:h-[60vh] w-auto object-contain"
+              className="h-[35vh] md:h-[40vh] lg:h-[60vh] w-auto object-contain"
             />
           </Parallax>
         </div>
+
+        {/* === FOURTH SECTION: Transition === */}
+        <div className="relative z-[20] top-[-100%] min-h-screen w-full">
+          {/* Transition Layer 1 - Mountains at top */}
+          <img 
+            src="/transition-1.webp" 
+            alt="Transition 1"
+            className="absolute top-[20%] md:top-[-45%] left-0 w-full h-auto z-[10]"
+          />
+    
+          {/* Transition Layer 2 - Purple mountains below */}
+          <img 
+            src="/transition-2.webp" 
+            alt="Transition 2"
+            className="absolute top-[30%] md:top-[-25%] left-0 w-full h-auto z-[11]"
+          />
+        </div>
+
+        {/* === FIFTH SECTION: ITB Day === */}
+        <div className="relative z-[20] flex min-h-screen flex-col items-center justify-center px-6 md:px-12 pb-20">
+          <div className="max-w-2xl mx-auto text-center mb-8">
+            <p 
+              className="text-base md:text-3xl text-[#600949] font-bold mb-8 px-4"
+              style={{ 
+                fontFamily: 'Euskadi, serif',
+                textShadow: '2px 2px 4px rgba(96, 9, 73, 0.3)'
+              }}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.
+            </p>
+            <button 
+              className="bg-[#6b1557] hover:bg-[#7a1a64] text-yellow-300 font-bold py-3 px-10 rounded-2xl text-base md:text-3xl transition-all duration-300 border-4 border-[#39112e] shadow-lg"
+              style={{ 
+                fontFamily: 'Euskadi, serif',
+                boxShadow: '0 4px 6px rgba(74, 13, 58, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              ITB DAY
+            </button>
+          </div>
+        </div>
+
+        {/* TO DO!! === FIFTH SECTION: Event Masuk ITB === */}
+        
+
+        {/* TO DO ! === SIXTH SECTION: Timeline === */}
+        
       </section>
     </ParallaxProvider>
   );
