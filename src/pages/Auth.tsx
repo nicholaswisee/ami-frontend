@@ -2,52 +2,52 @@ export default function AuthPage() {
   return (
     <section className="flex relative min-h-screen bg-cover bg-center bg-fixed w-full justify-center items-center" 
     style={{backgroundImage: "url('/oren-ijo.webp')", fontFamily:"Darker Grotesque"} }>
-    <div className="relative rounded-2xl overflow-hidden shadow-xl w-120 ">
-        <div className="absolute inset-0 bg-linear-to-r from-[rgb(172,22,108)] to-[#6F0E4E] opacity-70 backdrop-blur-md "></div>
+    <div className="relative rounded-2xl overflow-hidden shadow-xl w-96.75 lg:w-150 ">
+        <div className="absolute inset-0 bg-linear-to-r from-[#AC166C]/60 to-[#6F0E4E]/60 lg:from-[#AC166C] lg:to-[#6F0E4E] backdrop-blur-md "></div>
         
         {/* Content */}
-        <div className="relative z-10 p-8 space-y-5 ">
+        <div className="relative px-5 lg:px-16 py-10 lg:py-20 space-y-4">
           {/* Title */}
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-0">
             <h1 className="text-[#FFD88C] text-3xl font-bold drop-shadow-md" style={{fontFamily: 'Euskadi'}}>
               LOG IN
             </h1>
           </div>
-          <p className="text-[#FFC76E] font-bold text-center">Masukkan detail akunmu atau gunakan akun Google untuk melanjutkan</p>
+          <p className="text-[#FFC76E] font-bold text-center text-l lg:text-xl">Masukkan detail akunmu atau gunakan akun Google untuk melanjutkan</p>
           {/* Tab Buttons */}
-          <div className="flex gap-3 bg-[#FFB366] py-1 px-2 rounded-xl">
+          <div className="flex space-x-1.5 lg:space-x-4 bg-[#FFB366] py-2 px-2 lg:px-4 rounded-xl">
             {/* TODO: onClick untuk switch tab ke Pengunjung */}
-            <button className="w-[211px] py-1.5 bg-[#FFD88C] text-[#87095A] font-medium rounded-sm">
+            <button className="w-42 lg:w-52.75 py-1.5 bg-[#FFD88C] text-[#87095A] font-medium rounded-sm">
               Pengunjung
             </button>
-            {/* TODO: onClick untuk switch tab ke Pantia */}
-            <button className="w-[211px] py-1.5 bg-transparent text-[#87095A] font-medium rounded-sm hover:bg-[#FFD88C] transition">
+            {/* TODO: onClick untuk switch tab ke Pa  ntia */}
+            <button className="w-42 lg:w-52.75 py-1.5 bg-transparent text-[#87095A] font-medium rounded-sm hover:bg-[#FFD88C] transition">
               Pantia
             </button> 
           </div>
 
           {/* Username Field */}
           <div className="space-y-2">
-            <label className="text-[#FFDB8C] font-bold  text-xl " style={{fontFamily:"Darker Grotesque"}}>Username</label>
+            <label className="text-[#FFDB8C] font-bold lg:text-[24px] text-[16px] " style={{fontFamily:"Darker Grotesque"}}>Username</label>
             <input 
               type="text"
               placeholder="Username"
-              className="w-full bg-[#FFDB8C] text-[#302A77] font-bold placeholder-[#302A77] px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full text-[12px] lg:text-[16px] bg-[#FFDB8C] text-[#302A77] font-bold placeholder-[#302A77] px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300"
             />
           </div>
 
           {/* Password Field */}
           <div className="space-y-2">
-            <label className="text-yellow-100 font-medium text-sm"style={{fontFamily:"Darker Grotesque"}} >Password</label>
+            <label className="text-[#FFDB8C]  font-bold  lg:text-[24px] text-[16px]"style={{fontFamily:"Darker Grotesque"}} >Password</label>
             <input 
               type="password"
               placeholder="Password"
-              className="w-full  bg-[#FFDB8C] text-[#302A77] font-bold placeholder-[#302A77] px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full text-[12px] lg:text-[16px] bg-[#FFDB8C] text-[#302A77] font-bold placeholder-[#302A77] px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300"
             />
           </div>
 
           {/* TODO: onClick untuk handle login */}
-          <button className="w-full bg-[#F87F42] hover:bg-orange-600 text-[#FFDB8C] font-bold py-2 rounded-full transition">
+          <button className="w-full bg-[#F87F42] hover:bg-orange-600 text-[#FFDB8C] font-bold py-2 px-16 rounded-full transition">
             Log in
           </button>
 
@@ -71,7 +71,7 @@ export default function AuthPage() {
           <div className="text-center text-[#FFC76E] text-md font-bold" style={{fontFamily:"Darker Grotesque"}}>
             Belum punya akun? {" "}
             {/* TODO: onClick untuk navigate ke Sign Up page */}
-            <button className="underline hover:text-yellow-50 font-medium" style={{fontFamily:"Darker Grotesque"}}>
+            <button className="underline hover:text-orange-600 font-medium" style={{fontFamily:"Darker Grotesque"}}>
               Sign Up
             </button>
           </div>
