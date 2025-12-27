@@ -71,11 +71,20 @@ export default function Rundown() {
 
             {/* Rundown Content */}
             <div className='flex flex-col items-center gap-6'>
+
                 {/* Date Display */}
-                <div className="p-2 rounded-4xl bg-[#FFB366]">
-                    <div className="px-18 py-1 rounded-4xl bg-[#FFD88C]">
+                <div className="p-2 rounded-4xl bg-[#FFB366] inline-block">
+                    <div className="relative inline-block">
+                        <div className="px-18 py-1 absolute inset-0 rounded-4xl bg-[#FFD88C]" />
+                        <div
+                            className="absolute inset-0 rounded-4xl"
+                            style={{
+                                backgroundImage:
+                                    "linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))",
+                            }}
+                        />
                         <h2
-                            className="text-[#87095A] text-[40px] font-bold"
+                            className="relative z-10 px-18 py-1 text-[#87095A] text-[40px] font-bold"
                             style={{
                                 fontFamily: 'Euskadi, serif',
                             }}
@@ -116,6 +125,6 @@ export default function Rundown() {
                     ))}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

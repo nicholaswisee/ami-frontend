@@ -9,7 +9,7 @@ export default function ItbDayPage() {
         style={{
           backgroundImage: 'url(/homepage-bg-second.webp)',
           backgroundSize: 'cover',
-          backgroundPosition: 'top center',
+          backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
         {/* Countdown */}
@@ -38,7 +38,7 @@ export default function ItbDayPage() {
               className="text-[#EFFF8D] text-[54px] font-bold text-center"
               style={{
                 fontFamily: 'Euskadi, serif',
-                textShadow: '0 4 5.3px rgba(48, 42, 119, 1), 0 4 5.3px rgba(48, 42, 119, 1)'
+                textShadow: '0px 4px 5.3px rgba(48, 42, 119, 1), 0px 4px 5.3px rgba(48, 42, 119, 1)'
               }}>
               Lorem Ipsum dolor si amet
             </h1>
