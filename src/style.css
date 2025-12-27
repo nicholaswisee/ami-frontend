@@ -66,6 +66,16 @@
   }
 
   * {
-    @apply leading-normal;
+    @apply font-body font-medium leading-normal;
   }
+}
+
+.bg-purple {
+  background-image: url("/background/bg01.webp");
+  @apply bg-cover bg-center;
+}
+
+.bg-mixed {
+  background-image: url("/background/bg02.webp");
+  @apply bg-cover bg-top;
 }
