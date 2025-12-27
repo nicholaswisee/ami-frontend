@@ -6,7 +6,7 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <main className="*:min-h-lvh *:pt-14">
+      <main className="*:min-h-lvh *:pt-18">
         <Outlet />
       </main>
       <Footer />

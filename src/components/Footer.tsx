@@ -23,7 +23,13 @@ const socials: { icon: IconType; label: string; url: string }[] = [
 export default function Footer() {
   return (
     <footer className="bg-purple flex w-full flex-col gap-y-2 p-6 text-[#ffeabb]">
-      <img src="/logo.png" className="order-1 aspect-square w-24 lg:w-36" />
+      <a href="/">
+        <img
+          src="/logo.png"
+          alt="Logo AMI 2026"
+          className="order-1 aspect-square w-24 lg:w-36"
+        />
+      </a>
       <div className="order-2 flex gap-4 max-lg:order-3 max-lg:mt-4 max-lg:justify-between">
         {socials.map((s, i) => (
           <a
