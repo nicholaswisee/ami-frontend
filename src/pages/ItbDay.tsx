@@ -1,5 +1,6 @@
 import Countdown from '../components/countdown';
 import Rundown from '../components/rundown';
+import EventBlocks from '../components/EventBlocks';
 
 export default function ItbDayPage() {
   return (
@@ -25,10 +26,8 @@ export default function ItbDayPage() {
             <h2 className="max-w-[836px] text-[#590844] text-[40px] font-bold text-center text-shadow-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus. </h2>
           </div>
 
-          {/* TODO: Component events */}
-          <div>
-            EVENT ITB DAY 2025
-          </div>
+          {/* Event Blocks Component */}
+          <EventBlocks />
 
           {/* Rundown Component */}
           <Rundown />
