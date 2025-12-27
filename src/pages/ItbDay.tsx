@@ -1,6 +1,7 @@
 import Countdown from '../components/countdown';
 import Rundown from '../components/rundown';
 import EventBlocks from '../components/EventBlocks';
+import PastEvents from '../components/PastEvents';
 
 export default function ItbDayPage() {
   return (
@@ -33,16 +34,7 @@ export default function ItbDayPage() {
           <Rundown />
 
           {/* Foto2 Tahun lalu */}
-          <div>
-            <h1
-              className="text-[#EFFF8D] text-[54px] font-bold text-center"
-              style={{
-                fontFamily: 'Euskadi, serif',
-                textShadow: '0 4 5.3px rgba(48, 42, 119, 1), 0 4 5.3px rgba(48, 42, 119, 1)'
-              }}>
-              Lorem Ipsum dolor si amet
-            </h1>
-          </div>
+          <PastEvents />
         </div>
       </div>
     </section>

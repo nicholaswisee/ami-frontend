@@ -35,13 +35,13 @@ export default function EventBlocks() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-12 w-full max-w-[1200px] px-4">
+    <div className="flex flex-col items-center gap-7 w-full max-w-[1200px] px-4">
       {/* Title */}
       <h2
-        className="text-[#87095A] text-[54px] font-bold text-center"
+        className="text-[#87095A] text-[54px] font-bold text-center mb-8"
         style={{
           fontFamily: 'Euskadi, serif',
-          textShadow: '0 4px 5.3px rgba(239, 255, 141, 0.5), 0 4px 5.3px rgba(239, 255, 141, 0.5)'
+          textShadow: '0 4px 5.3px rgba(245, 55, 55, 0.99)'
         }}
       >
         EVENT ITB DAY 2026
@@ -53,14 +53,13 @@ export default function EventBlocks() {
           <button
             key={event.id}
             onClick={() => handleBlockClick(event.id, event.isLarge)}
-            className={`w-full rounded-[40px] font-bold text-[28px] transition-all duration-300 hover:scale-105 cursor-pointer flex items-center ${
-              expandedBlocks.includes(event.id) ? 'p-6 gap-4 flex-col' : 'py-12 px-6 justify-center'
+            className={`w-full rounded-[32px] font-bold text-[32px] transition-all duration-300 hover:scale-105 cursor-pointer flex items-center ${
+              expandedBlocks.includes(event.id) ? 'p-5 gap-4 flex-col' : 'py-3 px-6 justify-center'
             }`}
             style={{
               backgroundColor: '#FFD88C',
-              border: '4px solid #FFB366',
-              color: '#87095A',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+              border: '7px solid #FFB366',
+              color: '#87095A'
             }}
           >
             {/* Expanded Image */}
@@ -86,12 +85,11 @@ export default function EventBlocks() {
           <button
             key={event.id}
             onClick={() => handleBlockClick(event.id, event.isLarge)}
-            className="px-8 py-6 rounded-[40px] font-bold text-[20px] transition-all duration-300 hover:scale-105 w-[calc(25%-12px)] min-w-[200px]"
+            className="px-8 py-2 rounded-[40px] font-bold text-[25px] transition-all duration-300 hover:scale-105 w-[calc(20%-12px)] min-w-200px]"
             style={{
               backgroundColor: '#FFD88C',
-              border: '4px solid #FFB366',
-              color: '#87095A',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+              border: '7px solid #FFB366',
+              color: '#87095A'
             }}
           >
             {event.title}
