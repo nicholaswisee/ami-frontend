@@ -1,6 +1,16 @@
 import { FcGoogle } from "react-icons/fc";
+import { isInAppBrowser } from "../utils/checkBrowser";
+import { toast } from "sonner";
 
 export default function AuthPage() {
+  const handleAuth = () => {
+    if (isInAppBrowser()) {
+      toast.info(
+        "Lakukan autentikasi langsung di browser seperti Chrome atau Safari.",
+      );
+      return;
+    }
+  };
   return (
     <section className="bg-mixed relative flex min-h-screen w-full items-center justify-center p-6">
       <div className="relative max-w-96 overflow-hidden rounded-2xl lg:max-w-150">
@@ -56,8 +66,12 @@ export default function AuthPage() {
           <p className="text-center font-bold text-[#FFC76E]">atau</p>
 
           {/* Google Button */}
-          {/* TODO: onClick untuk login dengan Google */}
-          <button className="mx-auto flex max-w-sm items-center justify-center gap-2 rounded-full bg-white px-6 py-2 font-semibold text-black">
+          <button
+            onClick={() => {
+              handleAuth();
+            }}
+            className="mx-auto flex max-w-sm items-center justify-center gap-2 rounded-full bg-white px-6 py-2 font-semibold text-black"
+          >
             <FcGoogle className="size-6 lg:size-8" />
             <span className="mb-1">Lanjutkan dengan Google</span>
           </button>
