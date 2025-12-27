@@ -1,4 +1,8 @@
 import { Parallax, ParallaxProvider } from 'react-scroll-parallax';
+import BlockEventAMI from '../component/BlockEventAMI';
+import AmiImage from '../component/AmiImage';
+import Sponsor from '../component/Sponsor';
+import MediaPartner from '../component/MediaPartner';
 
 export default function HomePage() {
   return (
@@ -18,7 +22,7 @@ export default function HomePage() {
         </div>
 
         {/* Background Image - Second background (starts at middle of transition section) */}
-        <div className="absolute top-[350vh] left-0 right-0 z-0 h-[350vh]">
+        <div className="absolute top-[350vh] left-0 right-0 z-0 h-[550vh]">
           <div 
             className="h-full w-full"
             style={{
@@ -27,6 +31,13 @@ export default function HomePage() {
               backgroundPosition: 'top center',
               backgroundRepeat: 'no-repeat',
             }}
+          />
+        </div>
+
+        {/* Background Extension - Third background for additional sections */}
+        <div className="absolute top-[850vh] left-0 right-0 z-0 h-[350vh]">
+          <div 
+            className="h-full w-full bg-[#1a1a3e]"
           />
         </div>
 
@@ -144,14 +155,14 @@ export default function HomePage() {
         {/* === FIFTH SECTION: ITB Day === */}
         <div className="relative z-[20] flex min-h-screen flex-col items-center justify-center px-6 md:px-12 pb-20">
           <div className="max-w-2xl mx-auto text-center mb-8">
-            <p 
-              className="text-base md:text-3xl text-[#600949] font-bold mb-8 px-4"
-              style={{ 
+            <p
+              className="text-[#87095A] text-[40px] font-bold text-center mb-8"
+              style={{
                 fontFamily: 'Euskadi, serif',
-                textShadow: '2px 2px 4px rgba(96, 9, 73, 0.3)'
+                textShadow: '0 4px 5.3px rgba(245, 55, 55, 0.99)'
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias similique dolorum illo quaerat placeat repudiandae, sequi quae consectetur quam recusandae natus incidunt. Atque, quos itaque nam consectetur saepe molestias unde?
             </p>
             <button 
               className="bg-[#6b1557] hover:bg-[#7a1a64] text-yellow-300 font-bold py-3 px-10 rounded-2xl text-base md:text-3xl transition-all duration-300 border-4 border-[#39112e] shadow-lg"
@@ -163,12 +174,22 @@ export default function HomePage() {
               ITB DAY
             </button>
           </div>
+          
         </div>
 
         {/* TO DO!! === FIFTH SECTION: Event Masuk ITB === */}
+        <BlockEventAMI/>
         
 
         {/* TO DO ! === SIXTH SECTION: Timeline === */}
+        <AmiImage/>
+        
+        <div className="hidden md:block">
+          <Sponsor/>
+          <MediaPartner/>
+        </div>
+
+        
         
       </section>
     </ParallaxProvider>
