@@ -9,6 +9,7 @@ import ItbDayPage from "./pages/ItbDay";
 import OleatPage from "./pages/Oleat";
 import ProfilePage from "./pages/Profile";
 import RsvpPage from "./pages/Rsvp";
+import Faq from "./pages/Faq";
 import NotFoundPage from "./pages/NotFound";
 
 createRoot(document.getElementById("root")!).render(
@@ -22,8 +23,9 @@ createRoot(document.getElementById("root")!).render(
         <Route path="rsvp" element={<RsvpPage />} />
         <Route path="auth" element={<AuthPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="faq" element={<Faq />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
-  </BrowserRouter>
+  </BrowserRouter>,
 );
