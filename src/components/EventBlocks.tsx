@@ -57,6 +57,7 @@ export default function EventBlocks() {
               expandedBlocks.includes(event.id) ? 'p-5 gap-4 flex-col' : 'py-3 px-6 justify-center'
             }`}
             style={{
+              backgroundImage: 'linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))',
               backgroundColor: '#FFD88C',
               border: '7px solid #FFB366',
               color: '#87095A'
@@ -87,6 +88,7 @@ export default function EventBlocks() {
             onClick={() => handleBlockClick(event.id, event.isLarge)}
             className="px-8 py-2 rounded-[40px] font-bold text-[25px] transition-all duration-300 hover:scale-105 w-[calc(20%-12px)] min-w-200px]"
             style={{
+              backgroundImage: 'linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))',
               backgroundColor: '#FFD88C',
               border: '7px solid #FFB366',
               color: '#87095A'

@@ -10,12 +10,38 @@ export default function ItbDayPage() {
         style={{
           backgroundImage: 'url(/homepage-bg-second.webp)',
           backgroundSize: 'cover',
-          backgroundPosition: 'top center',
+          backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
         {/* Countdown */}
         <Countdown />
-        <div className="flex flex-col justify-center items-center py-[400px] gap-[132px]">
+        <div className="relative flex flex-col justify-center items-center py-[400px] gap-[132px]">
+          {/* Left Flower Decoration */}
+          <img
+            src="/Copy of Bunga_2_Ayu.webp"
+            alt=""
+            className="absolute right-30 top-[1200px] w-[120px] h-auto z-20 pointer-events-none"
+          />
+
+          <img
+            src="/Copy of Bunga_2_Ayu.webp"
+            alt=""
+            className="absolute left-15 top-[1150px] w-[120px] h-auto z-20 pointer-events-none"
+            style={{ transform: 'scaleX(-1) rotate(40deg)' }}
+          />
+
+          {/* Right Vine Decoration */}
+          <img
+            src="/Vines_3_Ical 1.webp"
+            alt=""
+            className="absolute right-0 top-[980px] w-[300px] h-auto z-10 pointer-events-none"
+          />
+
+          <img
+            src="/Vines_1_Ical 1.webp"
+            alt=""
+            className="absolute left-0 top-[980px] w-[300px] h-auto z-15 pointer-events-none"
+          />
 
           {/* Title */}
           <div className="flex flex-col gap-6 items-center">
