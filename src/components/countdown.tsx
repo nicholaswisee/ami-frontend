@@ -56,7 +56,7 @@ export default function Countdown() {
                 <h2 className="md:text-[40px] text-[20px] font-bold text-[#FFD88C]"
                     style={{
                         fontFamily: 'Euskadi, serif',
-                        textShadow: '4px 4px 6px rgba(0, 0, 0, 0.4), 2px 2px 4px rgba(0, 0, 0, 0.3)'
+                        textShadow: '0px 4px 4px #590844, 0px 4px 4px #590844'
                     }}>
                     {formatNumber(timeLeft.hours)}. {formatNumber(timeLeft.minutes)}. {formatNumber(timeLeft.seconds)} menuju AKU MASUK ITB 2026!
                 </h2>
