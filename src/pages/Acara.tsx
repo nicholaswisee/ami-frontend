@@ -64,7 +64,7 @@ export default function AcaraPage() {
               {/*prev button */}
             <button 
                 onClick={() => acaraApi?.scrollPrev()}
-                className="absolute left-1 md:-left-20 top-1/2 -translate-y-1/2 z-10 transition-transform hover:scale-110 focus:outline-none"
+                className="absolute left-1 md:-left-15 top-1/2 -translate-y-1/2 z-10 transition-transform hover:scale-110 focus:outline-none"
                 aria-label="Previous Slide"
               >
                 <img 
@@ -77,7 +77,7 @@ export default function AcaraPage() {
               {/* next button */}
               <button 
                 onClick={() => acaraApi?.scrollNext()}
-                className="absolute right-1 md:-right-20 top-1/2 -translate-y-1/2 z-10 transition-transform hover:scale-110 focus:outline-none"
+                className="absolute right-1 md:-right-15 top-1/2 -translate-y-1/2 z-10 transition-transform hover:scale-110 focus:outline-none"
                 aria-label="Next Slide"
               >
                 <img 
@@ -146,7 +146,7 @@ export default function AcaraPage() {
                 {/* previous button */}
                 <button
                   onClick={() => talkshowApi?.scrollPrev()}
-                  className="absolute left-2 md:-left-16 top-1/2 -translate-y-1/2 z-20 transition-transform hover:scale-110 focus:outline-none"
+                  className="absolute left-2 md:-left-5 top-1/2 -translate-y-1/2 z-20 transition-transform hover:scale-110 focus:outline-none"
                   aria-label="Previous Slide"
                 >
                   <img
@@ -159,7 +159,7 @@ export default function AcaraPage() {
                 {/* next button */}
                 <button
                   onClick={() => talkshowApi?.scrollNext()}
-                  className="absolute right-2 md:-right-16 top-1/2 -translate-y-1/2 z-20 transition-transform hover:scale-110 focus:outline-none"
+                  className="absolute right-2 md:-right-5 top-1/2 -translate-y-1/2 z-20 transition-transform hover:scale-110 focus:outline-none"
                   aria-label="Next Slide"
                 >
                   <img
