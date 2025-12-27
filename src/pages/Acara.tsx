@@ -27,7 +27,7 @@ export default function AcaraPage() {
         {/* header */}
         <section className="flex flex-col items-center text-center gap-4 my-24 md:my-48">
           <CTAButton text="AKU MASUK ITB"/>
-          <h3 className="max-w-sm px-4 text-[#590844] text-base md:text-lg text-shadow-xs text-shadow-[#EF5D23] leading-relaxed">
+          <h3 className="max-w-lg px-4 text-[#590844] text-base md:text-lg text-shadow-xs text-shadow-[#EF5D23] leading-relaxed">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt
             finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc
             a nibh ullamcorper tempus.
@@ -91,7 +91,7 @@ export default function AcaraPage() {
 
         {/* rundown  */}
         <section className="flex flex-col items-center w-full gap-6 px-2 py-24">
-            <h1 className="text-4xl font-bold uppercase tracking-wider text-[#87095A] text-shadow-sm text-shadow-[#F3414E]">
+            <h1 className="text-4xl mb-6 font-bold uppercase tracking-wider text-[#87095A] text-shadow-sm text-shadow-[#F3414E]">
                 Rundown Acara
             </h1>
             
@@ -106,7 +106,7 @@ export default function AcaraPage() {
                             <p>00.00-00.00</p>
                         </div>
                         <div className="w-2/3 bg-[#FFC763] border-0 rounded-full py-2 flex items-center justify-center font-bold text-[#590844] text-center px-2">
-                            <p className="line-clamp-1">ACARA ITEM {i + 1}</p>
+                            <p className="line-clamp-1">ACARA {i + 1}</p>
                         </div>
                     </div>
                 ))}
@@ -186,7 +186,7 @@ export default function AcaraPage() {
             </div>
             <button
               onClick={() => {console.log("Lokasi Detail clicked")}}
-              className={` relative group w-full sm:w-auto px-10 py-3 rounded-2xl font-bold tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-0 from-[#FFC76E] to-[#FFDB8C] border-4 border-[#FFB366] hover:brightness-110 active:translate-y-1 active:shadow-[0px_2px_0px_0px_##FFDB8C]
+              className={` relative group w-fit sm:w-auto px-10 py-3 rounded-2xl font-bold tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-0 from-[#FFC76E] to-[#FFDB8C] border-4 border-[#FFB366] hover:brightness-110 active:translate-y-1 active:shadow-[0px_2px_0px_0px_##FFDB8C]
               `}
             >
               <div className="absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-[#FFDB8C] to-90% to-transparent rounded-t-xl pointer-events-none" />
@@ -219,7 +219,7 @@ const CTAButton = ({ onClick, text }: { onClick?: () => void; text?: string;}) =
 const AcaraCard = ({title, description, imageUrl}: {title: string; description: string; imageUrl: string;}) => {
   return (
     <div className="w-full max-w-[18rem] md:w-72 rounded-3xl p-4 mx-0 md:mx-4 flex flex-col items-center text-center relative shadow-md shadow-[#590844] bg-[#FFC76E] border-4 border-[#FF9955]">
-      <div className="w-full aspect-4/3 bg-gray-300 mb-3 overflow-hidden flex items-center justify-center">
+      <div className="w-full aspect-4/3 bg-gray-300 mb-3 overflow-hidden rounded-2xl flex items-center justify-center">
           <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
       </div>
 
