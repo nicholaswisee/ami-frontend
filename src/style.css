@@ -57,7 +57,7 @@
 
   p.lead,
   .lead {
-    @apply font-medium text-base sm:text-lg md:text-xl;
+    @apply text-base font-medium sm:text-lg md:text-xl;
   }
 
   p.small,
@@ -66,7 +66,7 @@
   }
 
   * {
-    @apply font-body font-medium leading-normal;
+    @apply font-body leading-normal font-medium;
   }
 }
 

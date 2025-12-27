@@ -2,6 +2,8 @@ import { useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { NavLink } from "react-router";
+import { useAuthStore } from "../store/authStore";
+import { CgProfile } from "react-icons/cg";
 
 const navOpts = [
   {
@@ -33,7 +35,7 @@ const navOpts = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  // TO-DO: Implementasi login check
+  const { isAuthenticated, user } = useAuthStore();
   return (
     <>
       <nav className="bg-purple fixed top-0 z-50 flex h-18 w-full px-3 py-1">
@@ -54,14 +56,29 @@ export default function Navbar() {
             </NavLink>
           ))}
         </div>
-        <NavLink
-          to="/auth"
-          className={({ isActive }) =>
-            `${isActive ? "border-[#ffeabb]" : "border-transparent"} font-body mx-6 my-auto ml-auto h-12 min-w-20 rounded-xl border-2 bg-[#3c59cf] p-2 text-center font-bold text-[#ffeabb] max-lg:hidden`
-          }
-        >
-          Login
-        </NavLink>
+        {!isAuthenticated ? (
+          <NavLink
+            to="/auth"
+            className={({ isActive }) =>
+              `${isActive ? "border-[#ffeabb]" : "border-transparent"} font-body mx-6 my-auto ml-auto h-12 min-w-20 rounded-xl border-2 bg-[#3c59cf] p-2 text-center font-bold text-[#ffeabb] max-lg:hidden`
+            }
+          >
+            Login
+          </NavLink>
+        ) : (
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `${isActive ? "border-[#ffeabb]" : "border-transparent"} font-body mx-6 my-auto ml-auto flex h-12 min-w-20 items-center justify-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2 text-center font-bold text-[#ffeabb] max-lg:hidden`
+            }
+          >
+            <CgProfile size={32} />
+            <span className="mb-1 font-bold">
+              Hai, {user?.name?.trim().split(/\s+/)[0]}!
+            </span>
+          </NavLink>
+        )}
+
         <button
           onClick={() => {
             setIsOpen(!isOpen);
@@ -92,7 +109,7 @@ export default function Navbar() {
               key={i}
               to={n.url}
               className={({ isActive }) =>
-                `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 min-w-28 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
+                `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 min-w-28 items-center justify-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
               }
             >
               <img src={n.icon} className="w-8" alt="Icon" />
@@ -100,17 +117,35 @@ export default function Navbar() {
             </NavLink>
           ))}
         </div>
-        <NavLink
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-          to="/auth"
-          className={({ isActive }) =>
-            `${isActive ? "border-[#ffeabb]" : "border-transparent"} font-body h-12 min-w-20 rounded-xl border-2 bg-[#3c59cf] p-2 pt-3 text-center font-bold text-[#ffeabb]`
-          }
-        >
-          Login
-        </NavLink>
+        {!isAuthenticated ? (
+          <NavLink
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            to="/auth"
+            className={({ isActive }) =>
+              `${isActive ? "border-[#ffeabb]" : "border-transparent"} font-body h-12 min-w-20 rounded-xl border-2 bg-[#3c59cf] p-2 pt-3 text-center font-bold text-[#ffeabb]`
+            }
+          >
+            Login
+          </NavLink>
+        ) : (
+          <NavLink
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            to={"/profile"}
+            className={({ isActive }) =>
+              `${isActive ? "border-[#ffeabb]" : "border-transparent"} font-body bg-[#1b165e]/20bg-[#3c59cf] flex h-12 min-w-28 items-center gap-2 rounded-xl border-2 p-2 pt-3 text-center font-bold text-[#ffeabb]`
+            }
+          >
+            <CgProfile size={32} />
+            <span className="mb-1 font-bold">
+              Hai, {user?.name?.trim().split(/\s+/)[0]}!
+            </span>
+          </NavLink>
+        )}
+
         <button
           onClick={() => {
             setIsOpen(!isOpen);
