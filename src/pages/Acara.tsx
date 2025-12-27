@@ -67,22 +67,22 @@ export default function AcaraPage() {
         </section>
 
         {/* location */}
-        <section className="w-full flex flex-col items-center gap-4 pb-12 px-4">
-            <h2 className="text-xl font-bold uppercase tracking-wider text-gray-800">
+        <section className="w-full flex flex-col items-center gap-5 pb-12 px-4 my-16">
+            <h2 className="text-3xl font-bold uppercase tracking-wider text-[#EFFF8D] text-shadow-sm text-shadow-[#F3414E]">
                 Lokasi
             </h2>
-            <div className="w-full max-w-2xl aspect-video bg-gray-100 rounded-xl border-4 border-[#FFDB8C] flex flex-col items-center justify-center text-gray-400 gap-2">
+            <div className="w-full max-w-2xl aspect-video bg-gray-100 rounded-3xl border-8 border-[#FFB366] flex flex-col items-center justify-center text-gray-400 gap-2">
                 <span className="font-medium text-sm">Map Placeholder</span>
             </div>
             <button
               onClick={() => {console.log("Lokasi Detail clicked")}}
-              className={` relative group w-full sm:w-auto px-10 py-3 rounded-2xl font-bold tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-0 from-[#FFC76E] to-[#FFDB8C] border-4 border-[#FFC76E] hover:brightness-110 active:translate-y-[4px] active:shadow-[0px_2px_0px_0px_##FFDB8C]
+              className={` relative group w-full sm:w-auto px-10 py-3 rounded-2xl font-bold tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-0 from-[#FFC76E] to-[#FFDB8C] border-4 border-[#FFB366] hover:brightness-110 active:translate-y-[4px] active:shadow-[0px_2px_0px_0px_##FFDB8C]
               `}
             >
-              <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-[#FFDB8C] to-90% to-transparent rounded-t-xl pointer-events-none" />
-              <span className="relative z-10 drop-shadow-md">
+              <div className="absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-[#FFDB8C] to-90% to-transparent rounded-t-xl pointer-events-none" />
+              <h3 className="text-xl text-[#87095A] z-10 drop-shadow-md">
                 Lokasi Detail
-              </span>
+              </h3>
             </button>
         </section>
 
@@ -98,7 +98,7 @@ const CTAButton = ({ onClick, text }: { onClick?: () => void; text?: string;}) =
       className={` relative group w-full sm:w-auto px-6 py-3 text-lg md:text-2xl rounded-2xl text-[#FFDB8C] tracking-wide uppercase transition-all duration-150 ease-in-out bg-gradient-to-b from-[#AC166C] to-[#6F0E4E] border-2 border-[#C62D76] shadow-[0px_2px_0px_0px_#F3414E] hover:brightness-110 active:translate-y-[4px] active:shadow-[0px_2px_0px_0px_#F3414E]
       `}
     >
-      <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none" />
       <span className="relative z-10 drop-shadow-md ">
         <h3 className="text-shadow-sm whitespace-nowrap">{text}</h3>
       </span>
@@ -116,7 +116,6 @@ const AcaraCard = ({title, description, imageUrl}: {title: string; description: 
 
   return (
     <div
-      // Changed width to be responsive: w-full max-w-[18rem] on mobile, w-72 on desktop
       className="w-full max-w-[18rem] md:w-72 rounded-3xl p-6 mx-0 md:mx-4 flex flex-col items-center text-center relative shadow-sm shadow-[#590844]"
       style={{
         backgroundColor: colors.cardBg,
@@ -175,7 +174,7 @@ const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {titl
       className="rounded-3xl p-6 md:p-8 relative overflow-hidden bg-linear-0 from-[#302A77] to-[#6E46B2] border-4 border-[#302A77] w-full max-w-5xl"
     >
       <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
-        {/* left box (Image) */}
+        {/*image (left column) */}
         <div className="w-full md:w-1/3 md:mx-8 shrink-0">
           <div className="aspect-square bg-white flex items-center justify-center p-8">
             <svg
@@ -188,7 +187,7 @@ const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {titl
           </div>
         </div>
 
-        {/* Right box (Text) */}
+        {/* right column*/}
         <div className="flex flex-col gap-6 grow justify-start content-between text-center md:text-left">
           <div
             className="bg-linear-180 from-[#FFDB8C] to-[#FFC76E] border-4 border-[#FFC76E] py-2 px-8 rounded-3xl w-full text-center"
