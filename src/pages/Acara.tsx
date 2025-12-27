@@ -57,10 +57,11 @@ export default function AcaraPage() {
 
         {/* talkshow */}
         <section className="w-full relative mt-8 mb-8 flex flex-col items-center px-2 md:px-0">
-            <div className="w-full flex flex-col items-center">
-              <TalkshowCard title="Talkshow" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus." sourceName="Lorem" sourceDesc="Ipsum" time="00:00" place="Lorem"/>
+            <div className="max-w-3xl flex flex-col items-center">
+              <TalkshowCard title="Judul Talkshow" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus."
+              sourceName="Nama Narasumber" sourceDesc="Deskripsis Narasumber" time="Waktu" place="Tempat"/>
             <div className="flex justify-center items-center my-8 md:my-5">
-              <CTAButton text="RSPV Talkshow"/>
+              <CTAButton text="RSVP Talkshow"/>
             </div>
             </div>
         </section>
@@ -173,39 +174,10 @@ const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {titl
     <div
       className="rounded-3xl p-6 md:p-8 relative overflow-hidden bg-linear-0 from-[#302A77] to-[#6E46B2] border-4 border-[#302A77] w-full max-w-5xl"
     >
-      <div className="absolute left-1 md:left-4 top-1/2 -translate-y-1/2 z-20 cursor-pointer">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="w-8 h-8 md:w-10 md:h-10"
-          style={{ color: colors.accentBg }}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-      </div>
-
-      {/* Right Arrow */}
-      <div className="absolute right-1 md:right-4 top-1/2 -translate-y-1/2 z-20 cursor-pointer">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="w-8 h-8 md:w-10 md:h-10"
-          style={{ color: colors.accentBg }}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-      </div>
-
       <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
         {/* left box (Image) */}
         <div className="w-full md:w-1/3 md:mx-8 shrink-0">
-          <div className="aspect-square bg-white flex items-center justify-center p-8 rounded-2xl">
+          <div className="aspect-square bg-white flex items-center justify-center p-8">
             <svg
               className="w-full h-full text-gray-400"
               fill="currentColor"
@@ -217,53 +189,41 @@ const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {titl
         </div>
 
         {/* Right box (Text) */}
-        <div className="flex flex-col gap-6 grow justify-center content-between text-center md:text-left">
+        <div className="flex flex-col gap-6 grow justify-start content-between text-center md:text-left">
           <div
-            className="bg-[#FFDB8C] border-4 border-[#FFC76E] py-3 px-8 rounded-3xl w-full text-center"
+            className="bg-linear-180 from-[#FFDB8C] to-[#FFC76E] border-4 border-[#FFC76E] py-2 px-8 rounded-3xl w-full text-center"
           >
             <h3
-              className="font-extrabold text-xl tracking-wide"
-              style={{ color: colors.textColorDark }}
-            >
+              className="font-extrabold text-2xl uppercase tracking-wide text-[#87095A]">
               {title}
             </h3>
           </div>
 
-            <p className="text-sm leading-relaxed text-justify px-2" style={{ color: colors.textColorLight }}>
+            <p className="text-sm font-semibold leading-relaxed text-justify px-2" style={{ color: colors.textColorLight }}>
             {desc}
           </p>
         </div>
       </div>
 
-      {/* Bottom Boxes: Stack on small mobile, row on larger */}
       <div className="flex flex-col sm:flex-row gap-4 md:gap-6 mt-8 justify-evenly items-center z-10 w-full">
         <div
-          className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 text-center"
-        >
-          <span
-            className="block font-bold text-lg"
-            style={{ color: colors.textColorDark }}
-          >
-            <p>{sourceName}</p>
-          </span>
-          <span className="text-sm" style={{ color: colors.textColorDark }}>
-            <p>{sourceDesc}</p>
-          </span>
+          className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 z-10 text-center">
+          <p className="block font-extrabold text-xl text-[#590844]">
+            {sourceName}
+          </p>
+          <p className="text-lg font-semibold text-[#AC166C]">
+            {sourceDesc}
+          </p>
         </div>
 
         <div
-          className="w-full sm:flex-1 rounded-full py-4 px-6 max-w-xs sm:max-w-40 text-center"
-          style={{ backgroundColor: colors.accentBg }}
-        >
-          <span
-            className="block font-bold text-lg"
-            style={{ color: colors.textColorDark }}
-          >
-            <p>{time}</p>
-          </span>
-          <span className="text-sm" style={{ color: colors.textColorDark }}>
-            <p>{place}</p>
-          </span>
+          className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 md:max-w-40 z-10 text-center">
+          <p className="block font-extrabold text-xl text-[#590844]">
+            {time}
+          </p>
+          <p className="text-lg font-semibold text-[#AC166C]">
+            {place}
+          </p>
         </div>
       </div>
 
