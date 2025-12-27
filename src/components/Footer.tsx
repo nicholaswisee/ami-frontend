@@ -16,7 +16,7 @@ const socials: { icon: IconType; label: string; url: string }[] = [
   {
     icon: FaXTwitter,
     label: "AkuMasukITB",
-    url: "https://x.com/AkuMasukITB",
+    url: "https://x.com/akumasukitb26",
   },
 ];
 
