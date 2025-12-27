@@ -1,6 +1,7 @@
 import Countdown from '../components/countdown';
 import Rundown from '../components/rundown';
 import EventBlocks from '../components/EventBlocks';
+import PastEvents from '../components/PastEvents';
 
 export default function ItbDayPage() {
   return (
@@ -15,6 +16,32 @@ export default function ItbDayPage() {
         {/* Countdown */}
         <Countdown />
         <div className="flex flex-col justify-center items-center py-50 gap-50 md:py-[400px] md:gap-[132px]">
+          {/* Left Flower Decoration */}
+          <img
+            src="/Copy of Bunga_2_Ayu.webp"
+            alt=""
+            className="absolute right-30 top-[1200px] w-[120px] h-auto z-20 pointer-events-none"
+          />
+
+          <img
+            src="/Copy of Bunga_2_Ayu.webp"
+            alt=""
+            className="absolute left-15 top-[1150px] w-[120px] h-auto z-20 pointer-events-none"
+            style={{ transform: 'scaleX(-1) rotate(40deg)' }}
+          />
+
+          {/* Right Vine Decoration */}
+          <img
+            src="/Vines_3_Ical 1.webp"
+            alt=""
+            className="absolute right-0 top-[980px] w-[300px] h-auto z-10 pointer-events-none"
+          />
+
+          <img
+            src="/Vines_1_Ical 1.webp"
+            alt=""
+            className="absolute left-0 top-[980px] w-[300px] h-auto z-15 pointer-events-none"
+          />
 
           {/* Title */}
           <div className="flex flex-col gap-6 items-center">
@@ -40,16 +67,7 @@ export default function ItbDayPage() {
           <Rundown />
 
           {/* Foto2 Tahun lalu */}
-          <div>
-            <h1
-              className="text-[#EFFF8D] text-[54px] font-bold text-center"
-              style={{
-                fontFamily: 'Euskadi, serif',
-                textShadow: '0px 4px 5.3px rgba(48, 42, 119, 1), 0px 4px 5.3px rgba(48, 42, 119, 1)'
-              }}>
-              Lorem Ipsum dolor si amet
-            </h1>
-          </div>
+          <PastEvents />
         </div>
       </div>
     </section>
