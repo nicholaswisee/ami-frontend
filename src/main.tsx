@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import "./style.css";
 import { BrowserRouter, Route, Routes } from "react-router";
+import { ProtectedRoute } from "./utils/protectedRoute";
 import App from "./App";
 import AuthPage from "./pages/Auth";
 import AcaraPage from "./pages/Acara";
@@ -22,8 +23,15 @@ createRoot(document.getElementById("root")!).render(
         <Route path="oleat" element={<OleatPage />} />
         <Route path="rsvp" element={<RsvpPage />} />
         <Route path="auth" element={<AuthPage />} />
-        <Route path="profile" element={<ProfilePage />} />
         <Route path="faq" element={<Faq />} />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
