@@ -1,9 +1,16 @@
 import React from "react";
 import { useParams } from "react-router";
+import { type CarouselApi } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem
+} from "@/components/ui/carousel";
 
 export default function AcaraPage() {
   const { name } = useParams<{ name?: string }>();
-
+  const carouselItems = Array.from({ length: 6 }); 
+  const [api, setApi] = React.useState<CarouselApi | null>(null);
   return (
     <div 
       className="min-h-screen w-full bg-white text-gray-800 font-sans bg-cover bg-center bg-scroll" 
@@ -12,7 +19,7 @@ export default function AcaraPage() {
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col gap-12">
           {/* <h1 className="text-3xl font-bold">Acara: {name ?? "Nama Acara"}</h1> */}
         
-        {/* HEADER */}
+        {/* header */}
         <section className="flex flex-col items-center text-center gap-4 my-24 md:my-48">
           <CTAButton text="AKU MASUK ITB"/>
           <h3 className="max-w-sm px-4 text-[#590844] text-base md:text-lg text-shadow-xs text-shadow-[#EF5D23] leading-relaxed">
@@ -22,13 +29,59 @@ export default function AcaraPage() {
           </h3>
         </section>
 
-        {/* carousel */}
-        <section className="w-full relative group">
-            <div className="w-full flex flex-col md:flex-row items-center gap-8 md:gap-4 justify-center">
-                <AcaraCard title="Acara 1" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus"/>
-                <AcaraCard title="Acara 1" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus"/>
-                <AcaraCard title="Acara 1" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus"/>
-            </div>
+        {/* acara carousel */}
+        <section className="w-full relative group px-4 md:px-12">
+            <Carousel
+              setApi={setApi}
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-4 pb-4">
+                {carouselItems.map((_, index) => (
+                  <CarouselItem 
+                    key={index} 
+                    className="pl-4 basis-full md:basis-1/2 lg:basis-1/3 flex justify-center"
+                  >
+                    <div className="p-1">
+                      <AcaraCard 
+                        title={`Acara ${index + 1}`} 
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper." 
+                        imageUrl="/src/assets/img-placeholder.png"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              
+              {/*prev button */}
+            <button 
+                onClick={() => api?.scrollPrev()}
+                className="absolute left-1 md:-left-20 top-1/2 -translate-y-1/2 z-10 transition-transform hover:scale-110 focus:outline-none"
+                aria-label="Previous Slide"
+              >
+                <img 
+                    src="/src/assets/arrow.png" 
+                    alt="Previous" 
+                    className="w-10 h-10 md:w-16 md:h-16 object-contain drop-shadow-md"
+                />
+              </button>
+              
+              {/* next button */}
+              <button 
+                onClick={() => api?.scrollNext()}
+                className="absolute right-1 md:-right-20 top-1/2 -translate-y-1/2 z-10 transition-transform hover:scale-110 focus:outline-none"
+                aria-label="Next Slide"
+              >
+                <img 
+                    src="/src/assets/arrow.png" 
+                    alt="Next" 
+                    className="w-10 h-10 md:w-16 md:h-16 object-contain scale-x-[-1] drop-shadow-md"
+                />
+              </button>
+            </Carousel>
         </section>
 
         {/* rundown  */}
@@ -59,7 +112,7 @@ export default function AcaraPage() {
         <section className="w-full relative mt-8 mb-8 flex flex-col items-center px-2 md:px-0">
             <div className="max-w-3xl flex flex-col items-center">
               <TalkshowCard title="Judul Talkshow" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper. Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus."
-              sourceName="Nama Narasumber" sourceDesc="Deskripsis Narasumber" time="Waktu" place="Tempat"/>
+              imageUrl="/src/assets/img-placeholder.png" sourceName="Nama Narasumber" sourceDesc="Deskripsis Narasumber" time="Waktu" place="Tempat"/>
             <div className="flex justify-center items-center my-8 md:my-5">
               <CTAButton text="RSVP Talkshow"/>
             </div>
@@ -76,7 +129,7 @@ export default function AcaraPage() {
             </div>
             <button
               onClick={() => {console.log("Lokasi Detail clicked")}}
-              className={` relative group w-full sm:w-auto px-10 py-3 rounded-2xl font-bold tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-0 from-[#FFC76E] to-[#FFDB8C] border-4 border-[#FFB366] hover:brightness-110 active:translate-y-[4px] active:shadow-[0px_2px_0px_0px_##FFDB8C]
+              className={` relative group w-full sm:w-auto px-10 py-3 rounded-2xl font-bold tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-0 from-[#FFC76E] to-[#FFDB8C] border-4 border-[#FFB366] hover:brightness-110 active:translate-y-1 active:shadow-[0px_2px_0px_0px_##FFDB8C]
               `}
             >
               <div className="absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-[#FFDB8C] to-90% to-transparent rounded-t-xl pointer-events-none" />
@@ -95,7 +148,7 @@ const CTAButton = ({ onClick, text }: { onClick?: () => void; text?: string;}) =
   return (
     <button
       onClick={onClick}
-      className={` relative group w-full sm:w-auto px-6 py-3 text-lg md:text-2xl rounded-2xl text-[#FFDB8C] tracking-wide uppercase transition-all duration-150 ease-in-out bg-gradient-to-b from-[#AC166C] to-[#6F0E4E] border-2 border-[#C62D76] shadow-[0px_2px_0px_0px_#F3414E] hover:brightness-110 active:translate-y-[4px] active:shadow-[0px_2px_0px_0px_#F3414E]
+      className={` relative group w-full sm:w-auto px-6 py-3 text-lg md:text-2xl rounded-2xl text-[#FFDB8C] tracking-wide uppercase transition-all duration-150 ease-in-out bg-linear-to-b from-[#AC166C] to-[#6F0E4E] border-2 border-[#C62D76] shadow-[0px_2px_0px_0px_#F3414E] hover:brightness-110 active:translate-y-1 active:shadow-[0px_2px_0px_0px_#F3414E]
       `}
     >
       <div className="absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none" />
@@ -107,106 +160,54 @@ const CTAButton = ({ onClick, text }: { onClick?: () => void; text?: string;}) =
 };
 
 const AcaraCard = ({title, description, imageUrl}: {title: string; description: string; imageUrl: string;}) => {
-  const colors = {
-    cardBg: '#FFDB8C', // Orange-200
-    cardBorder: '#F87F42', // Orange-600
-    titleBg: '#FFC76E', // Orange-300
-    textColor: '#050836', // Purple-900 
-  };
-
   return (
-    <div
-      className="w-full max-w-[18rem] md:w-72 rounded-3xl p-6 mx-0 md:mx-4 flex flex-col items-center text-center relative shadow-sm shadow-[#590844]"
-      style={{
-        backgroundColor: colors.cardBg,
-        borderColor: colors.cardBorder,
-        borderWidth: '4px',
-      }}
-    >
-      {/* Image */}
-      <div className="w-full aspect-[4/3] bg-gray-300 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
-        {imageUrl ? (
+    <div className="w-full max-w-[18rem] md:w-72 rounded-3xl p-4 mx-0 md:mx-4 flex flex-col items-center text-center relative shadow-md shadow-[#590844] bg-[#FFC76E] border-4 border-[#FF9955]">
+      <div className="w-full aspect-4/3 bg-gray-300 mb-3 overflow-hidden flex items-center justify-center">
           <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
-        ) : (
-          //placeholder image 
-          <svg
-            className="w-24 h-24 text-gray-100"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
-          </svg>
-        )}
       </div>
 
-      <div
-        className="w-full py-3 rounded-3xl mb-4 border-4 border-[#FFB336]"
-        style={{ backgroundColor: colors.titleBg }}
-      >
-        <h3
-          className="font-extrabold text-2xl"
-          style={{ color: colors.textColor }}
-        >
+      <div className="w-full py-1 rounded-2xl mb-4 border-4 border-[#FFB366] bg-linear-180 from-[#FFDB8C] to-95%">
+        <h3 className="font-bold text-2xl text-[#6F0E4E]">
           {title}
         </h3>
       </div>
 
       <p
-        className="text-sm leading-relaxed font-medium"
-        style={{ color: colors.textColor }}
-      >
+        className="text-sm leading-relaxed font-extrabold text-justify text-[#590844]">
         {description}
       </p>
     </div>
   );
 };
 
-const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {title: string; desc: string, sourceName: string; sourceDesc: string; time: string; place: string}) => {
-  const colors = {
-    cardBg: '#302A77', // Purple-700
-    accentBg: '#FFDB8C', // Orange-200 
-    textColorDark: '#302A77', // Purple-700
-    textColorLight: '#FFFFFF', // White
-  };
-
+const TalkshowCard = ({title, desc, imageUrl, sourceName, sourceDesc, time, place }: {title: string; desc: string; imageUrl: string; sourceName: string; sourceDesc: string; time: string; place: string}) => {
   return (
-    <div
-      className="rounded-3xl p-6 md:p-8 relative overflow-hidden bg-linear-0 from-[#302A77] to-[#6E46B2] border-4 border-[#302A77] w-full max-w-5xl"
-    >
+    <div className="rounded-3xl p-6 md:p-8 relative overflow-hidden bg-linear-to-t from-[#302A77] to-[#6E46B2] border-4 border-[#302A77] w-full max-w-5xl">
       <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
         {/*image (left column) */}
         <div className="w-full md:w-1/3 md:mx-8 shrink-0">
-          <div className="aspect-square bg-white flex items-center justify-center p-8">
-            <svg
-              className="w-full h-full text-gray-400"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
-            </svg>
+          <div className="aspect-square bg-gray-300 flex items-center justify-center rounded-2xl">
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
           </div>
         </div>
 
-        {/* right column*/}
+        {/* right column */}
         <div className="flex flex-col gap-6 grow justify-start content-between text-center md:text-left">
-          <div
-            className="bg-linear-180 from-[#FFDB8C] to-[#FFC76E] border-4 border-[#FFC76E] py-2 px-8 rounded-3xl w-full text-center"
-          >
+          <div className="bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] border-4 border-[#FFC76E] py-2 px-8 rounded-3xl w-full text-center">
             <h3
               className="font-extrabold text-2xl uppercase tracking-wide text-[#87095A]">
               {title}
             </h3>
           </div>
 
-            <p className="text-sm font-semibold leading-relaxed text-justify px-2" style={{ color: colors.textColorLight }}>
+            <p className="text-sm font-semibold leading-relaxed text-justify px-2 text-[#FFEABB]">
             {desc}
           </p>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 md:gap-6 mt-8 justify-evenly items-center z-10 w-full">
-        <div
-          className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 z-10 text-center">
+        <div className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 z-10 text-center">
           <p className="block font-extrabold text-xl text-[#590844]">
             {sourceName}
           </p>
@@ -215,8 +216,7 @@ const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {titl
           </p>
         </div>
 
-        <div
-          className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 md:max-w-40 z-10 text-center">
+        <div className="w-full sm:flex-1 bg-[#FFDB8C] rounded-3xl py-4 px-6 max-w-xs sm:max-w-56 md:max-w-40 z-10 text-center">
           <p className="block font-extrabold text-xl text-[#590844]">
             {time}
           </p>
@@ -229,12 +229,12 @@ const TalkshowCard = ({title, desc, sourceName, sourceDesc, time, place }: {titl
       <img
         src="/src/assets/rock-1.png"
         alt="Decorative Rock Left"
-        className="absolute bottom-0 left-0 w-16 md:w-32 -z-0 pointer-events-none opacity-80 md:opacity-100"
+        className="absolute bottom-0 left-0 w-16 md:w-32 z-0 pointer-events-none opacity-80 md:opacity-100"
       />
       <img
         src="/src/assets/rock-2.png"
         alt="Decorative Rock Right"
-        className="absolute bottom-0 right-0 w-16 md:w-32 -z-0 pointer-events-none opacity-80 md:opacity-100"
+        className="absolute bottom-0 right-0 w-16 md:w-32 z-0 pointer-events-none opacity-80 md:opacity-100"
       />
     </div>
   );
