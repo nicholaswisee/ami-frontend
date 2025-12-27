@@ -15,36 +15,78 @@ export default function ItbDayPage() {
         }}>
         {/* Countdown */}
         <Countdown />
-        <div className="flex flex-col justify-center items-center py-50 gap-50 md:py-[400px] md:gap-[132px]">
-          {/* Left Flower Decoration */}
-          <img
-            src="/Copy of Bunga_2_Ayu.webp"
-            alt=""
-            className="absolute right-30 top-[1200px] w-[120px] h-auto z-20 pointer-events-none"
-          />
+        <div className="relative flex flex-col justify-center items-center py-50 gap-50 md:py-[400px] md:gap-[132px]">
+          {/* Decorations Layer - Behind content */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            {/* for event blocks */}
+            {/* Vines Layer - Bottom */}
+            <img
+              src="/Vines_3_Ical 1.webp"
+              alt=""
+              className="absolute right-0 top-[980px] w-[300px] h-auto z-0"
+            />
 
-          <img
-            src="/Copy of Bunga_2_Ayu.webp"
-            alt=""
-            className="absolute left-15 top-[1150px] w-[120px] h-auto z-20 pointer-events-none"
-            style={{ transform: 'scaleX(-1) rotate(40deg)' }}
-          />
+            <img
+              src="/Vines_1_Ical 1.webp"
+              alt=""
+              className="absolute left-0 top-[980px] w-[300px] h-auto z-0"
+            />
 
-          {/* Right Vine Decoration */}
-          <img
-            src="/Vines_3_Ical 1.webp"
-            alt=""
-            className="absolute right-0 top-[980px] w-[300px] h-auto z-10 pointer-events-none"
-          />
+            {/* Flowers Layer - On top of vines */}
+            <img
+              src="/Copy of Bunga_2_Ayu.webp"
+              alt=""
+              className="absolute right-30 top-[1200px] w-[120px] h-auto z-10"
+            />
 
-          <img
-            src="/Vines_1_Ical 1.webp"
-            alt=""
-            className="absolute left-0 top-[980px] w-[300px] h-auto z-15 pointer-events-none"
-          />
+            <img
+              src="/Copy of Bunga_2_Ayu.webp"
+              alt=""
+              className="absolute left-15 top-[1150px] w-[120px] h-auto z-10"
+              style={{ transform: 'scaleX(-1) rotate(40deg)' }}
+            />
+
+            {/* for past events */}
+            <img
+              src="/Copy of Bunga_1_Ayu.webp"
+              alt=""
+              className="absolute right-125 top-[2650px] w-[120px] h-auto z-10"
+            />
+            
+            <img
+              src="/Copy of Bunga_1_Ayu.webp"
+              alt=""
+              className="absolute left-145 top-[2390px] w-[120px] h-auto z-10"
+            />
+            
+            <img
+              src="/Vines baru(1) 1.webp"
+              alt=""
+              className="absolute left-0 top-[2260px] w-[300px] h-auto z-0"
+            />
+            
+            <img
+              src="/Vines baru(1) 2.webp"
+              alt=""
+              className="absolute left-100 top-[2300px] w-[400px] h-auto z-0"
+            />
+
+            <img
+              src="/Vines baru(1) 3.webp"
+              alt=""
+              className="absolute right-95 top-[2500px] w-[400px] h-auto z-0"
+            />
+
+            <img
+              src="/Vines baru(1) 4.webp"
+              alt=""
+              className="absolute right-0 top-[2550px] w-[300px] h-auto z-0"
+            />
+
+          </div>
 
           {/* Title */}
-          <div className="flex flex-col gap-6 items-center">
+          <div className="relative z-10 flex flex-col gap-6 items-center">
             <div className="p-2 bg-linear-to-t md:rounded-4xl rounded-2xl from-[#590844] to-[#9B0E76]"
               style={{
                 boxShadow: '0px 4px 0px rgba(243, 65, 78, 1), 0px 4px 0px rgba(243, 65, 78, 1)'
@@ -61,13 +103,19 @@ export default function ItbDayPage() {
           </div>
 
           {/* Event Blocks Component */}
-          <EventBlocks />
+          <div className="relative z-10 w-full flex justify-center">
+            <EventBlocks />
+          </div>
 
           {/* Rundown Component */}
-          <Rundown />
+          <div className="relative z-10 w-full flex justify-center">
+            <Rundown />
+          </div>
 
           {/* Foto2 Tahun lalu */}
-          <PastEvents />
+          <div className="relative z-10 w-full flex justify-center">
+            <PastEvents />
+          </div>
         </div>
       </div>
     </section>

@@ -1,8 +1,8 @@
 export default function PastEvents() {
   const pastEvents = [
-    { year: 2023, imageUrl: '/itb-day-2023.jpg' },
-    { year: 2024, imageUrl: '/itb-day-2024.jpg' },
-    { year: 2025, imageUrl: '/itb-day-2025.jpg' },
+    { year: 2023, imageUrl: '/itb-day-2023.jpg', marginTop: -210 },
+    { year: 2024, imageUrl: '/itb-day-2024.jpg', marginTop: 80 },
+    { year: 2025, imageUrl: '/itb-day-2025.jpg', marginTop: 250 },
   ];
 
   return (
@@ -18,21 +18,20 @@ export default function PastEvents() {
       </h1>
 
       {/* Past Events Gallery */}
-      <div className="relative w-full max-w-[1200px] h-[600px]">
+      <div className="flex justify-center items-center gap-40 w-full">
         {pastEvents.map((event, index) => (
           <div
             key={event.year}
-            className="absolute"
+            className="relative"
             style={{
-              left: `${index * 280}px`,
-              top: `${index * 120}px`,
+              marginTop: `${event.marginTop}px`,
               zIndex: index,
             }}
           >
             {/* Image */}
-            <div className="w-[280px] h-[200px] rounded-2xl overflow-hidden bg-gray-200 shadow-lg mb-4">
+            <div className="w-[240px] h-[170px] rounded-2xl overflow-hidden bg-gray-200 shadow-lg mb-4">
               <img
-                src={event.imageUrl}
+                src={event.imageUrl} 
                 alt={`ITB Day ${event.year}`}
                 className="w-full h-full object-cover"
               />
@@ -40,10 +39,11 @@ export default function PastEvents() {
 
             {/* Year Label */}
             <div
-              className="px-8 py-3 rounded-full font-bold text-[20px] inline-block"
+              className="px-13 py-2 rounded-3xl font-bold text-[20px] inline-block"
               style={{
+                backgroundImage: 'linear-gradient(180deg, rgba(14, 9, 77, 0.18), rgba(43, 35, 117, 1))',
                 backgroundColor: '#825AC3',
-                border: '4px solid #302A77',
+                border: '6px solid #302A77',
                 color: '#FFB6B0',
               }}
             >

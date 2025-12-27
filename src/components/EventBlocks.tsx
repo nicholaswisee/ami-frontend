@@ -38,7 +38,7 @@ export default function EventBlocks() {
     <div className="flex flex-col items-center gap-7 w-full max-w-[1200px] px-4">
       {/* Title */}
       <h2
-        className="text-[#87095A] text-[54px] font-bold text-center mb-8"
+        className="text-[#87095A] text-[54px] font-bold text-center mb-4"
         style={{
           fontFamily: 'Euskadi, serif',
           textShadow: '0 4px 5.3px rgba(245, 55, 55, 0.99)'
