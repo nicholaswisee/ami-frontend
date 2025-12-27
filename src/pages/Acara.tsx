@@ -32,22 +32,22 @@ export default function AcaraPage() {
         </section>
 
         {/* rundown  */}
-        <section className="flex flex-col items-center w-full gap-6 px-2">
-            <h2 className="text-xl font-bold uppercase tracking-wider text-gray-800">
+        <section className="flex flex-col items-center w-full gap-6 px-2 py-24">
+            <h1 className="text-4xl font-bold uppercase tracking-wider text-[#87095A] text-shadow-sm text-shadow-[#F3414E]">
                 Rundown Acara
-            </h2>
+            </h1>
             
-            <div className="bg-[#FFDB8C] border border-[#FFC76E] px-8 py-2 rounded-2xl font-bold text-gray-700 text-sm">
+            <div className="bg-[#FFDB8C] border-4 border-[#FFC76E] px-8 py-1 rounded-3xl font-bold text-[#6F0E4E] text-sm">
                 <h3>DD / MM / YYYY</h3>
             </div>
 
             <div className="w-full max-w-lg flex flex-col gap-3">
-                {Array.from({ length: 5 }).map((_, i) => (
+                {Array.from({ length: 8 }).map((_, i) => (
                     <div key={i} className="flex gap-4 w-full text-sm">
-                        <div className="w-1/3 bg-[#FFC763] border-0 rounded-full py-2 flex items-center justify-center font-mono text-xs font-bold text-gray-600">
+                        <div className="w-1/3 bg-[#FFC763] border-0 rounded-full py-2 flex items-center justify-center font text-xs font-bold text-[#590844]">
                             <p>00.00-00.00</p>
                         </div>
-                        <div className="w-2/3 bg-[#FFC763] border-0 rounded-full py-2 flex items-center justify-center font-bold text-gray-700 text-center px-2">
+                        <div className="w-2/3 bg-[#FFC763] border-0 rounded-full py-2 flex items-center justify-center font-bold text-[#590844] text-center px-2">
                             <p className="line-clamp-1">ACARA ITEM {i + 1}</p>
                         </div>
                     </div>
