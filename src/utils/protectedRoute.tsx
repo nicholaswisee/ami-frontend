@@ -6,7 +6,7 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, isPending } = useAuthStore();
 
   if (isPending) return null;
-  if (!isAuthenticated) return <Navigate to="/" replace />;
+  if (!isAuthenticated) return <Navigate to="/auth" replace />;
 
   return children;
 };
