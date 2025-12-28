@@ -21,7 +21,14 @@ createRoot(document.getElementById("root")!).render(
         <Route path="itb-day" element={<ItbDayPage />} />
         <Route path="acara/:name" element={<AcaraPage />} />
         <Route path="oleat" element={<OleatPage />} />
-        <Route path="rsvp" element={<RsvpPage />} />
+        <Route
+          path="rsvp"
+          element={
+            <ProtectedRoute>
+              <RsvpPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="auth" element={<AuthPage />} />
         <Route path="faq" element={<Faq />} />
         <Route
