@@ -2,54 +2,149 @@ import { CgProfile } from "react-icons/cg";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router";
 import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
+import bgRsvp from "../assets/bg-rsvp.png";
+import { useEffect, useState } from "react";
+import { env } from "../env";
+import { toast } from "sonner";
+
+type TicketStatus = "PENDING" | "CONFIRMED";
+type Reservation = {
+  id: string;
+  barcode: string;
+  status: TicketStatus;
+  email: string;
+  wantsTalkshow: boolean;
+  talkshowExpectation: string | null;
+  createdAt: string;
+  session: null | {
+    id: string;
+    code: "1" | "2";
+    name: string;
+    description: string | null;
+  };
+};
 
 export default function ProfilePage() {
   const { user, logOut } = useAuthStore();
   const navigate = useNavigate();
-  return (
-    <section className="bg-mixed relative flex w-full flex-col items-center justify-center text-[#FFEABB]">
-      <div className="flex w-full max-w-5xl justify-center px-6">
-        <div className="flex w-full items-center justify-between py-10 lg:py-20">
-          {/* Back Button */}
-          <button
-            className="mr-auto"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            <IoIosArrowBack size={32} fill="#6f0e4e" />
-          </button>
 
-          {/* Title */}
-          <h1 className="flex-1 text-center font-bold text-[#590844]">
-            Profil
-          </h1>
-        </div>
+  const [isLoadingReservations, setIsLoadingReservations] = useState(false);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+
+  useEffect(() => {
+    const run = async () => {
+      setIsLoadingReservations(true);
+      try {
+        const res = await fetch(`${env.API_URL}/api/reservations`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!res.ok) return;
+        const json = (await res.json()) as { reservations: Reservation[] };
+        setReservations(json.reservations ?? []);
+      } finally {
+        setIsLoadingReservations(false);
+      }
+    };
+
+    void run();
+  }, []);
+
+  const copyBarcode = async (barcode: string) => {
+    try {
+      await navigator.clipboard.writeText(barcode);
+      toast.success("Kode berhasil disalin.");
+    } catch {
+      toast.error("Gagal menyalin kode.");
+    }
+  };
+
+  return (
+    <section
+      className="flex w-full flex-col items-center justify-center px-4 py-10 text-[#FFEBB8]"
+      style={{
+        backgroundImage: `url(${bgRsvp})`,
+        backgroundSize: "cover",
+        backgroundPosition: "top center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="mb-6 grid w-full max-w-5xl grid-cols-3 items-center">
+        <button
+          className="justify-self-start rounded-xl bg-[#FFEBB8] px-3 py-1 text-[11px] font-bold text-[#B64556] hover:bg-[#FFEBB8]/90"
+          onClick={() => navigate("/")}
+        >
+          <p className="inline-flex items-center gap-1">
+            <IoIosArrowBack size={16} />
+            <span className="mb-1">Kembali</span>
+          </p>
+        </button>
+        <h1 className="font-body mb-2 justify-self-center font-bold drop-shadow-md">
+          Profil
+        </h1>
+        <div className="justify-self-end" />
       </div>
-      <div className="flex w-full max-w-5xl flex-col space-y-10 px-6">
-        <div className="overflow-hidden rounded-t-2xl">
-          <div className="bg-[#C62D76] px-10 py-5 lg:py-10">
-            <div className="flex flex-row gap-5">
-              <CgProfile size={64} />
-              <div className="flex flex-col justify-center">
-                <p className="font-bold">{user?.name}</p>
-                <p>{user?.email}</p>
+      <div className="relative max-h-[80svh] w-full max-w-5xl overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
+        <div className="mt-6 flex flex-col gap-4 lg:flex-row">
+          <div className="w-full rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-5 lg:w-1/2">
+            <div className="flex items-center gap-4">
+              <CgProfile size={56} />
+              <div className="min-w-0">
+                <p className="truncate font-bold">{user?.name}</p>
+                <p className="truncate">{user?.email}</p>
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center space-y-6 rounded-b-2xl bg-[#6F0E4E]/60 px-10 py-5 lg:py-10">
-            <h2 className="">Tiket Saya</h2>
-            <div>
-              <p>Tiket</p> {/* Implement Ticket Card later */}
-            </div>
-            <button
-              onClick={() => void logOut()}
-              className="flex w-28 cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[#e1461f] py-2 font-bold text-[#FFDB8C] transition hover:bg-[#e1461f]/90"
-            >
-              <IoIosLogOut size={24} />
-              <span className="mb-0.5 font-bold">Log Out</span>
-            </button>
+
+          <div className="w-full rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-5 lg:w-1/2">
+            <h2 className="font-body text-lg font-bold">Tiket Saya</h2>
+            {isLoadingReservations ? (
+              <p className="mt-2 text-sm opacity-90">Memuat...</p>
+            ) : reservations.length === 0 ? (
+              <p className="mt-2 text-sm opacity-90">Belum ada tiket.</p>
+            ) : (
+              <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                {reservations.map((r) => (
+                  <div
+                    key={r.id}
+                    className="rounded-xl border-2 border-[#FFEBB8]/20 bg-[#B64556]/40 p-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="rounded-xl bg-white p-2 shadow">
+                        <img
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(
+                            r.barcode,
+                          )}`}
+                          alt="Barcode"
+                          className="h-24 w-24 mix-blend-multiply"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="break-words font-bold">{r.barcode}</p>
+                        <button
+                          type="button"
+                          onClick={() => void copyBarcode(r.barcode)}
+                          className="mt-2 rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-4 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                        >
+                          Salin
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => void logOut()}
+            className="flex items-center justify-center gap-2 rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+          >
+            <IoIosLogOut size={18} />
+            Keluar
+          </button>
         </div>
       </div>
     </section>
