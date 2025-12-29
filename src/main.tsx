@@ -19,7 +19,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/" element={<App />}>
         <Route index element={<HomePage />} />
         <Route path="itb-day" element={<ItbDayPage />} />
-        <Route path="acara/:name" element={<AcaraPage />} />
+        <Route path="acara" element={<AcaraPage />} />
         <Route path="oleat" element={<OleatPage />} />
         <Route
           path="rsvp"
