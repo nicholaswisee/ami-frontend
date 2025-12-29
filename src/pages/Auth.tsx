@@ -14,7 +14,7 @@ export default function AuthPage() {
     try {
       if (type === "email") {
         if (!formData.email || !formData.password) {
-          toast.error("Masukkan email dan password terlebih dahulu.");
+          toast.error("Masukkan email dan password.");
           return;
         }
         const data = await authClient.signIn.email({
