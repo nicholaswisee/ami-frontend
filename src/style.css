@@ -79,3 +79,7 @@
   background-image: url("/background/bg02.webp");
   @apply bg-cover bg-top;
 }
+
+button {
+  @apply cursor-pointer;
+}

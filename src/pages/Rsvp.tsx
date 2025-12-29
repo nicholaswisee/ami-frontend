@@ -49,6 +49,7 @@ export default function RsvpPage() {
   const [isLoadingSessions, setIsLoadingSessions] = useState(false);
   const [sessions, setSessions] = useState<EventSession[]>([]);
   const [, setCreatedReservation] = useState<Reservation | null>(null);
+  const [hasExistingReservation, setHasExistingReservation] = useState(false);
   const [isFirstParticipantSynced, setIsFirstParticipantSynced] =
     useState(true);
 
@@ -127,6 +128,28 @@ export default function RsvpPage() {
     void run();
   }, []);
 
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const res = await fetch(`${env.API_URL}/api/reservations`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!res.ok) return;
+        const json = (await res.json()) as { reservations: Reservation[] };
+        const hasReservations = (json.reservations ?? []).length > 0;
+        if (hasReservations) {
+          setHasExistingReservation(true);
+          setStep("SUCCESS");
+        }
+      } catch {
+        // ignore
+      }
+    };
+
+    void run();
+  }, []);
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -180,7 +203,7 @@ export default function RsvpPage() {
     e.preventDefault();
 
     if (participants.some((p) => !p.fullName.trim() || !p.region.trim())) {
-      toast.error("Lengkapi data semua peserta (nama, daerah).");
+      toast.error("Lengkapi data semua pengunjung (nama, daerah).");
       return;
     }
 
@@ -236,6 +259,7 @@ export default function RsvpPage() {
 
       const json = (await res.json()) as { reservation: Reservation };
       setCreatedReservation(json.reservation);
+      setHasExistingReservation(true);
       setIsSuccess(true);
       setStep("SUCCESS");
       window.scrollTo(0, 0);
@@ -286,8 +310,8 @@ export default function RsvpPage() {
 
   const getMissingActiveParticipantFields = () => {
     const missing: string[] = [];
-    if (!activeParticipant.fullName.trim()) missing.push("Nama Peserta");
-    if (!activeParticipant.region.trim()) missing.push("Daerah Peserta");
+    if (!activeParticipant.fullName.trim()) missing.push("Nama Pengunjung");
+    if (!activeParticipant.region.trim()) missing.push("Daerah Pengunjung");
     return missing;
   };
 
@@ -323,7 +347,7 @@ export default function RsvpPage() {
       {step !== "SUCCESS" ? (
         <div className="relative my-auto max-h-[80svh] w-full max-w-lg overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
           <h3 className="font-subheading text-center font-bold text-[#FFEBB8] drop-shadow-md">
-            Registrasi Tiket
+            Reservasi Tiket
           </h3>
 
           <div className="mt-6 pr-1">
@@ -457,7 +481,7 @@ export default function RsvpPage() {
               <div className="space-y-4">
                 <div className="pt-2">
                   <h2 className="font-body text-xl font-bold text-[#FFEBB8]">
-                    Data Peserta
+                    Data Pengunjung
                   </h2>
                   <p className="font-bold text-[#FFEBB8]/90"></p>
                 </div>
@@ -477,7 +501,7 @@ export default function RsvpPage() {
                               : "border-[#FFEBB8]/30 bg-[#FFEBB8]/10 text-[#FFEBB8] hover:bg-[#FFEBB8]/20"
                           }`}
                         >
-                          Peserta {idx + 1}
+                          Pengunjung {idx + 1}
                         </button>
                       );
                     })}
@@ -486,7 +510,7 @@ export default function RsvpPage() {
                       onClick={addParticipant}
                       className="rounded-xl bg-[#FFEBB8] px-4 py-1.5 text-xs font-bold text-[#B64556] hover:bg-[#FFEBB8]/90"
                     >
-                      + Peserta
+                      + Pengunjung
                     </button>
                   </div>
                 </div>
@@ -494,8 +518,7 @@ export default function RsvpPage() {
                 <div className="rounded-2xl border-2 border-[#FFEBB8]/30 bg-[#FFEBB8]/10 p-4">
                   <div className="mb-3 flex items-center justify-between">
                     <p className="text-lg font-bold text-[#FFEBB8]">
-                      Peserta {activeParticipantIndex + 1} dari{" "}
-                      {participants.length}
+                      Pengunjung {activeParticipantIndex + 1}
                     </p>
                     {participants.length > 1 ? (
                       <button
@@ -580,7 +603,7 @@ export default function RsvpPage() {
                     </>
                   ) : null}
                   <p className="font-bold">
-                    Jumlah peserta: {participants.length}
+                    Jumlah pengunjung: {participants.length}
                   </p>
                 </div>
               </form>
@@ -686,7 +709,9 @@ export default function RsvpPage() {
       ) : (
         <div className="flex w-full flex-col items-center px-2 pb-20">
           <h1 className="font-subheading text-center leading-tight font-extrabold text-[#302a77] drop-shadow-md">
-            Reservasi Tiket Berhasil!
+            {hasExistingReservation
+              ? "Kamu sudah punya tiket!"
+              : "Reservasi Tiket Berhasil!"}
           </h1>
 
           <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
