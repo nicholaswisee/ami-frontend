@@ -9,33 +9,36 @@ export default function HomePage() {
     <ParallaxProvider>
       <section className="relative w-full overflow-hidden bg-[#1a1a3e]">
         {/* Background Image - First background (covers sections 1-3 + top half of transition) */}
-        <div className="absolute inset-0 z-0 h-[350vh]">
+        {/* Keep the backdrop static so only the foreground objects parallax */}
+        <div className="pointer-events-none absolute inset-0 z-0 h-[350vh]">
           <div 
-            className="h-full w-full"
+            className="h-full w-full bg-fixed"
             style={{
               backgroundImage: 'url(/homepage-bg.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'top center',
               backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
             }}
           />
         </div>
 
         {/* Background Image - Second background (starts at middle of transition section) */}
-        <div className="absolute top-[350vh] left-0 right-0 z-0 h-[550vh]">
+        <div className="pointer-events-none absolute top-[350vh] left-0 right-0 z-0 h-[550vh]">
           <div 
-            className="h-full w-full"
+            className="h-full w-full bg-fixed"
             style={{
               backgroundImage: 'url(/homepage-bg-second.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'top center',
               backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
             }}
           />
         </div>
 
         {/* Background Extension - Third background for additional sections */}
-        <div className="absolute top-[850vh] left-0 right-0 z-0 h-[350vh]">
+        <div className="pointer-events-none absolute top-[850vh] left-0 right-0 z-0 h-[350vh]">
           <div 
             className="h-full w-full bg-[#1a1a3e]"
           />
@@ -45,9 +48,8 @@ export default function HomePage() {
         <div className="relative z-[20] flex min-h-screen flex-col items-center justify-center px-4">
           <Parallax speed={-15} scale={[0.8, 1.1]} opacity={[1, 1]}>
             <h1 
-              className="text-3xl md:text-5xl lg:text-6xl font-bold text-orange-200 drop-shadow-lg italic"
+              className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-orange-200 drop-shadow-lg italic"
               style={{ 
-                fontFamily: 'Euskadi, serif',
                 textShadow: '0 0 30px rgba(232, 185, 35, 0.5)'
               }}
             >
@@ -74,6 +76,7 @@ export default function HomePage() {
           <Parallax 
             speed={12} 
             translateY={['80px', '-80px']}
+            opacity={[1, 0]}
             className="absolute left-[8%] md:left-[12%] bottom-[30%] md:bottom-[35%] z-[8]"
           >
             <div 
@@ -86,9 +89,8 @@ export default function HomePage() {
 
           <Parallax speed={-15} scale={[0.9, 1.05]} className="relative z-[16] mr-[25%] md:mr-[30%] lg:mr-[35%]">
             <h1 
-              className="text-3xl md:text-5xl lg:text-6xl font-bold text-orange-200 drop-shadow-2xl italic"
+              className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-orange-200 drop-shadow-2xl italic"
               style={{ 
-                fontFamily: 'Euskadi, serif',
                 textShadow: '0 0 40px rgba(232, 185, 35, 0.7), 0 0 80px rgba(232, 185, 35, 0.3)'
               }}
             >
@@ -113,7 +115,7 @@ export default function HomePage() {
           </Parallax>
 
           {/* AMI Logo */}
-          <Parallax speed={-12} scale={[0.7, 1.2]} rotate={[-5, 5]}>
+          <Parallax speed={-12} scale={[0.7, 1.2]} rotate={[-5, 5]} opacity={[1, 0]}>
             <img 
               src="/ami-logo.webp" 
               alt="AMI Logo"
@@ -156,18 +158,16 @@ export default function HomePage() {
         <div className="relative z-[20] flex min-h-screen flex-col items-center justify-center px-6 md:px-12 pb-20">
           <div className="max-w-2xl mx-auto text-center mb-8">
             <p
-              className="text-[#87095A] text-[40px] font-bold text-center mb-8"
+              className="font-subheading text-[#87095A] text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8"
               style={{
-                fontFamily: 'Euskadi, serif',
                 textShadow: '0 4px 5.3px rgba(245, 55, 55, 0.99)'
               }}
             >
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias similique dolorum illo quaerat placeat repudiandae, sequi quae consectetur quam recusandae natus incidunt. Atque, quos itaque nam consectetur saepe molestias unde?
             </p>
             <button 
-              className="bg-[#6b1557] hover:bg-[#7a1a64] text-yellow-300 font-bold py-3 px-10 rounded-2xl text-base md:text-3xl transition-all duration-300 border-4 border-[#39112e] shadow-lg"
+              className="font-heading bg-[#6b1557] hover:bg-[#7a1a64] text-yellow-300 font-bold py-3 px-10 rounded-2xl text-lg md:text-2xl lg:text-3xl transition-all duration-300 border-4 border-[#39112e] shadow-lg"
               style={{ 
-                fontFamily: 'Euskadi, serif',
                 boxShadow: '0 4px 6px rgba(74, 13, 58, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
               }}
             >
