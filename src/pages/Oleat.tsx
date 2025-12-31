@@ -47,18 +47,22 @@ export default function OleatPage() {
                 className="w-36 h-12 rounded-full flex items-center justify-center font-bold z-10"
                 style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '3px solid #FFB366' }}
               >
-                <span className="text-[#7a1646] font-['Euskadi']">DO</span>
+                <span className="text-[#7a1646] text-xl font-['Euskadi']">DO</span>
               </div>
             </div>
             <div
-              className="p-6 rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
+              className="p-6 w-full rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
               style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '2px solid #FFB366' }}
             >
               <ul className="list-disc list-outside space-y-2 text-justify px-4">
-                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                <li>Sed tincidunt finibus risus in ullamcorper.</li>
-                <li>Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.</li>
-                <li>Present a iaculis felis, sed efficitur ipsum.</li>
+                <li>Sudah mendaftarkan diri melalui GOERS ataupun mau registrasi di tempat juga boleh banget!</li>
+                <li>Disarankan datang pagi yaa!!</li>
+                <li>Baca-baca lagi informasi mengenai seluruh mata acara ITB Day beserta jamnya, supaya ga ketinggalan.</li>
+                <li>Pakai pakaian yang sopan dan rapih yaa!</li>
+                <li>Download Booklet ITB Day di: bit.ly/BookletAMI2025</li>
+                <li>Datang dengan sahabat ataupun keluargamu!</li>
+                <li>Jangan lupa untuk membawa topi/payung/ponco yaa!</li>
+                <li>Kalau ada yang ingin ditanyakan, silahkan bertanya ke panitia yang sedang bertugas nanti yaa!!  </li>
               </ul>
             </div>
           </div>
@@ -70,18 +74,26 @@ export default function OleatPage() {
                 className="w-36 h-12 rounded-full flex items-center justify-center font-bold z-10"
                 style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '3px solid #FFB366' }}
               >
-                <span className="text-[#7a1646] font-['Euskadi']">DONT</span>
+                <span className="text-[#7a1646] text-xl font-['Euskadi']">DONT</span>
               </div>
             </div>
             <div
-              className="p-6 rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
+              className="p-6 w-full rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
               style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '2px solid #FFB366' }}
             >
               <ul className="list-disc list-outside space-y-2 text-justify px-4">
-                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                <li>Sed tincidunt finibus risus in ullamcorper.</li>
-                <li>Nullam bibendum, ex ac finibus tempor, nisi est rhoncus turpis.</li>
-                <li>Vivamus et fringilla tortor.</li>
+                <li>Dilarang melakukan tindakan menyinggung SARA, berbau seksual, maupun unsur negatif lainnya selama ITB Day.</li>
+                <li>    Dilarang membawa dan menggunakan alat yang berbahaya ataupun menimbulkan kekacauan seperti (tetapi tidak terbatas pada):
+                  <ul className="list-disc list-outside ml-6 mt-2 space-y-1">
+                    <li>Hewan peliharaan</li>
+                    <li>Senjata api, senjata tajam ataupun senjata tumpul</li>
+                    <li>Bahan peledak dan benda rawan meledak</li>
+                    <li>Minuman keras</li>
+                  </ul>
+                </li>
+                <li>Dilarang merusak properti ITB dan AMI 2025.</li>
+                <li>Dilarang merokok kecuali di area yang telah ditentukan (Area Merokok).</li>
+                <li>Dan jangan telat yaa!! Nanti ketinggalan mata acaranya, rugi dong!!</li>
               </ul>
             </div>
           </div>
