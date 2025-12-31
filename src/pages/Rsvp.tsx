@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { toast } from "sonner";
-import bgRsvp from "../assets/bg-rsvp.png";
 import { env } from "../env";
 import { useAuthStore } from "../store/authStore";
 
@@ -335,15 +334,7 @@ export default function RsvpPage() {
   };
 
   return (
-    <div
-      className="flex min-h-screen w-full items-center justify-center px-4 py-10"
-      style={{
-        backgroundImage: `url(${bgRsvp})`,
-        backgroundSize: "cover",
-        backgroundPosition: "top center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="bg-mixed flex min-h-screen w-full items-center justify-center px-4 py-10">
       {step !== "SUCCESS" ? (
         <div className="relative my-auto max-h-[80svh] w-full max-w-lg overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
           <h3 className="font-subheading text-center font-bold text-[#FFEBB8] drop-shadow-md">
@@ -715,7 +706,7 @@ export default function RsvpPage() {
           </h1>
 
           <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
-            Lihat reservasi pada halaman profil kamu!
+            Lihat reservasi pada halaman profil kamu
           </p>
 
           <button

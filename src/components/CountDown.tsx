@@ -57,7 +57,7 @@ export default function CountDown() {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      className="relative z-50 flex h-14 items-center justify-center md:h-18"
+      className="fixed top-18 z-50 flex h-14 w-full items-center justify-center md:h-18"
     >
       <div className="text-center">
         <p className="font-heading text-sm font-normal tracking-wider text-[#FFD88C] md:text-2xl lg:text-3xl">

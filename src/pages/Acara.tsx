@@ -15,12 +15,7 @@ export default function AcaraPage() {
     null,
   );
   return (
-    <div
-      className="min-h-screen w-full bg-white bg-cover bg-scroll bg-center text-gray-800"
-      style={{
-        backgroundImage: "url('/src/assets/bg-acara.png')",
-      }}
-    >
+    <div className="bg-mixed min-h-screen w-full bg-cover bg-scroll bg-center text-gray-800">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-8">
         {/* <h1 className="text-3xl font-bold">Acara: {name ?? "Nama Acara"}</h1> */}
 

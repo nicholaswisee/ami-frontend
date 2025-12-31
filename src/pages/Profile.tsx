@@ -2,7 +2,6 @@ import { CgProfile } from "react-icons/cg";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router";
 import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
-import bgRsvp from "../assets/bg-rsvp.png";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
 import { env } from "../env";
@@ -134,15 +133,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <section
-      className="flex w-full flex-col items-center justify-start px-4 py-10 text-[#FFEBB8]"
-      style={{
-        backgroundImage: `url(${bgRsvp})`,
-        backgroundSize: "cover",
-        backgroundPosition: "top center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <section className="bg-mixed flex w-full flex-col items-center justify-start px-4 py-10 text-[#FFEBB8]">
       <div className="mt-20 mb-6 grid w-full max-w-5xl grid-cols-3 items-center">
         <button
           className="justify-self-start rounded-xl bg-[#FFEBB8] px-3 py-1 text-[11px] font-bold text-[#B64556] hover:bg-[#FFEBB8]/90"
@@ -250,19 +241,6 @@ export default function ProfilePage() {
             >
               Tutup
             </button>
-            {/* <div
-              className="relative h-40 w-full overflow-hidden"
-              style={{
-                backgroundImage: `url(${bgRsvp})`,
-                backgroundSize: "cover",
-                backgroundPosition: "top center",
-              }}
-            >
-              <div className="absolute inset-0 bg-black/10" />
-              <div className="*:font-body relative flex h-full flex-col items-center justify-center px-6 text-center text-white">
-                <h2 className="font-extrabold">Aku Masuk ITB</h2>
-              </div>
-            </div> */}
 
             <div className="mt-3 space-y-4 bg-white px-6 py-5">
               <div className="text-center">
