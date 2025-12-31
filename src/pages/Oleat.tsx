@@ -19,7 +19,7 @@ export default function OleatPage() {
           OLEAT ITB DAY
         </div>
 
-        <p className="text-sm text-[#3b0526] max-w-xl mx-auto mb-8 font-['Euskadi']"
+        <p className="text-lg md:text-xl text-[#3b0526] max-w-xl mx-auto mb-8 font-['Euskadi']"
         style={{ textShadow: '0px 3px 4px #F87F42' }}>
           
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper.
@@ -42,7 +42,7 @@ export default function OleatPage() {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="px-4">
             <div className="flex items-center justify-center mb-4 relative">
-              <img src={doImg} alt="do" className="w-14 h-14 absolute -top-7 left-1/2 transform -translate-x-1/2 z-20" />
+              <img src={doImg} alt="do" className="w-12 h-12 absolute -top-7 left-1/2 transform -translate-x-1/2 z-20" />
               <div
                 className="w-36 h-12 rounded-full flex items-center justify-center font-bold z-10"
                 style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '3px solid #FFB366' }}
@@ -51,10 +51,10 @@ export default function OleatPage() {
               </div>
             </div>
             <div
-              className="p-6 rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['darker_grotesque']"
+              className="p-6 rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
               style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '2px solid #FFB366' }}
             >
-              <ul className="list-disc list-inside space-y-2">
+              <ul className="list-disc list-outside space-y-2 text-justify px-4">
                 <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
                 <li>Sed tincidunt finibus risus in ullamcorper.</li>
                 <li>Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.</li>
@@ -65,7 +65,7 @@ export default function OleatPage() {
 
           <div className="px-4">
             <div className="flex items-center justify-center mb-4 relative">
-              <img src={dontImg} alt="dont" className="w-14 h-14 absolute -top-7 left-1/2 transform -translate-x-1/2 z-20" />
+              <img src={dontImg} alt="dont" className="w-12 h-12 absolute -top-7 left-1/2 transform -translate-x-1/2 z-20" />
               <div
                 className="w-36 h-12 rounded-full flex items-center justify-center font-bold z-10"
                 style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '3px solid #FFB366' }}
@@ -74,10 +74,10 @@ export default function OleatPage() {
               </div>
             </div>
             <div
-              className="p-6 rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['darker_grotesque']"
+              className="p-6 rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
               style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '2px solid #FFB366' }}
             >
-              <ul className="list-disc list-inside space-y-2">
+              <ul className="list-disc list-outside space-y-2 text-justify px-4">
                 <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
                 <li>Sed tincidunt finibus risus in ullamcorper.</li>
                 <li>Nullam bibendum, ex ac finibus tempor, nisi est rhoncus turpis.</li>
@@ -90,7 +90,7 @@ export default function OleatPage() {
         {/* Protokol Keamanan */}
         <div className="mt-12">
           <h3
-            className="text-xl font-extrabold mb-4 font-['euskadi']"
+            className="text-3xl font-extrabold mb-4 font-['Euskadi']"
             style={{
               background: 'linear-gradient(to bottom, #EFFF8D, #ffe48dff)',
               WebkitBackgroundClip: 'text',
@@ -102,16 +102,19 @@ export default function OleatPage() {
         
             PROTOKOL KEAMANAN
           </h3>
-          <div
-            className="mx-auto max-w-2xl text-white p-6 rounded-2xl font-['darker_grotesque']"
+          <div 
+            className="mx-auto max-w-xl text-[#FFEABB] py-6 px-10 rounded-2xl font-['DarkerGrotesque'] font-bold"
             style={{
               border: '4px solid transparent',
-              backgroundImage: 'linear-gradient(#3b1460, #51307f), linear-gradient(to bottom, #825AC3, #1B165E)',
+              backgroundImage: `
+                linear-gradient(#51307f, #3b1460),
+                linear-gradient(to bottom, #825AC3, #1B165E)
+              `,
               backgroundOrigin: 'border-box',
               backgroundClip: 'padding-box, border-box',
             }}
           >
-            <ul className="list-disc list-inside space-y-3 text-sm font-['darker_grotesque']">
+            <ul className="list-disc list-inside space-y-3 text-md text-justify font-['DarkerGrotesque'] font-bold">
               <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper.</li>
               <li>Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.</li>
               <li>Praesent a iaculis felis, sed efficitur ipsum.</li>
@@ -135,6 +138,5 @@ export default function OleatPage() {
 
 
 
-
-
+{/* radhit ajg kaga dilanjutin*/}
 {/* Lanjutinn besokk dehhh kontooooooooooooooooooooooooooooooooooo */}
