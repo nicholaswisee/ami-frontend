@@ -16,7 +16,6 @@ export default function CountDown() {
   });
 
   useEffect(() => {
-    // 14 Feb 2026 00:00 at UTC+7 => 13 Feb 2026 17:00 UTC
     const targetDate = new Date("2026-02-13T17:00:00Z");
 
     const calculateTimeLeft = () => {
@@ -58,7 +57,7 @@ export default function CountDown() {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      className="flex h-14 items-center justify-center md:h-18"
+      className="relative z-50 flex h-14 items-center justify-center md:h-18"
     >
       <div className="text-center">
         <p className="font-heading text-sm font-normal tracking-wider text-[#FFD88C] md:text-2xl lg:text-3xl">

@@ -35,12 +35,11 @@ export default function EventBlocks() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-7 w-full max-w-[1200px] px-4">
+    <div className="flex w-full flex-col items-center gap-7 px-4 md:px-6">
       {/* Title */}
       <h2
-        className="text-[#87095A] text-[54px] font-bold text-center mb-4"
+        className="font-heading text-[#87095A] text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4"
         style={{
-          fontFamily: 'Euskadi, serif',
           textShadow: '0 4px 5.3px rgba(245, 55, 55, 0.99)'
         }}
       >
@@ -53,13 +52,12 @@ export default function EventBlocks() {
           <button
             key={event.id}
             onClick={() => handleBlockClick(event.id, event.isLarge)}
-            className={`w-full rounded-[32px] font-bold text-[32px] transition-all duration-300 hover:scale-105 cursor-pointer flex items-center ${
+            className={`w-full rounded-3xl font-heading font-bold text-3xl transition-all duration-300 hover:scale-105 cursor-pointer flex items-center border-8 border-[#FFB366] ${
               expandedBlocks.includes(event.id) ? 'p-5 gap-4 flex-col' : 'py-3 px-6 justify-center'
             }`}
             style={{
               backgroundImage: 'linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))',
               backgroundColor: '#FFD88C',
-              border: '7px solid #FFB366',
               color: '#87095A'
             }}
           >
@@ -86,11 +84,10 @@ export default function EventBlocks() {
           <button
             key={event.id}
             onClick={() => handleBlockClick(event.id, event.isLarge)}
-            className="px-8 py-2 rounded-[40px] font-bold text-[25px] transition-all duration-300 hover:scale-105 w-[calc(20%-12px)] min-w-200px]"
+            className="px-8 py-2 rounded-full font-heading font-bold text-2xl transition-all duration-300 hover:scale-105 flex-1 basis-[45%] sm:basis-[30%] md:basis-[22%] min-w-[12.5rem] max-w-xs border-8 border-[#FFB366]"
             style={{
               backgroundImage: 'linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))',
               backgroundColor: '#FFD88C',
-              border: '7px solid #FFB366',
               color: '#87095A'
             }}
           >
