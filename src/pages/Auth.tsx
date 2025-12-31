@@ -3,7 +3,6 @@ import { isInAppBrowser } from "../utils/checkBrowser";
 import { toast } from "sonner";
 import { authClient } from "../lib/auth-client";
 import { useState } from "react";
-import bgRsvp from "../assets/bg-rsvp.png";
 
 export default function AuthPage() {
   const [formData, setFormData] = useState({
@@ -43,19 +42,12 @@ export default function AuthPage() {
         }
       }
     } catch (error) {
+      console.log(error);
       toast.error("Gagal melakukan autentikasi.");
     }
   };
   return (
-    <section
-      className="relative flex min-h-screen w-full items-center justify-center p-6"
-      style={{
-        backgroundImage: `url(${bgRsvp})`,
-        backgroundSize: "cover",
-        backgroundPosition: "top center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <section className="bg-mixed relative flex min-h-screen w-full items-center justify-center p-6">
       <div className="relative max-w-96 overflow-hidden rounded-2xl border-2 border-[#ffd88c] shadow-md lg:max-w-150">
         <div className="absolute inset-0 bg-[#B64556]"></div>
         <div className="relative space-y-4 px-5 py-10 lg:px-16 lg:py-20">

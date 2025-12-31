@@ -15,14 +15,14 @@ const socials: { icon: IconType; label: string; url: string }[] = [
   },
   {
     icon: FaXTwitter,
-    label: "AkuMasukITB",
+    label: "akumasukitb26",
     url: "https://x.com/akumasukitb26",
   },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-purple flex w-full flex-col gap-y-2 p-6 text-[#ffeabb]">
+    <footer className="bg-purple relative z-50 flex w-full flex-col gap-y-2 p-6 text-[#ffeabb]">
       <a href="/">
         <img
           src="/logo.png"
