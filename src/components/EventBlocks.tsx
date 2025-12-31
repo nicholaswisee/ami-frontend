@@ -1,0 +1,100 @@
+import { useState } from 'react';
+
+interface EventBlock {
+  id: number;
+  title: string;
+  isLarge: boolean;
+  imageUrl?: string;
+}
+
+export default function EventBlocks() {
+  const [expandedBlocks, setExpandedBlocks] = useState<number[]>([]);
+
+  const events: EventBlock[] = [
+    { id: 1, title: 'Nama Acara', isLarge: true, imageUrl: '/event-placeholder.jpg' },
+    { id: 2, title: 'Nama Acara', isLarge: true, imageUrl: '/event-placeholder.jpg' },
+    { id: 3, title: 'Nama Acara', isLarge: true, imageUrl: '/event-placeholder.jpg' },
+    { id: 4, title: 'Nama Acara', isLarge: true, imageUrl: '/event-placeholder.jpg' },
+    { id: 5, title: 'Nama Acara', isLarge: false },
+    { id: 6, title: 'Nama Acara', isLarge: false },
+    { id: 7, title: 'Nama Acara', isLarge: false },
+    { id: 8, title: 'Nama Acara', isLarge: false },
+    { id: 9, title: 'Nama Acara', isLarge: false },
+    { id: 10, title: 'Nama Acara', isLarge: false },
+    { id: 11, title: 'Nama Acara', isLarge: false },
+  ];
+
+  const handleBlockClick = (id: number, isLarge: boolean) => {
+    if (isLarge) {
+      if (expandedBlocks.includes(id)) {
+        setExpandedBlocks(expandedBlocks.filter(blockId => blockId !== id));
+      } else {
+        setExpandedBlocks([...expandedBlocks, id]);
+      }
+    }
+  };
+
+  return (
+    <div className="flex w-full flex-col items-center gap-7 px-4 md:px-6">
+      {/* Title */}
+      <h2
+        className="font-heading text-[#87095A] text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4"
+        style={{
+          textShadow: '0 4px 5.3px rgba(245, 55, 55, 0.99)'
+        }}
+      >
+        EVENT ITB DAY 2026
+      </h2>
+
+      {/* Large blocks grid (top 4) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full items-end">
+        {events.slice(0, 4).map((event) => (
+          <button
+            key={event.id}
+            onClick={() => handleBlockClick(event.id, event.isLarge)}
+            className={`w-full rounded-3xl font-heading font-bold text-3xl transition-all duration-300 hover:scale-105 cursor-pointer flex items-center border-8 border-[#FFB366] ${
+              expandedBlocks.includes(event.id) ? 'p-5 gap-4 flex-col' : 'py-3 px-6 justify-center'
+            }`}
+            style={{
+              backgroundImage: 'linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))',
+              backgroundColor: '#FFD88C',
+              color: '#87095A'
+            }}
+          >
+            {/* Expanded Image */}
+            {expandedBlocks.includes(event.id) && (
+              <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden bg-gray-200 animate-in fade-in zoom-in-95 duration-300">
+                <img
+                  src={event.imageUrl}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Title */}
+            <span className="text-center">{event.title}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Small blocks grid (remaining 7) */}
+      <div className="flex flex-wrap gap-4 w-full justify-center">
+        {events.slice(4).map((event) => (
+          <button
+            key={event.id}
+            onClick={() => handleBlockClick(event.id, event.isLarge)}
+            className="px-8 py-2 rounded-full font-heading font-bold text-2xl transition-all duration-300 hover:scale-105 flex-1 basis-[45%] sm:basis-[30%] md:basis-[22%] min-w-[12.5rem] max-w-xs border-8 border-[#FFB366]"
+            style={{
+              backgroundImage: 'linear-gradient(180deg, rgba(255,179,102,0), rgba(255,179,102,0.8))',
+              backgroundColor: '#FFD88C',
+              color: '#87095A'
+            }}
+          >
+            {event.title}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
