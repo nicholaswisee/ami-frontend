@@ -10,6 +10,7 @@ import OleatPage from "./pages/Oleat";
 import ProfilePage from "./pages/Profile";
 import RsvpPage from "./pages/Rsvp";
 import NotFoundPage from "./pages/NotFound";
+import FaqPage from "./pages/Faq";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="rsvp" element={<RsvpPage />} />
         <Route path="auth" element={<AuthPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="faq" element={<FaqPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
