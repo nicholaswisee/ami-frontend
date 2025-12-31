@@ -9,7 +9,7 @@ export default function OleatPage() {
       style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="w-full max-w-3xl px-6 text-center ">
-        <div className="inline-block px-10 py-2 rounded-xl bg-[#87095A] text-[#FFC76E] font-bold text-xl mb-4 font-['Euskadi']"
+        <div className="inline-block px-10 py-2 rounded-xl bg-[#87095A] text-[#FFC76E] font-bold text-3xl mb-4 font-['Euskadi']"
         style={{ boxShadow: '0px 3px 0px #F3414E',
           border: '2px solid transparent',
           backgroundImage: 'linear-gradient(#87095A, #87095A), linear-gradient( #BF1192 , #590844 )',
