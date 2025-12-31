@@ -10,7 +10,6 @@ import ItbDayPage from "./pages/ItbDay";
 import OleatPage from "./pages/Oleat";
 import ProfilePage from "./pages/Profile";
 import RsvpPage from "./pages/Rsvp";
-import Faq from "./pages/Faq";
 import NotFoundPage from "./pages/NotFound";
 import FaqPage from "./pages/Faq";
 

@@ -244,7 +244,7 @@ export default function RsvpPage() {
       }
 
       if (res.status === 409) {
-        const json = (await res.json().catch(() => null)) as any;
+        const json = await res.json().catch(() => null);
         toast.error(
           json?.message ?? "Email ini sudah terdaftar untuk sesi yang dipilih.",
         );

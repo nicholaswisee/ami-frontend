@@ -42,6 +42,7 @@ export default function AuthPage() {
         }
       }
     } catch (error) {
+      console.log(error);
       toast.error("Gagal melakukan autentikasi.");
     }
   };
