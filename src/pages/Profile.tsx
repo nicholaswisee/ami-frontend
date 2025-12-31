@@ -224,111 +224,109 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      {activeReservation && (
+      <div
+        className={`${activeReservation ? "z-60 opacity-100" : "-z-50 opacity-0"} fixed inset-0 flex items-center justify-center overflow-y-auto bg-white/5 px-4 backdrop-blur-md transition-opacity`}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setActiveReservation(null);
+        }}
+      >
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-white/5 px-4 backdrop-blur-md"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setActiveReservation(null);
-          }}
+          className="bg-mixed relative max-h-[90svh] w-full max-w-md overflow-hidden overflow-y-auto rounded-xl text-[#111] shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div
-            className="bg-mixed relative max-h-[90svh] w-full max-w-md overflow-hidden overflow-y-auto rounded-xl text-[#111] shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            className="absolute top-3 right-3 px-3 py-1 font-semibold"
+            onClick={() => setActiveReservation(null)}
           >
-            <button
-              className="absolute top-3 right-3 px-3 py-1 font-semibold"
-              onClick={() => setActiveReservation(null)}
-            >
-              Tutup
-            </button>
+            Tutup
+          </button>
 
-            <div className="mt-3 space-y-4 bg-white px-6 py-5">
-              <div className="text-center">
-                <h2 className="font-body font-extrabold text-gray-900">
-                  ITB DAY 2026
-                </h2>
-                <p className="text-md">14 Februari 2026</p>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
-                <div>
-                  <p>Nama</p>
-                  <p className="text-sm font-semibold text-gray-900">
-                    {activeReservation.contactFullName}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p>Tanggal Reservasi</p>
-                  <p className="text-sm font-semibold text-gray-900">
-                    {formatDate(activeReservation.createdAt)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3 text-xs tracking-wide text-gray-500 sm:grid-cols-2">
-                <div>
-                  <p>Email</p>
-                  <p className="text-sm font-semibold text-gray-900">
-                    {activeReservation.email}
-                  </p>
-                </div>
-                <div className="sm:text-right">
-                  <p>Sekolah / Daerah</p>
-                  <p className="text-sm font-semibold text-gray-900">
-                    {activeReservation.contactSchool} /{" "}
-                    {activeReservation.contactRegion}
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-2 rounded-2xl border border-gray-200 px-4 py-3 text-xs tracking-wide text-gray-500">
-                <p>Pengunjung</p>
-                {isLoadingParticipants ? (
-                  <p className="text-sm font-semibold text-gray-800">
-                    Memuat pengunjung...
-                  </p>
-                ) : activeParticipants.length === 0 ? (
-                  <p className="text-sm text-gray-700">
-                    Tidak ada pengunjung terdaftar.
-                  </p>
-                ) : (
-                  <ul className="space-y-1 text-sm text-gray-800">
-                    {activeParticipants.map((p) => (
-                      <li
-                        key={p.id}
-                        className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2"
-                      >
-                        <span className="font-semibold">{p.fullName}</span>
-                        <span className="text-xs tracking-wide text-gray-600">
-                          {p.region}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
-                <p className="font-semibold text-gray-900">
-                  {activeReservation.wantsTalkshow
-                    ? "Ikut Talkshow"
-                    : "Tidak ikut talkshow"}{" "}
-                  {activeReservation.session?.name}
+          <div className="mt-3 space-y-4 bg-white px-6 py-5">
+            <div className="text-center">
+              <h2 className="font-body font-extrabold text-gray-900">
+                ITB DAY 2026
+              </h2>
+              <p className="text-md">14 Februari 2026</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
+              <div>
+                <p>Nama</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {activeReservation?.contactFullName}
                 </p>
               </div>
-              <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
-              <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
-                <TicketBarcode
-                  value={activeReservation.barcode}
-                  className="h-auto w-full"
-                />
-                <p className="text-xs font-semibold tracking-widest text-gray-700">
-                  {activeReservation.barcode}
+              <div className="text-right">
+                <p>Tanggal Reservasi</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {formatDate(activeReservation?.createdAt || "")}
                 </p>
               </div>
             </div>
+
+            <div className="grid grid-cols-1 gap-3 text-xs tracking-wide text-gray-500 sm:grid-cols-2">
+              <div>
+                <p>Email</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {activeReservation?.email}
+                </p>
+              </div>
+              <div className="sm:text-right">
+                <p>Sekolah / Daerah</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {activeReservation?.contactSchool} /{" "}
+                  {activeReservation?.contactRegion}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 rounded-2xl border border-gray-200 px-4 py-3 text-xs tracking-wide text-gray-500">
+              <p>Pengunjung</p>
+              {isLoadingParticipants ? (
+                <p className="text-sm font-semibold text-gray-800">
+                  Memuat pengunjung...
+                </p>
+              ) : activeParticipants.length === 0 ? (
+                <p className="text-sm text-gray-700">
+                  Tidak ada pengunjung terdaftar.
+                </p>
+              ) : (
+                <ul className="space-y-1 text-sm text-gray-800">
+                  {activeParticipants.map((p) => (
+                    <li
+                      key={p.id}
+                      className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2"
+                    >
+                      <span className="font-semibold">{p.fullName}</span>
+                      <span className="text-xs tracking-wide text-gray-600">
+                        {p.region}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
+              <p className="font-semibold text-gray-900">
+                {activeReservation?.wantsTalkshow
+                  ? "Ikut Talkshow"
+                  : "Tidak ikut talkshow"}{" "}
+                {activeReservation?.session?.name}
+              </p>
+            </div>
+            <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
+            <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
+              <TicketBarcode
+                value={activeReservation?.barcode || ""}
+                className="h-auto w-full"
+              />
+              <p className="text-xs font-semibold tracking-widest text-gray-700">
+                {activeReservation?.barcode}
+              </p>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }

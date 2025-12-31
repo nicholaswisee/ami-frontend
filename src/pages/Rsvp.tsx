@@ -270,7 +270,7 @@ export default function RsvpPage() {
     }
   };
 
-  if (isPending) return null;
+  if (isPending) return <div className="bg-mixed min-h-lvh w-full"></div>;
   if (!isAuthenticated) return <Navigate to="/auth" replace />;
 
   const canNextFromContact =

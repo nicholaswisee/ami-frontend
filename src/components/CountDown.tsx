@@ -57,10 +57,10 @@ export default function CountDown() {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      className="fixed top-18 z-50 flex h-14 w-full items-center justify-center md:h-18"
+      className="fixed top-18 z-50 flex h-12 w-full items-center justify-center px-2 lg:h-12"
     >
       <div className="text-center">
-        <p className="font-heading text-sm font-normal tracking-wider text-[#FFD88C] md:text-2xl lg:text-3xl">
+        <p className="font-heading text-sm font-normal tracking-wider text-[#FFD88C] text-shadow-black/30 text-shadow-lg lg:text-lg">
           {formatDays(timeLeft.days)} hari {formatNumber(timeLeft.hours)} jam{" "}
           {formatNumber(timeLeft.minutes)} menit{" "}
           {formatNumber(timeLeft.seconds)} detik menuju ITB DAY 2026!
