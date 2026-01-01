@@ -127,7 +127,7 @@ export default function ItbDayPage() {
           dari berbagai rangkaian kegiatan menarik loh, Luminettes!
         </h3>
       </div>
-      <div className="relative z-10 mx-auto flex min-h-lvh flex-col items-center justify-center">
+      <div className="relative z-10 mx-auto flex min-h-lvh flex-col items-center justify-center pb-28">
         <h1 className="text-center text-[#6f0e4e] text-shadow-[#bf1192] text-shadow-sm">
           EVENT ITB DAY
         </h1>
@@ -146,8 +146,8 @@ export default function ItbDayPage() {
             );
           })}
         </div>
-        <h3 className="mb-12 text-[#ffdb8c] lg:my-12">
-          Sampai Jumpa di ITB Day 2026!
+        <h3 className="mt-12 text-[#ffdb8c]">
+          Sampai jumpa di ITB Day 2026, Luminettes!
         </h3>
       </div>
     </section>
