@@ -1,6 +1,7 @@
 import Badge from "@/components/Badge";
 import FAQFlower from "../assets/faqflower.png";
 import { ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface FAQItem {
   question: string;
@@ -51,7 +52,7 @@ export default function FaqPage() {
     {
       question: "Apa itu Aku Masuk ITB (AMI) 2026?",
       answer:
-        "AMI adalah rangkaian acara penyambutan dan pengenalan kampus bagi calon mahasiswa baru ITB. Di sini Luminettes bisa mengenal fakultas, jurusan, fasilitas kampus, serta budaya akademik dan non-akademik ITB.",
+        "AMI adalah rangkaian acara yang bertujuan untuk menyebarluaskan semangat berpendidikan tinggi khususnya di ITB. Di sini Luminettes bisa mengenal fakultas, jurusan, fasilitas kampus, serta budaya yang hadir di lingkungan ITB.",
     },
     {
       question: "Bagaimana cara daftar atau konfirmasi kehadiran?",
@@ -66,7 +67,7 @@ export default function FaqPage() {
     {
       question: "Apa yang perlu dibawa Luminettes saat hadir?",
       answer:
-        "Bawa identitas diri, tiket reservasi dari handphone, pakai pakaian rapi-sopan dan alas kaki nyaman. Bila acara outdoor, siapkan topi, payung, atau ponco ya!",
+        "Bawa diri, tiket reservasi dari handphone, pakai pakaian rapi-sopan dan alas kaki nyaman. Bila acara outdoor, siapkan topi, payung, atau ponco ya!",
     },
     {
       question: "Ke mana bertanya kalau ada kendala?",
@@ -78,19 +79,43 @@ export default function FaqPage() {
   return (
     <section className="bg-mixed min-h-lvh">
       <div className="flex flex-col items-center justify-center gap-10 py-28">
-        <div className="relative">
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <Badge>FAQ</Badge>
           <img
             src={FAQFlower}
             alt="faqFlower"
             className="pointer-events-none absolute -top-6 -right-4 z-20 aspect-square w-14 rotate-3 object-contain md:-top-8 md:-right-10 md:w-20"
           />
-        </div>
-        <div className="mt-12 w-full max-w-3xl space-y-4 px-4">
-          {faqs.map((item) => (
-            <AccordionItem key={item.question} {...item} />
+        </motion.div>
+        <motion.div
+          className="mt-12 w-full max-w-3xl space-y-4 px-4"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
+        >
+          {faqs.map((item, index) => (
+            <motion.div
+              key={item.question}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.6,
+                ease: "easeOut",
+                delay: 0.08 + index * 0.1,
+              }}
+            >
+              <AccordionItem {...item} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

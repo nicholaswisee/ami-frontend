@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { env } from "../env";
 import { useAuthStore } from "../store/authStore";
+import { AnimatePresence, motion } from "framer-motion";
 
 type EventSessionCode = "1" | "2";
 type TicketStatus = "PENDING" | "CONFIRMED";
@@ -335,29 +336,37 @@ export default function RsvpPage() {
 
   return (
     <div className="bg-mixed flex min-h-screen w-full items-center justify-center px-4 py-10">
-      {step !== "SUCCESS" ? (
-        <div className="relative my-auto max-h-[80svh] w-full max-w-lg overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
-          <h3 className="font-subheading text-center font-bold text-[#FFEBB8] drop-shadow-md">
-            Reservasi Tiket
-          </h3>
+      <AnimatePresence mode="wait">
+        {step !== "SUCCESS" ? (
+          <motion.div
+            key={step}
+            className="relative my-auto max-h-[80svh] w-full max-w-lg overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+          >
+            <h3 className="font-subheading text-center font-bold text-[#FFEBB8] drop-shadow-md">
+              Reservasi Tiket
+            </h3>
 
-          <div className="mt-6 pr-1">
-            {step === "CONTACT" ? (
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                    Email *
-                  </label>
-                  <input
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    type="email"
-                    required
-                    placeholder="Email"
-                    className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                  />
-                </div>
+            <div className="mt-6 pr-1">
+              {step === "CONTACT" ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                      Email *
+                    </label>
+                    <input
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      type="email"
+                      required
+                      placeholder="Email"
+                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                    />
+                  </div>
 
                 <div>
                   <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
@@ -598,29 +607,29 @@ export default function RsvpPage() {
                   </p>
                 </div>
               </form>
-            ) : null}
-          </div>
+              ) : null}
+            </div>
 
-          <div className="border-t border-[#FFEBB8]/20 pt-6">
-            {step === "CONTACT" ? (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const missing = getMissingContactFields();
-                    if (missing.length) {
-                      toast.info("Lengkapi data yang dibutuhkan");
-                      return;
-                    }
-                    setStep("TALKSHOW");
-                  }}
-                  aria-disabled={!canNextFromContact}
-                  className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromContact ? "opacity-60" : ""}`}
-                >
-                  Next
-                </button>
-              </div>
-            ) : null}
+            <div className="border-t border-[#FFEBB8]/20 pt-6">
+              {step === "CONTACT" ? (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const missing = getMissingContactFields();
+                      if (missing.length) {
+                        toast.info("Lengkapi data yang dibutuhkan");
+                        return;
+                      }
+                      setStep("TALKSHOW");
+                    }}
+                    aria-disabled={!canNextFromContact}
+                    className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromContact ? "opacity-60" : ""}`}
+                  >
+                    Next
+                  </button>
+                </div>
+              ) : null}
 
             {step === "TALKSHOW" ? (
               <div className="flex justify-between">
@@ -694,30 +703,38 @@ export default function RsvpPage() {
                   {isSubmitting ? "Memproses..." : "Submit"}
                 </button>
               </div>
-            ) : null}
-          </div>
-        </div>
-      ) : (
-        <div className="flex w-full flex-col items-center px-2 pb-20">
-          <h1 className="font-subheading text-center leading-tight font-extrabold text-[#302a77] drop-shadow-md">
-            {hasExistingReservation
-              ? "Kamu sudah punya tiket!"
-              : "Reservasi Tiket Berhasil!"}
-          </h1>
-
-          <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
-            Lihat reservasi pada halaman profil kamu
-          </p>
-
-          <button
-            type="button"
-            onClick={() => navigate("/profile")}
-            className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+              ) : null}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="success"
+            className="flex w-full flex-col items-center px-2 pb-20"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           >
-            Ke Profil
-          </button>
-        </div>
-      )}
+            <h1 className="font-subheading text-center leading-tight font-extrabold text-[#302a77] drop-shadow-md">
+              {hasExistingReservation
+                ? "Kamu sudah punya tiket!"
+                : "Reservasi Tiket Berhasil!"}
+            </h1>
+
+            <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
+              Lihat reservasi pada halaman profil kamu
+            </p>
+
+            <button
+              type="button"
+              onClick={() => navigate("/profile")}
+              className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+            >
+              Ke Profil
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

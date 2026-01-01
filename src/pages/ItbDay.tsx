@@ -1,6 +1,8 @@
 import type React from "react";
 import Badge from "@/components/Badge";
 import CountDown from "../components/CountDown";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 
 type EventCardProps = {
   label: string;
@@ -76,7 +78,13 @@ function EventCard({ label, thumbnail, tooltip, position }: EventCardProps) {
     pos = "end";
   }
   return (
-    <div className={`flex items-center justify-${pos} w-full`}>
+    <motion.div
+      className={`flex items-center justify-${pos} w-full`}
+      initial={{ opacity: 0, y: 22, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+    >
       <div
         className="relative flex flex-col items-center gap-3 md:items-center md:justify-center"
         style={{
@@ -111,26 +119,46 @@ function EventCard({ label, thumbnail, tooltip, position }: EventCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function ItbDayPage() {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-mixed relative min-h-lvh overflow-hidden">
       <CountDown />
-      <div className="relative z-10 mx-auto flex min-h-lvh max-w-5xl flex-col items-center justify-center gap-8 px-6 pt-28 pb-16 text-center">
+      <motion.div
+        className="relative z-10 mx-auto flex min-h-lvh max-w-5xl flex-col items-center justify-center gap-8 px-6 pt-28 pb-16 text-center"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <Badge>ITB Day</Badge>
         <h3 className="font-body max-w-3xl text-[#6f0e4e]">
           Puncak dari Aku Masuk ITB, ITB Day mengusung semangat perguruan tinggi
           sekaligus memperkenalkan ITB kepada masyarakat luas. Acara ini terdiri
           dari berbagai rangkaian kegiatan menarik loh, Luminettes!
         </h3>
-      </div>
-      <div className="relative z-10 mx-auto flex min-h-lvh flex-col items-center justify-center pb-28">
-        <h1 className="text-center text-[#6f0e4e] text-shadow-[#bf1192] text-shadow-sm">
+      </motion.div>
+      <motion.div
+        className="relative z-10 mx-auto flex min-h-lvh flex-col items-center justify-center pb-28"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.h1
+          className="text-center text-[#6f0e4e] text-shadow-[#bf1192] text-shadow-sm"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
           EVENT ITB DAY
-        </h1>
+        </motion.h1>
         <div className="relative z-10 mx-auto mt-12 grid w-full max-w-5xl grid-cols-1 gap-10 px-4 pb-28 md:place-items-center md:gap-16 md:pb-10">
           {eventDetail.map((event, idx) => {
             const col = (idx % 3) + 1;
@@ -146,10 +174,26 @@ export default function ItbDayPage() {
             );
           })}
         </div>
-        <h3 className="mt-12 text-[#ffdb8c]">
+        <motion.h3
+          className="mt-12 text-center text-[#ffdb8c]"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
           Sampai jumpa di ITB Day 2026, Luminettes!
-        </h3>
-      </div>
+        </motion.h3>
+        <motion.button
+          onClick={() => navigate("/rsvp")}
+          className="mt-6 rounded-2xl border-4 border-[#C62D76] bg-linear-to-b from-[#AC166C] to-[#6F0E4E] px-8 pt-3 pb-4 text-lg font-extrabold tracking-wide text-[#FFDB8C] shadow-[0px_2px_0px_0px_#F3414E] transition-all duration-200 hover:brightness-110"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
+        >
+          RSVP ITB Day
+        </motion.button>
+      </motion.div>
     </section>
   );
 }

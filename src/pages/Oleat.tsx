@@ -1,4 +1,5 @@
 import Badge from "@/components/Badge";
+import { motion } from "framer-motion";
 
 export default function OleatPage() {
   const doImg = "/flower/flower01.webp";
@@ -7,31 +8,55 @@ export default function OleatPage() {
   return (
     <section className="bg-mixed min-h-lvh">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-10 px-6 py-28 text-center">
-        <Badge>Oleat ITB Day</Badge>
-
-        <p className="mx-auto mb-8 max-w-xl text-lg text-[#3b0526] md:text-xl">
-          Alur lebih lengkapnya akan diperbarui secara berkala ya, Luminettes!
-        </p>
+        <motion.div className="flex flex-col items-center gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <Badge>Oleat ITB Day</Badge>
+          </motion.div>
+          <motion.p
+            className="mx-auto mb-8 max-w-xl text-lg text-[#3b0526] md:text-xl"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
+          >
+            Alur lebih lengkapnya akan diperbarui secara berkala ya, Luminettes!
+          </motion.p>
+        </motion.div>
 
         {/* <h2 className="mb-6 bg-linear-to-b from-[#BF1192] to-[#590844] bg-clip-text font-bold text-[#7a1646]">
           ALUR ITB DAY
         </h2> */}
 
-        <div className="mx-auto w-full max-w-3xl">
+        <motion.div className="mx-auto w-full max-w-3xl">
           <div className="mb-3 flex items-center justify-between px-1">
-            <h3 className="font-body text-lg font-bold text-[#5a1130]">
+            <motion.h3
+              className="font-body text-lg font-bold text-[#5a1130]"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               Peta ITB Ganesha
-            </h3>
-            <a
+            </motion.h3>
+            <motion.a
               href="https://maps.app.goo.gl/pCb5TASoBW296gGv5"
               target="_blank"
               rel="noreferrer"
               className="text-sm font-semibold text-[#BF1192] underline underline-offset-4"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
             >
               Buka di tab baru
-            </a>
+            </motion.a>
           </div>
-          <div
+          <motion.div
             className="h-96 overflow-hidden rounded-2xl border-4 border-[#5a1130] shadow-lg"
             style={{
               boxShadow: "0px 3px 0px #F3414E",
@@ -41,6 +66,10 @@ export default function OleatPage() {
               backgroundOrigin: "border-box",
               backgroundClip: "padding-box, border-box",
             }}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.16 }}
           >
             <iframe
               title="Peta ITB Ganesha"
@@ -50,12 +79,18 @@ export default function OleatPage() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* DO / DONT section */}
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div className="px-4">
+          <motion.div
+            className="px-4"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <div className="relative mb-4 flex items-center justify-center">
               <img
                 src={doImg}
@@ -99,9 +134,15 @@ export default function OleatPage() {
                 </li>
               </ul>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="px-4">
+          <motion.div
+            className="px-4"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
+          >
             <div className="relative mb-4 flex items-center justify-center">
               <img
                 src={dontImg}
@@ -152,7 +193,7 @@ export default function OleatPage() {
                 </li>
               </ul>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Protokol Keamanan

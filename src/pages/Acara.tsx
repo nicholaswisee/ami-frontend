@@ -8,6 +8,7 @@ import {
 // import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import CountDown from "@/components/CountDown";
+import { motion } from "framer-motion";
 
 export default function AcaraPage() {
   const carouselItems = [
@@ -54,18 +55,42 @@ export default function AcaraPage() {
         {/* <h1 className="text-3xl font-bold">Acara: {name ?? "Nama Acara"}</h1> */}
 
         {/* header */}
-        <section className="my-24 flex flex-col items-center gap-6 text-center md:my-48">
-          <div className="flex flex-col items-center gap-2">
+        <motion.section
+          className="my-24 flex flex-col items-center gap-6 text-center md:my-48"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <motion.div
+            className="flex flex-col items-center gap-2"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <CTAButton text="Aku Masuk ITB 2026" />
-          </div>
-          <h3 className="font-body max-w-3xl px-4 leading-relaxed text-[#590844] text-shadow-[#EF5D23] text-shadow-xs">
+          </motion.div>
+          <motion.h3
+            className="font-body max-w-3xl px-4 leading-relaxed text-[#590844] text-shadow-[#EF5D23] text-shadow-xs"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
+          >
             Rangkaian acara Aku Masuk ITB 2026 siap nemenin Luminettes kenalan
             lebih dekat sama ITB, yuk simak lebih lanjut!
-          </h3>
-        </section>
+          </motion.h3>
+        </motion.section>
 
         {/* acara carousel */}
-        <section className="group relative w-full px-4 md:px-12">
+        <motion.section
+          className="group relative w-full px-4 md:px-12"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <Carousel
             setApi={setAcaraApi}
             opts={{
@@ -117,7 +142,7 @@ export default function AcaraPage() {
               />
             </button>
           </Carousel>
-        </section>
+        </motion.section>
 
         {/* rundown  */}
         {/* <section className="flex w-full flex-col items-center gap-6 px-2 py-24">
@@ -144,7 +169,13 @@ export default function AcaraPage() {
         </section> */}
 
         {/* talkshow */}
-        <section className="relative mt-8 mb-8 flex w-full flex-col items-center px-2 md:px-0">
+        <motion.section
+          className="relative mt-8 mb-8 flex w-full flex-col items-center px-2 md:px-0"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <div className="relative w-full max-w-4xl">
             <Carousel
               setApi={setTalkshowApi}
@@ -202,20 +233,36 @@ export default function AcaraPage() {
           </div>
 
           <div className="my-8 flex items-center justify-center md:my-5">
-            <CTAButton
-              onClick={() => {
-                navigate("/rsvp");
-              }}
-              text="RSVP ITB Day"
-            />
+            <motion.button
+              onClick={() => navigate("/rsvp")}
+              className="mt-6 rounded-2xl border-4 border-[#C62D76] bg-linear-to-b from-[#AC166C] to-[#6F0E4E] px-8 pt-3 pb-4 text-xl font-extrabold tracking-wide text-[#FFDB8C] shadow-[0px_2px_0px_0px_#F3414E] transition-all duration-200 hover:brightness-110"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
+            >
+              RSVP ITB Day
+            </motion.button>
           </div>
-        </section>
+        </motion.section>
 
         {/* location */}
-        <section className="my-16 flex w-full flex-col items-center gap-5 px-4 pb-12">
-          <h2 className="font-bold tracking-wider text-[#EFFF8D] uppercase text-shadow-[#F3414E] text-shadow-sm">
+        <motion.section
+          className="my-16 flex w-full flex-col items-center gap-5 px-4 pb-12"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <motion.h2
+            className="font-bold tracking-wider text-[#EFFF8D] uppercase text-shadow-[#F3414E] text-shadow-sm"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             Lokasi
-          </h2>
+          </motion.h2>
           <div className="flex aspect-4/5 w-full max-w-2xl flex-col items-center justify-center gap-2 rounded-3xl border-8 border-[#FFB366] bg-gray-100 text-gray-400 md:aspect-video">
             <iframe
               title="Peta ITB Ganesha"
@@ -226,7 +273,7 @@ export default function AcaraPage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-          <button
+          <motion.button
             onClick={() => {
               // toast.info(
               //   "Untuk lokasi acara akan diadakan di ITB Ganesha, lebih lengkapnya menyusul ya, Luminettes!",
@@ -234,13 +281,17 @@ export default function AcaraPage() {
               navigate("/oleat");
             }}
             className={`group relative w-fit rounded-2xl border-4 border-[#FFB366] bg-linear-0 from-[#FFC76E] to-[#FFDB8C] px-10 py-3 font-bold tracking-wide uppercase transition-all duration-150 ease-in-out hover:brightness-110 active:translate-y-1 active:shadow-[0px_2px_0px_0px_##FFDB8C] sm:w-auto`}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-xl bg-linear-to-b from-[#FFDB8C] to-transparent to-90%" />
             <h3 className="z-10 text-xl text-[#87095A] drop-shadow-md">
               Lokasi Detail
             </h3>
-          </button>
-        </section>
+          </motion.button>
+        </motion.section>
       </div>
     </div>
   );
