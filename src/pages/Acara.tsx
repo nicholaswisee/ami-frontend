@@ -123,7 +123,7 @@ export default function AcaraPage() {
               aria-label="Previous Slide"
             >
               <img
-                src="/src/assets/arrow.png"
+                src="/arrow.png"
                 alt="Previous"
                 className="h-9 w-9 object-contain drop-shadow-md md:h-14 md:w-14"
               />
@@ -136,7 +136,7 @@ export default function AcaraPage() {
               aria-label="Next Slide"
             >
               <img
-                src="/src/assets/arrow.png"
+                src="/arrow.png"
                 alt="Next"
                 className="h-9 w-9 scale-x-[-1] object-contain drop-shadow-md md:h-14 md:w-14"
               />
@@ -211,7 +211,7 @@ export default function AcaraPage() {
                 aria-label="Previous Slide"
               >
                 <img
-                  src="/src/assets/arrow.png"
+                  src="/arrow.png"
                   alt="Previous"
                   className="h-9 w-9 object-contain drop-shadow-md md:h-14 md:w-14"
                 />
@@ -224,7 +224,7 @@ export default function AcaraPage() {
                 aria-label="Next Slide"
               >
                 <img
-                  src="/src/assets/arrow.png"
+                  src="/arrow.png"
                   alt="Next"
                   className="h-9 w-9 scale-x-[-1] object-contain drop-shadow-md md:h-14 md:w-14"
                 />
@@ -408,12 +408,12 @@ const TalkshowCard = ({
       </div>
 
       <img
-        src="/src/assets/rock-1.png"
+        src="/rock-1.png"
         alt="Decorative Rock Left"
         className="pointer-events-none absolute bottom-0 left-0 z-0 w-16 opacity-80 md:w-32 md:opacity-100"
       />
       <img
-        src="/src/assets/rock-2.png"
+        src="/rock-2.png"
         alt="Decorative Rock Right"
         className="pointer-events-none absolute right-0 bottom-0 z-0 w-16 opacity-80 md:w-32 md:opacity-100"
       />

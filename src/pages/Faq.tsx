@@ -1,5 +1,4 @@
 import Badge from "@/components/Badge";
-import FAQFlower from "../assets/faqflower.png";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -88,7 +87,7 @@ export default function FaqPage() {
         >
           <Badge>FAQ</Badge>
           <img
-            src={FAQFlower}
+            src={"/faqflower.png"}
             alt="faqFlower"
             className="pointer-events-none absolute -top-6 -right-4 z-20 aspect-square w-14 rotate-3 object-contain md:-top-8 md:-right-10 md:w-20"
           />
