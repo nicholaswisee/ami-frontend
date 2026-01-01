@@ -71,7 +71,7 @@ export default function HomePage() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
           />
           <motion.h2
-            className="bg-linear-to-b from-[#ffdb8c] via-[#ffd37a] to-[#ffb066] bg-clip-text text-[#ffdb8c] text-transparent drop-shadow-[0_4px_10px_rgba(255,197,107,0.55)]"
+            className="bg-linear-to-b from-[#ffdb8c] via-[#ffd37a] to-[#ffb066] bg-clip-text text-[#ffdb8c] drop-shadow-[0_4px_10px_rgba(255,197,107,0.55)]"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
