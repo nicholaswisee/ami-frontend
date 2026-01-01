@@ -1,90 +1,140 @@
-import bg from '../assets/Copy of IMG_9788.png';
-import doImg from '../assets/Copy of Bunga_1_Jeby.png';
-import dontImg from '../assets/Copy of Bunga_1_Ayu.png';
+import Badge from "@/components/Badge";
 
 export default function OleatPage() {
-  return (
-    <section
-      className="min-h-screen bg-center bg-cover flex flex-col items-center py-12"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
-      <div className="w-full max-w-3xl px-6 text-center ">
-        <div className="inline-block px-10 py-2 rounded-xl bg-[#87095A] text-[#FFC76E] font-bold text-3xl mb-4 font-['Euskadi']"
-        style={{ boxShadow: '0px 3px 0px #F3414E',
-          border: '2px solid transparent',
-          backgroundImage: 'linear-gradient(#87095A, #87095A), linear-gradient( #BF1192 , #590844 )',
-          backgroundOrigin: 'border-box',
-          backgroundClip: 'padding-box, border-box'
-        }}>
-          OLEAT ITB DAY
-        </div>
+  const doImg = "/flower/flower01.webp";
+  const dontImg = "/flower/flower04.webp";
 
-        <p className="text-lg md:text-xl text-[#3b0526] max-w-xl mx-auto mb-8 font-['Euskadi']"
-        style={{ textShadow: '0px 3px 4px #F87F42' }}>
-          
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper.
-          Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.
+  return (
+    <section className="bg-mixed min-h-lvh">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-10 px-6 py-28 text-center">
+        <Badge>Oleat ITB Day</Badge>
+
+        <p className="mx-auto mb-8 max-w-xl text-lg text-[#3b0526] md:text-xl">
+          Alur lebih lengkapnya akan diperbarui secara berkala ya, Luminettes!
         </p>
 
-        <h2 className="text-xl text-[#7a1646] font-bold mb-6 font-['Euskadi'] 
-        bg-gradient-to-b from-[#BF1192] to-[#590844]  
-        bg-clip-text text-transparent">ALUR ITB DAY</h2>
+        {/* <h2 className="mb-6 bg-linear-to-b from-[#BF1192] to-[#590844] bg-clip-text font-bold text-[#7a1646]">
+          ALUR ITB DAY
+        </h2> */}
 
-        <div className="mx-auto bg-gray-200 w-72 md:w-96 h-96 rounded-2xl border-4 border-[#5a1130] shadow-lg" style={{ boxShadow: '0px 3px 0px #F3414E',
-          border: '4px solid transparent', 
-          
-          backgroundImage: 'linear-gradient(#D9D9D9, #D9D9D9), linear-gradient(to bottom, #BF1192, #590844)',
-          backgroundOrigin: 'border-box',
-          backgroundClip: 'padding-box, border-box'
-        }}></div>
+        <div className="mx-auto w-full max-w-3xl">
+          <div className="mb-3 flex items-center justify-between px-1">
+            <h3 className="font-body text-lg font-bold text-[#5a1130]">
+              Peta ITB Ganesha
+            </h3>
+            <a
+              href="https://maps.app.goo.gl/pCb5TASoBW296gGv5"
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm font-semibold text-[#BF1192] underline underline-offset-4"
+            >
+              Buka di tab baru
+            </a>
+          </div>
+          <div
+            className="h-96 overflow-hidden rounded-2xl border-4 border-[#5a1130] shadow-lg"
+            style={{
+              boxShadow: "0px 3px 0px #F3414E",
+              border: "4px solid transparent",
+              backgroundImage:
+                "linear-gradient(#D9D9D9, #D9D9D9), linear-gradient(to bottom, #BF1192, #590844)",
+              backgroundOrigin: "border-box",
+              backgroundClip: "padding-box, border-box",
+            }}
+          >
+            <iframe
+              title="Peta ITB Ganesha"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=107.608371%2C-6.892925%2C107.612371%2C-6.888925&layer=mapnik&marker=-6.890925%2C107.610371"
+              className="h-full w-full"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
 
         {/* DO / DONT section */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="px-4">
-            <div className="flex items-center justify-center mb-4 relative">
-              <img src={doImg} alt="do" className="w-12 h-12 absolute -top-7 left-1/2 transform -translate-x-1/2 z-20" />
+            <div className="relative mb-4 flex items-center justify-center">
+              <img
+                src={doImg}
+                alt="do"
+                className="absolute -top-7 left-1/2 z-20 h-12 w-12 -translate-x-1/2 transform"
+              />
               <div
-                className="w-36 h-12 rounded-full flex items-center justify-center font-bold z-10"
-                style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '3px solid #FFB366' }}
+                className="z-10 flex h-12 w-36 items-center justify-center rounded-full font-bold"
+                style={{
+                  background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
+                  border: "3px solid #FFB366",
+                }}
               >
-                <span className="text-[#7a1646] text-xl font-['Euskadi']">DO</span>
+                <span className="text-xl font-bold text-[#7a1646]">DO</span>
               </div>
             </div>
             <div
-              className="p-6 w-full rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
-              style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '2px solid #FFB366' }}
+              className="mt-6 w-full rounded-xl p-6 font-['DarkerGrotesque'] text-sm font-bold text-[#3b0526] shadow-lg"
+              style={{
+                background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
+                border: "2px solid #FFB366",
+              }}
             >
-              <ul className="list-disc list-outside space-y-2 text-justify px-4">
-                <li>Sudah mendaftarkan diri melalui GOERS ataupun mau registrasi di tempat juga boleh banget!</li>
-                <li>Disarankan datang pagi yaa!!</li>
-                <li>Baca-baca lagi informasi mengenai seluruh mata acara ITB Day beserta jamnya, supaya ga ketinggalan.</li>
+              <ul className="list-outside list-disc space-y-2 px-4 text-justify">
+                <li>
+                  Sudah mendaftarkan diri melalui website ini dan mendapatkan
+                  tiket ITB Day ya Luminettes!
+                </li>
+                <li>Disarankan datang pagi yaa!</li>
+                <li>
+                  Baca-baca lagi informasi mengenai seluruh mata acara ITB Day
+                  beserta jamnya, supaya ga ketinggalan.
+                </li>
                 <li>Pakai pakaian yang sopan dan rapih yaa!</li>
-                <li>Download Booklet ITB Day di: bit.ly/BookletAMI2025</li>
+                {/* <li>Download Booklet ITB Day di: bit.ly/BookletAMI2025</li> */}
                 <li>Datang dengan sahabat ataupun keluargamu!</li>
                 <li>Jangan lupa untuk membawa topi/payung/ponco yaa!</li>
-                <li>Kalau ada yang ingin ditanyakan, silahkan bertanya ke panitia yang sedang bertugas nanti yaa!!  </li>
+                <li>
+                  Kalau ada yang ingin ditanyakan, silahkan bertanya ke panitia
+                  yang sedang bertugas nanti yaa!!{" "}
+                </li>
               </ul>
             </div>
           </div>
 
           <div className="px-4">
-            <div className="flex items-center justify-center mb-4 relative">
-              <img src={dontImg} alt="dont" className="w-12 h-12 absolute -top-7 left-1/2 transform -translate-x-1/2 z-20" />
+            <div className="relative mb-4 flex items-center justify-center">
+              <img
+                src={dontImg}
+                alt="dont"
+                className="absolute -top-7 left-1/2 z-20 h-12 w-12 -translate-x-1/2 transform"
+              />
               <div
-                className="w-36 h-12 rounded-full flex items-center justify-center font-bold z-10"
-                style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '3px solid #FFB366' }}
+                className="z-10 flex h-12 w-36 items-center justify-center rounded-full font-bold"
+                style={{
+                  background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
+                  border: "3px solid #FFB366",
+                }}
               >
-                <span className="text-[#7a1646] text-xl font-['Euskadi']">DONT</span>
+                <span className="text-xl font-bold text-[#7a1646]">DON'T</span>
               </div>
             </div>
             <div
-              className="p-6 w-full rounded-xl shadow-lg text-sm text-[#3b0526] mt-6 font-['DarkerGrotesque'] font-bold"
-              style={{ background: 'linear-gradient(to bottom,#FFD88C,#FFB366)', border: '2px solid #FFB366' }}
+              className="mt-6 w-full rounded-xl p-6 font-['DarkerGrotesque'] text-sm font-bold text-[#3b0526] shadow-lg"
+              style={{
+                background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
+                border: "2px solid #FFB366",
+              }}
             >
-              <ul className="list-disc list-outside space-y-2 text-justify px-4">
-                <li>Dilarang melakukan tindakan menyinggung SARA, berbau seksual, maupun unsur negatif lainnya selama ITB Day.</li>
-                <li>    Dilarang membawa dan menggunakan alat yang berbahaya ataupun menimbulkan kekacauan seperti (tetapi tidak terbatas pada):
-                  <ul className="list-disc list-outside ml-6 mt-2 space-y-1">
+              <ul className="list-outside list-disc space-y-2 px-4 text-justify">
+                <li>
+                  Dilarang melakukan tindakan menyinggung SARA, berbau seksual,
+                  maupun unsur negatif lainnya selama ITB Day.
+                </li>
+                <li>
+                  {" "}
+                  Dilarang membawa dan menggunakan alat yang berbahaya ataupun
+                  menimbulkan kekacauan seperti (tetapi tidak terbatas pada):
+                  <ul className="mt-2 ml-6 list-outside list-disc space-y-1">
                     <li>Hewan peliharaan</li>
                     <li>Senjata api, senjata tajam ataupun senjata tumpul</li>
                     <li>Bahan peledak dan benda rawan meledak</li>
@@ -92,63 +142,72 @@ export default function OleatPage() {
                   </ul>
                 </li>
                 <li>Dilarang merusak properti ITB dan AMI 2025.</li>
-                <li>Dilarang merokok kecuali di area yang telah ditentukan (Area Merokok).</li>
-                <li>Dan jangan telat yaa!! Nanti ketinggalan mata acaranya, rugi dong!!</li>
+                <li>
+                  Dilarang merokok kecuali di area yang telah ditentukan (Area
+                  Merokok).
+                </li>
+                <li>
+                  Dan jangan telat yaa!! Nanti ketinggalan mata acaranya, rugi
+                  dong!!
+                </li>
               </ul>
             </div>
           </div>
         </div>
 
-        {/* Protokol Keamanan */}
+        {/* Protokol Keamanan
         <div className="mt-12">
           <h3
-            className="text-3xl font-extrabold mb-4 font-['Euskadi']"
+            className="mb-4 text-3xl font-extrabold"
             style={{
-              background: 'linear-gradient(to bottom, #EFFF8D, #ffe48dff)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              
+              background: "linear-gradient(to bottom, #EFFF8D, #ffe48dff)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
             }}
           >
-        
             PROTOKOL KEAMANAN
           </h3>
-          <div 
-            className="mx-auto max-w-xl text-[#FFEABB] py-6 px-10 rounded-2xl font-['DarkerGrotesque'] font-bold"
+          <div
+            className="mx-auto max-w-xl rounded-2xl px-10 py-6 font-['DarkerGrotesque'] font-bold text-[#FFEABB]"
             style={{
-              border: '4px solid transparent',
+              border: "4px solid transparent",
               backgroundImage: `
                 linear-gradient(#51307f, #3b1460),
                 linear-gradient(to bottom, #825AC3, #1B165E)
               `,
-              backgroundOrigin: 'border-box',
-              backgroundClip: 'padding-box, border-box',
+              backgroundOrigin: "border-box",
+              backgroundClip: "padding-box, border-box",
             }}
           >
-            <ul className="list-disc list-inside space-y-3 text-md text-justify font-['DarkerGrotesque'] font-bold">
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper.</li>
-              <li>Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus.</li>
+            <ul className="text-md list-inside list-disc space-y-3 text-justify font-['DarkerGrotesque'] font-bold">
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                tincidunt finibus risus in ullamcorper.
+              </li>
+              <li>
+                Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper
+                tempus.
+              </li>
               <li>Praesent a iaculis felis, sed efficitur ipsum.</li>
               <li>Donec malesuada viverra velit quis accumsan.</li>
-              <li>Nullam bibendum, ex ac finibus tempor, nisi est rhoncus turpis.</li>
+              <li>
+                Nullam bibendum, ex ac finibus tempor, nisi est rhoncus turpis.
+              </li>
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-{/* radhit ajg kaga dilanjutin*/}
-{/* Lanjutinn besokk dehhh kontooooooooooooooooooooooooooooooooooo */}
+{
+  /* radhit ajg kaga dilanjutin*/
+}
+{
+  /* Lanjutinn besokk dehhh kontooooooooooooooooooooooooooooooooooo */
+}
+{
+  /* dit mandi ditttt */
+}

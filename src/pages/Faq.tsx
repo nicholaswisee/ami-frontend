@@ -1,4 +1,4 @@
-import bg from "../assets/Copy of IMG_9788.png";
+import Badge from "@/components/Badge";
 import FAQFlower from "../assets/faqflower.png";
 import { ChevronDown } from "lucide-react";
 
@@ -20,11 +20,11 @@ function AccordionItem({ question, answer }: FAQItem) {
         background: "linear-gradient(to bottom, #795376, #302A77)",
       }}
     >
-      <button //795376
+      <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between px-6 py-4 text-left hover:cursor-pointer"
+        className="flex w-full items-center justify-between px-6 pt-3 pb-1 text-left hover:cursor-pointer"
       >
-        <span className="font-['DarkerGrotesque'] text-lg font-bold text-[#FFEABB] md:text-xl">
+        <span className="text-lg font-bold text-[#FFEABB] md:text-xl">
           {question}
         </span>
 
@@ -38,7 +38,7 @@ function AccordionItem({ question, answer }: FAQItem) {
           open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
-        <div className="overflow-hidden px-6 pb-4 font-['DarkerGrotesque'] text-xl text-[#FFEABB]">
+        <div className="overflow-hidden px-6 pb-4 text-xl text-[#FFEABB]">
           {answer}
         </div>
       </div>
@@ -47,50 +47,50 @@ function AccordionItem({ question, answer }: FAQItem) {
 }
 
 export default function FaqPage() {
+  const faqs: FAQItem[] = [
+    {
+      question: "Apa itu Aku Masuk ITB (AMI) 2026?",
+      answer:
+        "AMI adalah rangkaian acara penyambutan dan pengenalan kampus bagi calon mahasiswa baru ITB. Di sini Luminettes bisa mengenal fakultas, jurusan, fasilitas kampus, serta budaya akademik dan non-akademik ITB.",
+    },
+    {
+      question: "Bagaimana cara daftar atau konfirmasi kehadiran?",
+      answer:
+        "Luminettes cukup mengikuti tautan pendaftaran yang dibagikan oleh panitia AMI 2026. Setelah mengisi formulir reservasi di website ini, Luminettes akan mendapatkan tiket dengan kode QR yang akan dipindai oleh panitia saat acara nanti. Jika butuh bantuan, Luminettes dapat menghubungi panitia lewat sosial media resmi ya!",
+    },
+    {
+      question: "Kapan dan di mana ITB Day 2026 berlangsung?",
+      answer:
+        "Acara akan dilaksanakan di ITB Ganesha pada 14 Februari 2026 ya, Luminettes. Jadwal detail akan diumumkan melalui kanal resmi panitia, pantau terus pembaruan biar tidak ketinggalan!",
+    },
+    {
+      question: "Apa yang perlu dibawa Luminettes saat hadir?",
+      answer:
+        "Bawa identitas diri, tiket reservasi dari handphone, pakai pakaian rapi-sopan dan alas kaki nyaman. Bila acara outdoor, siapkan topi, payung, atau ponco ya!",
+    },
+    {
+      question: "Ke mana bertanya kalau ada kendala?",
+      answer:
+        "Luminettes dapat menghubungi panitia di media sosial Aku Masuk ITB 2026 atau bisa mendekati panitia lapangan yang mengenakan identitas panitia saat acara berlangsung ya!",
+    },
+  ];
+
   return (
-    <section
-      className="flex min-h-screen flex-col items-center bg-cover bg-center py-12"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
-      <img
-        src={FAQFlower}
-        alt="faqFlower"
-        className="absolute top-3 right-1/2 z-20 h-20 w-20 translate-x-32 transform"
-      />
-      <div
-        className="mb-4 inline-block rounded-xl bg-[#87095A] px-20 py-2 font-['Euskadi'] text-3xl font-bold text-[#FFC76E]"
-        style={{
-          boxShadow: "0px 3px 0px #F3414E",
-          border: "2px solid transparent",
-          backgroundImage:
-            "linear-gradient(#87095A, #87095A), linear-gradient( #BF1192 , #590844 )",
-          backgroundOrigin: "border-box",
-          backgroundClip: "padding-box, border-box",
-        }}
-      >
-        FAQ
-      </div>
-      <div className="mt-12 w-full max-w-3xl space-y-4 px-4">
-        <AccordionItem
-          question="Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-          answer="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt finibus risus in ullamcorper."
-        />
-        <AccordionItem
-          question="Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-          answer="Aliquam erat volutpat. Proin vitae nunc a nibh ullamcorper tempus."
-        />
-        <AccordionItem
-          question="Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-          answer="Praesent a iaculis felis, sed efficitur ipsum. Donec malesuada viverra velit."
-        />
-        <AccordionItem
-          question="Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-          answer="Nullam bibendum, ex ac finibus tempor, nisi est rhoncus turpis."
-        />
-        <AccordionItem
-          question="Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-          answer="Vivamus et fringilla tortor. Sed at metus non magna commodo pretium."
-        />
+    <section className="bg-mixed min-h-lvh">
+      <div className="flex flex-col items-center justify-center gap-10 py-28">
+        <div className="relative">
+          <Badge>FAQ</Badge>
+          <img
+            src={FAQFlower}
+            alt="faqFlower"
+            className="pointer-events-none absolute -top-6 -right-4 z-20 aspect-square w-14 rotate-3 object-contain md:-top-8 md:-right-10 md:w-20"
+          />
+        </div>
+        <div className="mt-12 w-full max-w-3xl space-y-4 px-4">
+          {faqs.map((item) => (
+            <AccordionItem key={item.question} {...item} />
+          ))}
+        </div>
       </div>
     </section>
   );
