@@ -1,23 +1,19 @@
+import type { Session } from "@auth/core/types";
 import { authClient } from "../lib/auth-client";
 
-export type AuthSession = typeof authClient.$Infer.Session;
-export type AuthUser = AuthSession["user"];
-export type AuthSessionData = AuthSession["session"];
+export type AuthUser = Session["user"];
+export type AuthSessionData = Session;
 
 export const useAuthStore = () => {
-  const { data, isPending, isRefetching, error, refetch } =
-    authClient.useSession();
-
-  const logOut = authClient.signOut;
+  const { data, status } = authClient.useSession();
+  const logOut = (callbackUrl = window.location.origin) =>
+    authClient.signOut({ callbackUrl });
 
   return {
     user: data?.user ?? null,
-    session: data?.session ?? null,
-    isAuthenticated: Boolean(data?.user),
-    isPending,
-    isRefetching,
-    error,
-    refetch,
+    session: data ?? null,
+    isAuthenticated: status === "authenticated",
+    isPending: status === "loading",
     logOut,
   };
 };

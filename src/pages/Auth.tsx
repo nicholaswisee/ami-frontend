@@ -16,14 +16,22 @@ export default function AuthPage() {
           toast.error("Masukkan email dan password.");
           return;
         }
-        const data = await authClient.signIn.email({
+        const data = await authClient.signIn("credentials", {
           email: formData.email,
           password: formData.password,
-          callbackURL: `${window.location.origin}/profile`,
+          redirect: false,
+          callbackUrl: `${window.location.origin}/profile`,
         });
-        if (data.error) {
+        if (data?.error) {
           toast.error("Kredensial salah.");
+          window.location.href = `${window.location.origin}/`;
+          return;
         }
+        if (data?.url) {
+          window.location.href = data.url;
+          return;
+        }
+        window.location.href = `${window.location.origin}/profile`;
       } else if (type === "google") {
         if (isInAppBrowser()) {
           toast.error(
@@ -31,15 +39,20 @@ export default function AuthPage() {
           );
           return;
         }
-        const data = await authClient.signIn.social({
-          provider: "google",
-          callbackURL: `${window.location.origin}/profile`,
-          errorCallbackURL: `${window.location.origin}`,
-          newUserCallbackURL: `${window.location.origin}/profile`,
+        const data = await authClient.signIn("google", {
+          redirect: false,
+          callbackUrl: `${window.location.origin}/profile`,
         });
-        if (data.error) {
+        if (data?.error) {
           toast.error("Gagal melakukan autentikasi Google.");
+          window.location.href = `${window.location.origin}/`;
+          return;
         }
+        if (data?.url) {
+          window.location.href = data.url;
+          return;
+        }
+        window.location.href = `${window.location.origin}/profile`;
       }
     } catch (error) {
       console.log(error);
