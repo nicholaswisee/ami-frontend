@@ -94,7 +94,7 @@ export default function ProfilePage() {
     const run = async () => {
       setIsLoadingReservations(true);
       try {
-        const res = await fetch(`${env.API_URL}/api/reservations`, {
+        const res = await fetch(`${env.API_URL}/reservations`, {
           method: "GET",
           credentials: "include",
         });
@@ -114,13 +114,10 @@ export default function ProfilePage() {
     setActiveParticipants([]);
     setIsLoadingParticipants(true);
     try {
-      const res = await fetch(
-        `${env.API_URL}/api/reservations/${reservation.id}`,
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
+      const res = await fetch(`${env.API_URL}/reservations/${reservation.id}`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (!res.ok) return;
       const json = (await res.json()) as {
         reservation: Reservation & { participants?: Participant[] };
