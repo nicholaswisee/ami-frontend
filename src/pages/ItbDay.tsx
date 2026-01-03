@@ -112,7 +112,7 @@ function EventCard({ label, thumbnail, tooltip, position }: EventCardProps) {
           )}
           <div className="relative w-full max-w-52.5">
             <div
-              className="group relative w-full rounded-3xl px-6 py-3 text-center text-lg font-extrabold tracking-[0.08em] text-[#fdd6be] uppercase drop-shadow outline-none focus-visible:ring-2 focus-visible:ring-[#fdd6be]/60"
+              className="group relative w-full rounded-3xl px-6 py-3 text-center text-lg font-extrabold tracking-[0.08em] text-[#fdd6be] uppercase drop-shadow outline-none select-none focus-visible:ring-2 focus-visible:ring-[#fdd6be]/60"
               style={badgeStyle}
               tabIndex={0}
               role="button"
