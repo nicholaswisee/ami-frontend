@@ -58,10 +58,15 @@ const eventDetail: Array<{
       "Unit-unit menampilkan pertunjukan menarik untuk menghibur dan menunjukkan keberagaman bakat yang dimiliki mereka!",
   },
   {
-    label: "AMI's Carnival",
+    label: "Jejak Eksplorasa",
     thumbnail: "",
     tooltip:
-      "Pada carnival ini Luminettes dapat bermain sekaligus menambah wawasan kalian!",
+      "Pada acara ini Luminettes dapat bermain sekaligus menambah wawasan kalian!",
+  },
+  {
+    label: "Treasure Hunt",
+    thumbnail: "",
+    tooltip: "Seru-seruan dan bawa pulang hadiah menarik dari AMI!",
   },
   {
     label: "& masih banyak acara keren lainnya!",
@@ -69,6 +74,8 @@ const eventDetail: Array<{
     tooltip: "See you there!",
   },
 ];
+
+const colSequence = [1, 2, 3, 2, 1, 2, 3, 2, 1, 2];
 
 function EventCard({ label, thumbnail, tooltip, position }: EventCardProps) {
   let pos = "start";
@@ -94,7 +101,7 @@ function EventCard({ label, thumbnail, tooltip, position }: EventCardProps) {
           }}
         >
           {thumbnail && (
-            <div className="relative aspect-16/10 w-full max-w-65 shadow-xl md:max-w-[320px]">
+            <div className="relative aspect-6/5 w-full max-w-65 shadow-xl md:max-w-[320px]">
               <img
                 src={thumbnail}
                 alt={label}
@@ -163,7 +170,7 @@ export default function ItbDayPage() {
         </motion.h1>
         <div className="relative z-10 mx-auto mt-12 grid w-full max-w-5xl grid-cols-1 gap-10 px-4 pb-28 md:place-items-center md:gap-16 md:pb-10">
           {eventDetail.map((event, idx) => {
-            const col = (idx % 3) + 1;
+            const col = colSequence[(idx + 1) % colSequence.length];
             const row = Math.floor(idx / 3) + 1;
             return (
               <EventCard
@@ -175,6 +182,57 @@ export default function ItbDayPage() {
               />
             );
           })}
+        </div>
+        <motion.h1
+          className="mt-12 text-[#ffdb8c] text-shadow-[#bf1192] text-shadow-sm"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          TREASURE HUNT
+        </motion.h1>
+        <div className="p-6">
+          <div
+            className="w-full max-w-3xl rounded-2xl p-6 text-center text-[#ffdb8c] shadow-lg"
+            style={{
+              background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
+              border: "2px solid #FFB366",
+            }}
+          >
+            <motion.div
+              className="my-6 space-y-4 text-center text-[#7a1646]"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <p className="font-bold tracking-wide">
+                TEKNIS TREASURE HUNT ITB DAY!!
+              </p>
+              <p className="font-semibold">
+                Hahh?! Apaan tuh? Mau seru-seruan dan bawa pulang hadiah
+                menarik?
+              </p>
+              <p className="font-semibold">Caranya gampang, ikuti ini ya:</p>
+              <div className="mx-auto w-fit space-y-2 text-left text-sm font-semibold sm:text-base">
+                <p>1. Temukan clue di Instagram @akumasukitb.</p>
+                <p>2. Ikuti petunjuk dan cari maskot Aku Masuk ITB 2026.</p>
+                <p>
+                  3. Foto bareng maskot Aku Masuk ITB, pose sekreatif mungkin.
+                </p>
+                <p>
+                  4. Post fotomu di Instagram Story pakai template "Add Yours"
+                  dari @akumasukitb.
+                </p>
+                <p>5. Tukarkan dengan hadiah menarik di booth sponsor!</p>
+              </div>
+              <p className="text-center font-semibold">
+                Ajak temanmu dan buktikan siapa treasure hunter sejati.
+                Kesempatan terbatas!
+              </p>
+            </motion.div>
+          </div>
         </div>
         <motion.h3
           className="mt-12 text-center text-[#ffdb8c]"

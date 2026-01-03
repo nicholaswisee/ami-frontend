@@ -306,7 +306,7 @@ export default function ProfilePage() {
             <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
               <p className="font-semibold text-gray-900">
                 {activeReservation?.wantsTalkshow
-                  ? "Ikut Talkshow"
+                  ? "Talkshow"
                   : "Tidak ikut talkshow"}{" "}
                 {activeReservation?.session?.name}
               </p>
