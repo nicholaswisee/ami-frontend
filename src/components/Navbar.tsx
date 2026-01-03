@@ -31,6 +31,12 @@ const navOpts = [
     label: "FAQ",
     url: "/faq",
   },
+  {
+    icon: "/flower/flower04.webp",
+    label: "Merch",
+    url: "https://findmi.akumasukitb.com",
+    external: true,
+  },
 ];
 
 export default function Navbar() {
@@ -43,18 +49,29 @@ export default function Navbar() {
           <img src="/logo.png" alt="Logo AMI 2026" />
         </a>
         <div className="mx-8 flex items-center gap-4 text-[#ffeabb] max-lg:hidden">
-          {navOpts.map((n, i) => (
-            <NavLink
-              key={i}
-              to={n.url}
-              className={({ isActive }) =>
-                `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
-              }
-            >
-              <img src={n.icon} className="w-8" alt="Icon" />
-              <span className="font-body font-bold">{n.label}</span>
-            </NavLink>
-          ))}
+          {navOpts.map((n) =>
+            n.external ? (
+              <a
+                key={n.label}
+                href={n.url}
+                className="flex h-12 items-center gap-2 rounded-xl border-2 border-transparent bg-[#1b165e]/20 p-2"
+              >
+                <img src={n.icon} className="w-8" alt="Icon" />
+                <span className="font-body font-bold">{n.label}</span>
+              </a>
+            ) : (
+              <NavLink
+                key={n.label}
+                to={n.url}
+                className={({ isActive }) =>
+                  `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
+                }
+              >
+                <img src={n.icon} className="w-8" alt="Icon" />
+                <span className="font-body font-bold">{n.label}</span>
+              </NavLink>
+            ),
+          )}
         </div>
         {!isAuthenticated ? (
           <NavLink
@@ -101,21 +118,35 @@ export default function Navbar() {
           <img src="/logo.png" alt="Logo AMI 2026" />
         </a>
         <div className="mx-8 flex flex-col items-center gap-4 text-[#ffeabb]">
-          {navOpts.map((n, i) => (
-            <NavLink
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
-              key={i}
-              to={n.url}
-              className={({ isActive }) =>
-                `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 min-w-28 items-center justify-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
-              }
-            >
-              <img src={n.icon} className="w-8" alt="Icon" />
-              <span className="font-body text-lg font-bold">{n.label}</span>
-            </NavLink>
-          ))}
+          {navOpts.map((n) =>
+            n.external ? (
+              <a
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                }}
+                key={n.label}
+                href={n.url}
+                className="flex h-12 min-w-28 items-center justify-center gap-2 rounded-xl border-2 border-transparent bg-[#1b165e]/20 p-2"
+              >
+                <img src={n.icon} className="w-8" alt="Icon" />
+                <span className="font-body text-lg font-bold">{n.label}</span>
+              </a>
+            ) : (
+              <NavLink
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                }}
+                key={n.label}
+                to={n.url}
+                className={({ isActive }) =>
+                  `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 min-w-28 items-center justify-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
+                }
+              >
+                <img src={n.icon} className="w-8" alt="Icon" />
+                <span className="font-body text-lg font-bold">{n.label}</span>
+              </NavLink>
+            ),
+          )}
         </div>
         {!isAuthenticated ? (
           <NavLink
