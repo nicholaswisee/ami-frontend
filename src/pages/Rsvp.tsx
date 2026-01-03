@@ -594,7 +594,7 @@ export default function RsvpPage() {
               ) : null}
             </div>
 
-            <div className="border-t border-[#FFEBB8]/20 pt-6">
+            <div className="pt-6">
               {step === "CONTACT" ? (
                 <div className="flex justify-end">
                   <button
