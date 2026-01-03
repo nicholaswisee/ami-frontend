@@ -106,7 +106,7 @@ export default function Navbar() {
         </button>
       </nav>
       <div
-        className={`${isOpen ? "z-100 opacity-100" : "-z-10 opacity-0"} bg-purple fixed flex h-lvh w-full flex-col items-center justify-center gap-10 transition-opacity duration-75`}
+        className={`${isOpen ? "z-100 opacity-100" : "-z-10 opacity-0"} bg-purple fixed flex h-dvh w-full flex-col items-center justify-center gap-10 transition-opacity duration-75`}
       >
         <a
           onClick={() => {
