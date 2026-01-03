@@ -83,3 +83,7 @@
 button {
   @apply cursor-pointer;
 }
+
+body {
+  @apply overflow-x-hidden;
+}

@@ -1,6 +1,6 @@
 import Badge from "@/components/Badge";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const itbDayEvents: Array<{
   thumbnail: string;
@@ -14,16 +14,33 @@ const itbDayEvents: Array<{
   {
     thumbnail: "/flashback02.webp",
   },
+  {
+    thumbnail: "/itbday/bioskop.webp",
+  },
+  {
+    thumbnail: "/itbday/hmps.webp",
+  },
+  {
+    thumbnail: "/itbday/parade.webp",
+  },
+  {
+    thumbnail: "/itbday/performance.webp",
+  },
+  {
+    thumbnail: "/itbday/talkshow.webp",
+  },
+  {
+    thumbnail: "/itbday/tour.webp",
+  },
 ];
 
 export default function HomePage() {
-  const { scrollY } = useScroll();
-  const treeOpacityLeft = useTransform(scrollY, [0, 400], [0, 1]);
-  const treeXLeft = useTransform(scrollY, [0, 400], [-120, 0]);
-  const treeYLeft = useTransform(scrollY, [0, 400], [20, 0]);
-  const treeOpacityRight = useTransform(scrollY, [40, 440], [0, 1]);
-  const treeXRight = useTransform(scrollY, [40, 440], [120, 0]);
-  const treeYRight = useTransform(scrollY, [40, 440], [20, 0]);
+  // const treeOpacityLeft = useTransform(scrollY, [0, 700], [0, 1]);
+  // const treeXLeft = useTransform(scrollY, [0, 700], [-120, 0]);
+  // const treeYLeft = useTransform(scrollY, [0, 700], [20, 0]);
+  // const treeOpacityRight = useTransform(scrollY, [60, 760], [0, 1]);
+  // const treeXRight = useTransform(scrollY, [60, 760], [120, 0]);
+  // const treeYRight = useTransform(scrollY, [60, 760], [20, 0]);
 
   return (
     <div>
@@ -38,58 +55,79 @@ export default function HomePage() {
           alt=""
           className="absolute top-0 left-0 z-20 -scale-x-100 rotate-90"
         /> */}
-        <motion.img
+        <img
           src="/transition-1.webp"
           alt=""
+          draggable="false"
           className="absolute bottom-0 z-25 w-full"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          // initial={{ opacity: 0, y: 12 }}
+          // whileInView={{ opacity: 1, y: 0 }}
+          // viewport={{ once: true, amount: 0.2 }}
+          // transition={{ duration: 0.5, ease: "easeOut" }}
         />
         <div className="pointer-events-none absolute inset-0 z-33 bg-linear-to-b from-black/35 via-black/10 to-black/45" />
         <div className="flex h-lvh flex-col items-center justify-center">
-          <motion.img
-            className="absolute bottom-0 left-0 z-20 mb-32 max-w-1/2 select-none sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
+          {/* <img
+            className="absolute bottom-0 left-0 z-20 mb-32 max-w-1/2 max-sm:max-w-2/3 sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
             src="/tree-left-main.webp"
             alt=""
-            style={{ opacity: treeOpacityLeft, x: treeXLeft, y: treeYLeft }}
+            draggable="false"
           />
-          <motion.img
-            className="absolute right-0 bottom-0 z-20 mb-32 max-w-1/2 select-none sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
+          <img
+            className="absolute right-0 bottom-0 z-20 mb-32 max-w-1/2 max-sm:-right-6 max-sm:max-w-2/3 sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
             src="/tree-right-main.webp"
             alt=""
-            style={{ opacity: treeOpacityRight, x: treeXRight, y: treeYRight }}
+            draggable="false"
+          /> */}
+          <motion.img
+            className="absolute bottom-0 left-0 z-20 mb-32 max-w-1/2 max-sm:max-w-2/3 sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
+            src="/tree-left-main.webp"
+            alt=""
+            draggable="false"
+            initial={{ opacity: 0, x: -50, y: 12 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+          />
+          <motion.img
+            className="absolute right-0 bottom-0 z-20 mb-32 max-w-1/2 max-sm:-right-6 max-sm:max-w-2/3 sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
+            src="/tree-right-main.webp"
+            alt=""
+            draggable="false"
+            initial={{ opacity: 0, x: 50, y: 12 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
           />
           <motion.img
             src="/logo.png"
             alt="AMI 2026"
-            className="relative z-0 aspect-square w-full max-w-64"
+            draggable="false"
+            className="relative z-32 aspect-square w-full max-w-64"
             initial={{ opacity: 0, y: 18, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
           />
           <motion.h2
-            className="bg-linear-to-b from-[#ffdb8c] via-[#ffd37a] to-[#ffb066] bg-clip-text text-[#ffdb8c] drop-shadow-[0_4px_10px_rgba(255,197,107,0.55)]"
+            className="relative z-34 bg-linear-to-b from-[#ffdb8c] via-[#ffd37a] to-[#ffb066] bg-clip-text text-[#ffdb8c] drop-shadow-[0_4px_10px_rgba(255,197,107,0.55)]"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
+            transition={{ duration: 0.5, ease: "easeInOut", delay: 0.65 }}
           >
             Aku Masuk ITB 2026
           </motion.h2>
         </div>
       </section>
       <section className="bg-mixed relative flex min-h-[120lvh] flex-col items-center pb-28 sm:min-h-[180lvh] lg:min-h-[180lvh]">
-        <motion.img
+        <img
           src="/transition-2.webp"
           alt=""
+          draggable="false"
           className="absolute -top-12 z-35 w-full drop-shadow-2xl drop-shadow-white/65 sm:-top-16 md:-top-18 lg:-top-24 xl:-top-40"
-          initial={{ opacity: 0, y: -12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          // initial={{ opacity: 0, y: -12 }}
+          // whileInView={{ opacity: 1, y: 0 }}
+          // viewport={{ once: true, amount: 0.2 }}
+          // transition={{ duration: 0.5, ease: "easeOut" }}
         />
         <motion.div
           className="relative z-30 mt-64 flex w-full max-w-5xl flex-col items-center px-6 text-center sm:mt-96 xl:mt-128"
@@ -107,7 +145,7 @@ export default function HomePage() {
             <Badge>Aku Masuk ITB</Badge>
           </motion.div>
           <motion.p
-            className="mt-4 max-w-3xl leading-relaxed font-semibold text-[#6f0e4e]"
+            className="relative z-3 mt-4 max-w-3xl leading-relaxed font-semibold text-[#6f0e4e]"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -118,7 +156,7 @@ export default function HomePage() {
             baru. Luminettes akan diajak mengenal ITB lewat acara seru,
             inspiratif, dan penuh kebersamaan!
           </motion.p>
-          <div className="mx-auto mt-12 w-fit max-w-5xl space-y-6 px-4">
+          <div className="relative z-3 mx-auto mt-12 w-fit max-w-5xl space-y-6 px-4">
             <div className="mx-auto grid w-fit grid-cols-3 justify-center gap-4 sm:gap-6 md:place-items-center">
               {["ITB Day", "Paguyuban Membangun", "Diseminasi"].map(
                 (title, index) => (
@@ -164,8 +202,20 @@ export default function HomePage() {
               )}
             </div>
           </div>
+          <img
+            src="/vines/redvines01.png"
+            alt=""
+            draggable="false"
+            className="absolute bottom-0 left-[calc((100vw-100%)/-2)] z-0 max-sm:max-w-1/3"
+          />
+          <img
+            src="/vines/redvines02.png"
+            alt=""
+            draggable="false"
+            className="absolute right-[calc((100vw-100%)/-2)] bottom-0 z-0 max-sm:max-w-1/3"
+          />
           <motion.div
-            className="my-12"
+            className="relative z-3 my-12"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -179,7 +229,7 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </motion.div>
-        <div className="mt-36">
+        <div className="relative mt-36">
           <motion.h1
             className="text-center text-[#6f0e4e] text-shadow-[#bf1192] text-shadow-sm"
             initial={{ opacity: 0, y: 12 }}
@@ -203,12 +253,25 @@ export default function HomePage() {
                   delay: 0.06 + index * 0.05,
                 }}
               >
-                <div className="relative aspect-16/10 w-full max-w-65 shadow-xl md:max-w-[320px]">
+                <div className="relative aspect-4/5 w-full max-w-65 shadow-xl md:max-w-[320px]">
+                  <img
+                    src="/flower/flower01.webp"
+                    alt=""
+                    draggable="false"
+                    className="absolute -top-8 -right-3 h-14 w-14"
+                  />
                   <img
                     src={event.thumbnail}
                     alt=""
+                    draggable="false"
                     className="h-full w-full rounded-2xl object-cover"
                     loading="lazy"
+                  />
+                  <img
+                    src="/flower/flower01.webp"
+                    alt=""
+                    draggable="false"
+                    className="absolute -bottom-8 -left-3 h-14 w-14"
                   />
                 </div>
               </motion.div>

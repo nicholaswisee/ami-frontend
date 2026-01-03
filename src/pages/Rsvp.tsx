@@ -49,7 +49,6 @@ export default function RsvpPage() {
   const [isLoadingSessions, setIsLoadingSessions] = useState(false);
   const [sessions, setSessions] = useState<EventSession[]>([]);
   const [, setCreatedReservation] = useState<Reservation | null>(null);
-  const [hasExistingReservation, setHasExistingReservation] = useState(false);
   const [isFirstParticipantSynced, setIsFirstParticipantSynced] =
     useState(true);
 
@@ -122,28 +121,6 @@ export default function RsvpPage() {
         // ignore: UI falls back to static session options
       } finally {
         setIsLoadingSessions(false);
-      }
-    };
-
-    void run();
-  }, []);
-
-  useEffect(() => {
-    const run = async () => {
-      try {
-        const res = await fetch(`${env.API_URL}/reservations`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (!res.ok) return;
-        const json = (await res.json()) as { reservations: Reservation[] };
-        const hasReservations = (json.reservations ?? []).length > 0;
-        if (hasReservations) {
-          setHasExistingReservation(true);
-          setStep("SUCCESS");
-        }
-      } catch {
-        // ignore
       }
     };
 
@@ -259,7 +236,6 @@ export default function RsvpPage() {
 
       const json = (await res.json()) as { reservation: Reservation };
       setCreatedReservation(json.reservation);
-      setHasExistingReservation(true);
       setIsSuccess(true);
       setStep("SUCCESS");
       window.scrollTo(0, 0);
@@ -724,9 +700,7 @@ export default function RsvpPage() {
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <h1 className="font-subheading text-center leading-tight font-extrabold text-[#302a77] drop-shadow-md">
-              {hasExistingReservation
-                ? "Kamu sudah punya tiket!"
-                : "Reservasi Tiket Berhasil!"}
+              Reservasi Tiket Berhasil!
             </h1>
 
             <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">

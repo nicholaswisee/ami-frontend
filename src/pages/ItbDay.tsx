@@ -78,48 +78,50 @@ function EventCard({ label, thumbnail, tooltip, position }: EventCardProps) {
     pos = "end";
   }
   return (
-    <motion.div
-      className={`flex items-center justify-${pos} w-full`}
-      initial={{ opacity: 0, y: 22, scale: 0.98 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
-    >
-      <div
-        className="relative flex flex-col items-center gap-3 md:items-center md:justify-center"
-        style={{
-          gridColumn: position.col,
-          gridRow: position.row,
-        }}
+    <>
+      <motion.div
+        className={`z-3 flex items-center justify-${pos} w-full`}
+        initial={{ opacity: 0, y: 22, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
       >
-        {thumbnail && (
-          <div className="relative aspect-16/10 w-full max-w-65 shadow-xl md:max-w-[320px]">
-            <img
-              src={thumbnail}
-              alt={label}
-              className="h-full w-full rounded-2xl object-cover"
-              loading="lazy"
-            />
-          </div>
-        )}
-        <div className="relative w-full max-w-52.5">
-          <div
-            className="group relative w-full rounded-3xl px-6 py-3 text-center text-lg font-extrabold tracking-[0.08em] text-[#fdd6be] uppercase drop-shadow outline-none focus-visible:ring-2 focus-visible:ring-[#fdd6be]/60"
-            style={badgeStyle}
-            tabIndex={0}
-            role="button"
-            aria-label={label}
-          >
-            {label}
-            {tooltip && tooltip.trim() !== "" && (
-              <span className="pointer-events-none absolute -top-2 left-1/2 w-full -translate-x-1/2 -translate-y-full rounded-md bg-[#2d0f55] p-3 text-xs font-semibold text-[#fdd6be] normal-case opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 group-active:opacity-100">
-                {tooltip}
-              </span>
-            )}
+        <div
+          className="relative flex flex-col items-center gap-3 md:items-center md:justify-center"
+          style={{
+            gridColumn: position.col,
+            gridRow: position.row,
+          }}
+        >
+          {thumbnail && (
+            <div className="relative aspect-16/10 w-full max-w-65 shadow-xl md:max-w-[320px]">
+              <img
+                src={thumbnail}
+                alt={label}
+                className="h-full w-full rounded-2xl object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div className="relative w-full max-w-52.5">
+            <div
+              className="group relative w-full rounded-3xl px-6 py-3 text-center text-lg font-extrabold tracking-[0.08em] text-[#fdd6be] uppercase drop-shadow outline-none focus-visible:ring-2 focus-visible:ring-[#fdd6be]/60"
+              style={badgeStyle}
+              tabIndex={0}
+              role="button"
+              aria-label={label}
+            >
+              {label}
+              {tooltip && tooltip.trim() !== "" && (
+                <span className="pointer-events-none absolute -top-2 left-1/2 w-full -translate-x-1/2 -translate-y-full rounded-md bg-[#2d0f55] p-3 text-xs font-semibold text-[#fdd6be] normal-case opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 group-active:opacity-100">
+                  {tooltip}
+                </span>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }
 
