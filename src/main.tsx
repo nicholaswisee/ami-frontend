@@ -4,6 +4,7 @@ import "./lib/auth-client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { SessionProvider } from "@hono/auth-js/react";
 import { ProtectedRoute } from "./utils/protectedRoute";
+import { ScannerRoute } from "./utils/scannerRoute";
 import App from "./App";
 import AuthPage from "./pages/Auth";
 import AcaraPage from "./pages/Acara";
@@ -12,6 +13,7 @@ import ItbDayPage from "./pages/ItbDay";
 import OleatPage from "./pages/Oleat";
 import ProfilePage from "./pages/Profile";
 import RsvpPage from "./pages/Rsvp";
+import ScannerPage from "./pages/Scanner";
 import NotFoundPage from "./pages/NotFound";
 import FaqPage from "./pages/Faq";
 
@@ -40,6 +42,14 @@ createRoot(document.getElementById("root")!).render(
               <ProtectedRoute>
                 <ProfilePage />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="scanner"
+            element={
+              <ScannerRoute>
+                <ScannerPage />
+              </ScannerRoute>
             }
           />
           <Route path="*" element={<NotFoundPage />} />
