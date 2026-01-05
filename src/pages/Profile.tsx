@@ -205,7 +205,9 @@ export default function ProfilePage() {
                         <p className="leading-tight font-semibold">
                           {r.contactFullName}
                         </p>
-                        <p className="text-xs opacity-75">{r.contactRegion}</p>
+                        <p className="text-xs opacity-75">
+                          {r.status === "PENDING" ? "Pending" : "Scanned"}
+                        </p>
                       </div>
                       <button
                         onClick={() => void openTicket(r)}
