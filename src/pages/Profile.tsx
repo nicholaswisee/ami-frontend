@@ -205,8 +205,12 @@ export default function ProfilePage() {
                         <p className="leading-tight font-semibold">
                           {r.contactFullName}
                         </p>
-                        <p className="text-xs opacity-75">
-                          {r.status === "PENDING" ? "Pending" : "Scanned"}
+                        <p
+                          className={`text-xs font-semibold ${r.status === "PENDING" ? "text-yellow-300" : "text-green-300"}`}
+                        >
+                          {r.status === "PENDING"
+                            ? "Menunggu"
+                            : "Terkonfirmasi"}
                         </p>
                       </div>
                       <button
@@ -315,6 +319,13 @@ export default function ProfilePage() {
             </div>
             <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
             <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
+              <h4
+                className={`font-body font-bold ${activeReservation?.status === "PENDING" ? "text-yellow-500" : "text-green-500"}`}
+              >
+                {activeReservation?.status === "PENDING"
+                  ? "Menunggu"
+                  : "Terkonfirmasi"}
+              </h4>
               <TicketBarcode
                 value={activeReservation?.barcode || ""}
                 className="h-auto w-full"
