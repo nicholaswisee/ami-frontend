@@ -45,6 +45,22 @@ export default function HomePage() {
   return (
     <div>
       <section className="bg-purple relative min-h-[120lvh] overflow-hidden sm:min-h-[180lvh] lg:min-h-[220lvh]">
+        <motion.img
+          src="/glow-1.png"
+          alt=""
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 0.9, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute bottom-72 left-1/4 z-40 w-20 animate-pulse max-md:left-4 md:bottom-2/3"
+        />
+        <motion.img
+          src="/glow-1.png"
+          alt=""
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 0.9, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute right-1/4 bottom-84 z-40 w-20 animate-pulse max-md:right-8 md:bottom-2/5"
+        />
         {/* <img
           src="/leaf-right-main.webp"
           alt=""
