@@ -50,7 +50,7 @@ export default function HomePage() {
           alt=""
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 0.9, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
           className="absolute bottom-72 left-1/4 z-40 w-20 animate-pulse max-md:left-4 md:bottom-2/3"
         />
         <motion.img
@@ -58,7 +58,7 @@ export default function HomePage() {
           alt=""
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 0.9, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
           className="absolute right-1/4 bottom-84 z-40 w-20 animate-pulse max-md:right-8 md:bottom-2/5"
         />
         {/* <img
@@ -100,18 +100,20 @@ export default function HomePage() {
             src="/tree-left-main.webp"
             alt=""
             draggable="false"
-            initial={{ opacity: 0, x: -50, y: 12 }}
+            // initial={{ opacity: 0, x: -50, y: 12 }}
+            initial={{ opacity: 0, x: 0, y: 0 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: 0.6 }}
           />
           <motion.img
             className="absolute right-0 bottom-0 z-20 mb-32 max-w-1/2 max-sm:-right-6 max-sm:max-w-2/3 sm:mb-36 md:mb-40 lg:mb-56 xl:mb-96"
             src="/tree-right-main.webp"
             alt=""
             draggable="false"
-            initial={{ opacity: 0, x: 50, y: 12 }}
+            // initial={{ opacity: 0, x: 50, y: 12 }}
+            initial={{ opacity: 0, x: 0, y: 0 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: 0.8 }}
           />
           <motion.img
             src="/logo.png"

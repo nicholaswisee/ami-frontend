@@ -45,7 +45,7 @@ export default function AcaraPage() {
   const navigate = useNavigate();
 
   const [acaraApi, setAcaraApi] = React.useState<CarouselApi | null>(null);
-  const [talkshowApi, setTalkshowApi] = React.useState<CarouselApi | null>(
+  const [_talkshowApi, setTalkshowApi] = React.useState<CarouselApi | null>(
     null,
   );
   return (
@@ -119,26 +119,26 @@ export default function AcaraPage() {
             {/*prev button */}
             <button
               onClick={() => acaraApi?.scrollPrev()}
-              className="absolute top-1/2 left-3 z-10 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:left-4"
+              className="absolute top-1/2 -left-6 z-10 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:-left-16"
               aria-label="Previous Slide"
             >
               <img
                 src="/arrow.png"
                 alt="Previous"
-                className="h-9 w-9 object-contain drop-shadow-md md:h-14 md:w-14"
+                className="h-9 w-9 object-contain drop-shadow-md md:h-11 md:w-11"
               />
             </button>
 
             {/* next button */}
             <button
               onClick={() => acaraApi?.scrollNext()}
-              className="absolute top-1/2 right-3 z-10 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:right-4"
+              className="absolute top-1/2 -right-6 z-10 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:-right-16"
               aria-label="Next Slide"
             >
               <img
                 src="/arrow.png"
                 alt="Next"
-                className="h-9 w-9 scale-x-[-1] object-contain drop-shadow-md md:h-14 md:w-14"
+                className="h-9 w-9 scale-x-[-1] object-contain drop-shadow-md md:h-11 md:w-11"
               />
             </button>
           </Carousel>
@@ -205,30 +205,30 @@ export default function AcaraPage() {
               </CarouselContent>
 
               {/* previous button */}
-              <button
+              {/* <button
                 onClick={() => talkshowApi?.scrollPrev()}
-                className="absolute top-1/2 left-3 z-20 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:left-4"
+                className="absolute top-1/2 -left-6 z-20 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:-left-16"
                 aria-label="Previous Slide"
               >
                 <img
                   src="/arrow.png"
                   alt="Previous"
-                  className="h-9 w-9 object-contain drop-shadow-md md:h-14 md:w-14"
+                  className="h-9 w-9 object-contain drop-shadow-md md:h-11 md:w-11"
                 />
-              </button>
+              </button> */}
 
               {/* next button */}
-              <button
+              {/* <button
                 onClick={() => talkshowApi?.scrollNext()}
-                className="absolute top-1/2 right-3 z-20 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:right-4"
+                className="absolute top-1/2 -right-6 z-20 -translate-y-1/2 transition-transform hover:scale-110 focus:outline-none md:-right-16"
                 aria-label="Next Slide"
               >
                 <img
                   src="/arrow.png"
                   alt="Next"
-                  className="h-9 w-9 scale-x-[-1] object-contain drop-shadow-md md:h-14 md:w-14"
+                  className="h-9 w-9 scale-x-[-1] object-contain drop-shadow-md md:h-11 md:w-11"
                 />
-              </button>
+              </button> */}
             </Carousel>
           </div>
 
@@ -369,8 +369,8 @@ const TalkshowCard = ({
       <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row-reverse">
         {/* judul & desc */}
         <div className="flex w-full grow flex-col content-between justify-start gap-6 text-center md:text-left">
-          <div className="w-full rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-8 py-2 text-center">
-            <h3 className="text-2xl font-extrabold tracking-wide text-[#87095A] uppercase">
+          <div className="w-full rounded-xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-8 py-2 text-center">
+            <h3 className="font-body text-xl font-extrabold tracking-wide text-[#87095A] uppercase max-sm:text-base">
               {title}
             </h3>
           </div>
@@ -393,17 +393,23 @@ const TalkshowCard = ({
       </div>
 
       {/* narasumber dan waktu */}
-      <div className="z-10 mt-8 flex w-full flex-col items-center justify-evenly gap-4 sm:flex-row md:gap-6">
+      <div className="z-10 mt-8 flex w-full items-center justify-evenly gap-4 max-sm:flex-row md:gap-6">
         <div className="z-10 w-full max-w-xs rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-6 py-4 text-center shadow-md sm:max-w-56 sm:flex-1">
-          <p className="block text-xl font-extrabold text-[#590844]">
+          <p className="block text-xl font-extrabold text-[#590844] max-sm:text-base">
             {sourceName}
           </p>
-          <p className="text-lg font-semibold text-[#AC166C]">{sourceDesc}</p>
+          <p className="text-lg font-semibold text-[#AC166C] max-sm:text-xs">
+            {sourceDesc}
+          </p>
         </div>
 
         <div className="z-10 w-full max-w-xs rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-6 py-4 text-center shadow-md sm:max-w-56 sm:flex-1 md:max-w-40">
-          <p className="block text-xl font-extrabold text-[#590844]">{time}</p>
-          <p className="text-lg font-semibold text-[#AC166C]">{place}</p>
+          <p className="block text-xl font-extrabold text-[#590844] max-sm:text-base">
+            {time}
+          </p>
+          <p className="text-lg font-semibold text-[#AC166C] max-sm:text-xs">
+            {place}
+          </p>
         </div>
       </div>
 
