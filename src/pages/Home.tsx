@@ -44,7 +44,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <section className="bg-purple relative min-h-[120lvh] overflow-hidden sm:min-h-[180lvh] lg:min-h-[220lvh]">
+      <section className="bg-purple relative min-h-[120svh] overflow-hidden sm:min-h-[180lvh] lg:min-h-[220lvh]">
         <motion.img
           src="/glow-1.png"
           alt=""
@@ -75,7 +75,7 @@ export default function HomePage() {
           src="/transition-1.webp"
           alt=""
           draggable="false"
-          className="absolute bottom-0 z-25 w-full"
+          className="absolute bottom-0 z-34 w-full"
           // initial={{ opacity: 0, y: 12 }}
           // whileInView={{ opacity: 1, y: 0 }}
           // viewport={{ once: true, amount: 0.2 }}
@@ -141,7 +141,7 @@ export default function HomePage() {
           src="/transition-2.webp"
           alt=""
           draggable="false"
-          className="absolute -top-12 z-35 w-full drop-shadow-2xl drop-shadow-white/65 sm:-top-16 md:-top-18 lg:-top-24 xl:-top-40"
+          className="absolute -top-12 z-35 w-full drop-shadow-2xl drop-shadow-orange-300/65 sm:-top-16 md:-top-18 lg:-top-24 xl:-top-40"
           // initial={{ opacity: 0, y: -12 }}
           // whileInView={{ opacity: 1, y: 0 }}
           // viewport={{ once: true, amount: 0.2 }}

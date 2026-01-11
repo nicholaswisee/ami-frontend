@@ -1,3 +1,6 @@
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as
+  | string
+  | undefined;
 const API_URL = import.meta.env.VITE_API_URL as string | undefined;
 
 if (!API_URL) {
@@ -6,5 +9,5 @@ if (!API_URL) {
 
 export const env = {
   API_URL,
+  CLOUDINARY_CLOUD_NAME,
 };
-
