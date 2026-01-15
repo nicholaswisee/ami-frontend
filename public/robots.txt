@@ -1,5 +1,11 @@
 User-agent: *
 Disallow: /auth
 Disallow: /profile
+Allow: /
+Allow: /itb-day
+Allow: /rsvp
+Allow: /acara
+Allow: /oleat
+Allow: /faq
 
 Sitemap: /sitemap.xml
