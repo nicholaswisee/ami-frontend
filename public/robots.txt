@@ -1,6 +1,5 @@
 User-agent: *
 Disallow: /auth
 Disallow: /profile
-Disallow: /rsvp
 
 Sitemap: /sitemap.xml
