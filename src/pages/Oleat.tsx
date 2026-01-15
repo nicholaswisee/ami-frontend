@@ -182,7 +182,7 @@ export default function OleatPage() {
                     <li>Minuman keras</li>
                   </ul>
                 </li>
-                <li>Dilarang merusak properti ITB dan AMI 2025.</li>
+                <li>Dilarang merusak properti ITB dan AMI 2026.</li>
                 <li>
                   Dilarang merokok kecuali di area yang telah ditentukan (Area
                   Merokok).

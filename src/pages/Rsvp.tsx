@@ -55,6 +55,7 @@ export default function RsvpPage() {
   const [formData, setFormData] = useState({
     email: "",
     contactFullName: "",
+    contactPhone: "",
     contactSchool: "",
     contactRegion: "",
     sessionCode: "" as "" | EventSessionCode,
@@ -63,8 +64,8 @@ export default function RsvpPage() {
   });
 
   const [participants, setParticipants] = useState<
-    Array<{ fullName: string; school: string; region: string }>
-  >([{ fullName: "", school: "", region: "" }]);
+    Array<{ fullName: string; phone: string; school: string; region: string }>
+  >([{ fullName: "", phone: "", school: "", region: "" }]);
   const [activeParticipantIndex, setActiveParticipantIndex] = useState(0);
 
   const sessionOptions = useMemo(() => {
@@ -93,6 +94,7 @@ export default function RsvpPage() {
         {
           ...prev[0],
           fullName: formData.contactFullName,
+          phone: formData.contactPhone,
           school: formData.contactSchool,
           region: formData.contactRegion,
         },
@@ -101,6 +103,7 @@ export default function RsvpPage() {
     });
   }, [
     formData.contactFullName,
+    formData.contactPhone,
     formData.contactSchool,
     formData.contactRegion,
     isFirstParticipantSynced,
@@ -138,19 +141,24 @@ export default function RsvpPage() {
       setFormData((prev) => ({ ...prev, [name]: checked }));
       return;
     }
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    // Filter non-digits for phone fields
+    const filteredValue =
+      name === "contactPhone" ? value.replace(/\D/g, "") : value;
+    setFormData((prev) => ({ ...prev, [name]: filteredValue }));
   };
 
   const handleParticipantChange = (
     index: number,
-    key: "fullName" | "school" | "region",
+    key: "fullName" | "phone" | "school" | "region",
     value: string,
   ) => {
     if (index === 0 && isFirstParticipantSynced) {
       setIsFirstParticipantSynced(false);
     }
+    // Filter non-digits for phone field
+    const filteredValue = key === "phone" ? value.replace(/\D/g, "") : value;
     setParticipants((prev) =>
-      prev.map((p, i) => (i === index ? { ...p, [key]: value } : p)),
+      prev.map((p, i) => (i === index ? { ...p, [key]: filteredValue } : p)),
     );
   };
 
@@ -162,7 +170,7 @@ export default function RsvpPage() {
     }
     setParticipants((prev) => [
       ...prev,
-      { fullName: "", school: "", region: "" },
+      { fullName: "", phone: "", school: "", region: "" },
     ]);
     setActiveParticipantIndex((prev) => prev + 1);
   };
@@ -179,8 +187,12 @@ export default function RsvpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (participants.some((p) => !p.fullName.trim() || !p.region.trim())) {
-      toast.error("Lengkapi data semua pengunjung (nama, daerah).");
+    if (
+      participants.some(
+        (p) => !p.fullName.trim() || !p.phone.trim() || !p.region.trim(),
+      )
+    ) {
+      toast.error("Lengkapi data semua pengunjung (nama, telepon, daerah).");
       return;
     }
 
@@ -203,6 +215,7 @@ export default function RsvpPage() {
         body: JSON.stringify({
           email: formData.email,
           contactFullName: formData.contactFullName,
+          contactPhone: formData.contactPhone,
           contactSchool: formData.contactSchool,
           contactRegion: formData.contactRegion,
           wantsTalkshow: formData.wantsTalkshow,
@@ -253,7 +266,7 @@ export default function RsvpPage() {
   const canNextFromContact =
     formData.email.trim() &&
     formData.contactFullName.trim() &&
-    formData.contactSchool.trim() &&
+    formData.contactPhone.trim() &&
     formData.contactRegion.trim();
 
   const canNextFromTalkshow =
@@ -263,6 +276,7 @@ export default function RsvpPage() {
 
   const activeParticipant = participants[activeParticipantIndex] ?? {
     fullName: "",
+    phone: "",
     school: "",
     region: "",
   };
@@ -271,7 +285,7 @@ export default function RsvpPage() {
     const missing: string[] = [];
     if (!formData.email.trim()) missing.push("Email");
     if (!formData.contactFullName.trim()) missing.push("Nama Lengkap");
-    if (!formData.contactSchool.trim()) missing.push("Asal Sekolah");
+    if (!formData.contactPhone.trim()) missing.push("Nomor Telepon");
     if (!formData.contactRegion.trim()) missing.push("Asal Daerah");
     return missing;
   };
@@ -287,17 +301,20 @@ export default function RsvpPage() {
   const getMissingActiveParticipantFields = () => {
     const missing: string[] = [];
     if (!activeParticipant.fullName.trim()) missing.push("Nama Pengunjung");
+    if (!activeParticipant.phone.trim()) missing.push("Telepon Pengunjung");
     if (!activeParticipant.region.trim()) missing.push("Daerah Pengunjung");
     return missing;
   };
 
   const getMissingParticipantFields = (p: {
     fullName: string;
+    phone: string;
     school: string;
     region: string;
   }) => {
     const missing: string[] = [];
     if (!p.fullName.trim()) missing.push("Nama");
+    if (!p.phone.trim()) missing.push("Telepon");
     if (!p.region.trim()) missing.push("Daerah");
     return missing;
   };
@@ -361,14 +378,29 @@ export default function RsvpPage() {
 
                   <div>
                     <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                      Asal Sekolah *
+                      Nomor Telepon *
+                    </label>
+                    <input
+                      name="contactPhone"
+                      value={formData.contactPhone}
+                      onChange={handleInputChange}
+                      type="tel"
+                      required
+                      pattern="[0-9]*"
+                      placeholder="Nomor Telepon"
+                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                      Asal Sekolah
                     </label>
                     <input
                       name="contactSchool"
                       value={formData.contactSchool}
                       onChange={handleInputChange}
                       type="text"
-                      required
                       placeholder="Asal Sekolah"
                       className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                     />
@@ -525,6 +557,21 @@ export default function RsvpPage() {
                         className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                       />
                       <input
+                        value={activeParticipant.phone}
+                        onChange={(e) =>
+                          handleParticipantChange(
+                            activeParticipantIndex,
+                            "phone",
+                            e.target.value,
+                          )
+                        }
+                        type="tel"
+                        required
+                        pattern="[0-9]*"
+                        placeholder="Nomor Telepon *"
+                        className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                      />
+                      <input
                         value={activeParticipant.school}
                         onChange={(e) =>
                           handleParticipantChange(
@@ -566,6 +613,9 @@ export default function RsvpPage() {
                     <p className="font-bold">Email: {formData.email}</p>
                     <p className="font-bold">
                       Nama: {formData.contactFullName}
+                    </p>
+                    <p className="font-bold">
+                      Telepon: {formData.contactPhone}
                     </p>
                     <p className="font-bold">
                       Sekolah: {formData.contactSchool}
