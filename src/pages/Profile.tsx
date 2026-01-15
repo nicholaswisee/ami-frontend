@@ -5,6 +5,7 @@ import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
 import { env } from "../env";
+import { toast } from "sonner";
 
 type TicketStatus = "PENDING" | "CONFIRMED";
 type Participant = {
@@ -89,6 +90,17 @@ export default function ProfilePage() {
       };
     }
   }, [activeReservation]);
+
+  useEffect(() => {
+    const hasSeenUpdate = sessionStorage.getItem("hasSeenReservationUpdate");
+    if (hasSeenUpdate || !hasSeenUpdate) {
+      toast.info(
+        "Terdapat pembaruan reservasi tiket ITB Day, Bagi Luminettes yang telah mengisi sebelum pukul 21.00 tanggal 15/01/2026 dapat reservasi kembali ya!",
+        { duration: 12000 },
+      );
+      sessionStorage.setItem("hasSeenReservationUpdate", "true");
+    }
+  }, []);
 
   useEffect(() => {
     const run = async () => {
