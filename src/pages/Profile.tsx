@@ -20,8 +20,11 @@ type Reservation = {
   status: TicketStatus;
   email: string;
   contactFullName: string;
+  contactPhone: string;
   contactSchool: string;
   contactRegion: string;
+  parentName: string;
+  parentPhone: string;
   wantsTalkshow: boolean;
   talkshowExpectation: string | null;
   createdAt: string;
@@ -73,10 +76,10 @@ export default function ProfilePage() {
     [],
   );
   const [isLoadingParticipants, setIsLoadingParticipants] = useState(false);
-  const formatDate = (value: string) =>
-    new Date(value).toLocaleDateString("id-ID", {
-      dateStyle: "medium",
-    });
+  // const formatDate = (value: string) =>
+  //   new Date(value).toLocaleDateString("id-ID", {
+  //     dateStyle: "medium",
+  //   });
 
   const [isLoadingReservations, setIsLoadingReservations] = useState(false);
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -271,9 +274,23 @@ export default function ProfilePage() {
                 </p>
               </div>
               <div className="text-right">
-                <p>Tanggal Reservasi</p>
+                <p>Nomor Telepon</p>
                 <p className="text-sm font-semibold text-gray-900">
-                  {formatDate(activeReservation?.createdAt || "")}
+                  {activeReservation?.contactPhone}
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
+              <div>
+                <p>Nama Orang Tua</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {activeReservation?.parentName}
+                </p>
+              </div>
+              <div className="text-right">
+                <p>Nomor Telepon Orang Tua</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {activeReservation?.parentPhone}
                 </p>
               </div>
             </div>
@@ -288,7 +305,7 @@ export default function ProfilePage() {
               <div className="sm:text-right">
                 <p>Sekolah / Daerah</p>
                 <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.contactSchool} /{" "}
+                  {activeReservation?.contactSchool || "-"} /{" "}
                   {activeReservation?.contactRegion}
                 </p>
               </div>
