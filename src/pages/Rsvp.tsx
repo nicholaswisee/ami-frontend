@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { env } from "../env";
 import { useAuthStore } from "../store/authStore";
 import { AnimatePresence, motion } from "framer-motion";
+import TermsAndConditions from "../components/TermsAndConditions";
 
 type EventSessionCode = "1" | "2";
 type TicketStatus = "PENDING" | "CONFIRMED";
@@ -41,7 +42,13 @@ export default function RsvpPage() {
   const { isAuthenticated, isPending, user } = useAuthStore();
   const navigate = useNavigate();
 
-  type Step = "CONTACT" | "TALKSHOW" | "PARTICIPANTS" | "REVIEW" | "SUCCESS";
+  type Step =
+    | "CONTACT"
+    | "TALKSHOW"
+    | "PARTICIPANTS"
+    | "TERMS"
+    | "REVIEW"
+    | "SUCCESS";
 
   const [step, setStep] = useState<Step>("CONTACT");
   const [, setIsSuccess] = useState(false);
@@ -58,14 +65,31 @@ export default function RsvpPage() {
     contactPhone: "",
     contactSchool: "",
     contactRegion: "",
+    parentName: "",
+    parentPhone: "",
     sessionCode: "" as "" | EventSessionCode,
     wantsTalkshow: false,
     talkshowExpectation: "",
+    acceptedTerms: false,
   });
 
   const [participants, setParticipants] = useState<
-    Array<{ fullName: string; phone: string; school: string; region: string }>
-  >([{ fullName: "", phone: "", school: "", region: "" }]);
+    Array<{
+      fullName: string;
+      email: string;
+      phone: string;
+      school: string;
+      region: string;
+    }>
+  >([
+    {
+      fullName: "",
+      email: "",
+      phone: "",
+      school: "",
+      region: "",
+    },
+  ]);
   const [activeParticipantIndex, setActiveParticipantIndex] = useState(0);
 
   const sessionOptions = useMemo(() => {
@@ -143,13 +167,15 @@ export default function RsvpPage() {
     }
     // Filter non-digits for phone fields
     const filteredValue =
-      name === "contactPhone" ? value.replace(/\D/g, "") : value;
+      name === "contactPhone" || name === "parentPhone"
+        ? value.replace(/\D/g, "")
+        : value;
     setFormData((prev) => ({ ...prev, [name]: filteredValue }));
   };
 
   const handleParticipantChange = (
     index: number,
-    key: "fullName" | "phone" | "school" | "region",
+    key: "fullName" | "email" | "phone" | "school" | "region",
     value: string,
   ) => {
     if (index === 0 && isFirstParticipantSynced) {
@@ -170,7 +196,13 @@ export default function RsvpPage() {
     }
     setParticipants((prev) => [
       ...prev,
-      { fullName: "", phone: "", school: "", region: "" },
+      {
+        fullName: "",
+        email: "",
+        phone: "",
+        school: "",
+        region: "",
+      },
     ]);
     setActiveParticipantIndex((prev) => prev + 1);
   };
@@ -189,10 +221,16 @@ export default function RsvpPage() {
 
     if (
       participants.some(
-        (p) => !p.fullName.trim() || !p.phone.trim() || !p.region.trim(),
+        (p) =>
+          !p.fullName.trim() ||
+          !p.email.trim() ||
+          !p.phone.trim() ||
+          !p.region.trim(),
       )
     ) {
-      toast.error("Lengkapi data semua pengunjung (nama, telepon, daerah).");
+      toast.error(
+        "Lengkapi data semua pengunjung (nama, email, nomor telepon, daerah).",
+      );
       return;
     }
 
@@ -218,6 +256,8 @@ export default function RsvpPage() {
           contactPhone: formData.contactPhone,
           contactSchool: formData.contactSchool,
           contactRegion: formData.contactRegion,
+          parentName: formData.parentName,
+          parentPhone: formData.parentPhone,
           wantsTalkshow: formData.wantsTalkshow,
           talkshowExpectation: formData.wantsTalkshow
             ? formData.talkshowExpectation
@@ -225,6 +265,7 @@ export default function RsvpPage() {
           sessionCode: formData.wantsTalkshow
             ? formData.sessionCode
             : undefined,
+          acceptedTerms: formData.acceptedTerms,
           participants,
         }),
       });
@@ -267,7 +308,9 @@ export default function RsvpPage() {
     formData.email.trim() &&
     formData.contactFullName.trim() &&
     formData.contactPhone.trim() &&
-    formData.contactRegion.trim();
+    formData.contactRegion.trim() &&
+    formData.parentName.trim() &&
+    formData.parentPhone.trim();
 
   const canNextFromTalkshow =
     !formData.wantsTalkshow ||
@@ -276,6 +319,7 @@ export default function RsvpPage() {
 
   const activeParticipant = participants[activeParticipantIndex] ?? {
     fullName: "",
+    email: "",
     phone: "",
     school: "",
     region: "",
@@ -287,6 +331,8 @@ export default function RsvpPage() {
     if (!formData.contactFullName.trim()) missing.push("Nama Lengkap");
     if (!formData.contactPhone.trim()) missing.push("Nomor Telepon");
     if (!formData.contactRegion.trim()) missing.push("Asal Daerah");
+    if (!formData.parentName.trim()) missing.push("Nama Orang Tua");
+    if (!formData.parentPhone.trim()) missing.push("Nomor Telepon Orang Tua");
     return missing;
   };
 
@@ -301,20 +347,24 @@ export default function RsvpPage() {
   const getMissingActiveParticipantFields = () => {
     const missing: string[] = [];
     if (!activeParticipant.fullName.trim()) missing.push("Nama Pengunjung");
-    if (!activeParticipant.phone.trim()) missing.push("Telepon Pengunjung");
+    if (!activeParticipant.email.trim()) missing.push("Email Pengunjung");
+    if (!activeParticipant.phone.trim())
+      missing.push("Nomor Telepon Pengunjung");
     if (!activeParticipant.region.trim()) missing.push("Daerah Pengunjung");
     return missing;
   };
 
   const getMissingParticipantFields = (p: {
     fullName: string;
+    email: string;
     phone: string;
     school: string;
     region: string;
   }) => {
     const missing: string[] = [];
     if (!p.fullName.trim()) missing.push("Nama");
-    if (!p.phone.trim()) missing.push("Telepon");
+    if (!p.email.trim()) missing.push("Email");
+    if (!p.phone.trim()) missing.push("Nomor Telepon");
     if (!p.region.trim()) missing.push("Daerah");
     return missing;
   };
@@ -328,445 +378,549 @@ export default function RsvpPage() {
   };
 
   return (
-    <div className="bg-mixed flex min-h-screen w-full items-center justify-center px-4 py-10">
-      <AnimatePresence mode="wait">
-        {step !== "SUCCESS" ? (
-          <motion.div
-            key={step}
-            className="relative my-auto max-h-[80svh] w-full max-w-lg overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-          >
-            <h3 className="font-subheading text-center font-bold text-[#FFEBB8] drop-shadow-md">
-              Reservasi Tiket
-            </h3>
+    <div>
+      <div className="bg-mixed flex min-h-screen w-full items-center justify-center px-4 py-10">
+        <AnimatePresence mode="wait">
+          {step !== "SUCCESS" ? (
+            <motion.div
+              key={step}
+              className="relative my-auto w-full max-w-lg overflow-y-auto rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+            >
+              <h3 className="font-subheading text-center font-bold text-[#FFEBB8] drop-shadow-md">
+                Reservasi Tiket
+              </h3>
 
-            <div className="mt-6 pr-1">
-              {step === "CONTACT" ? (
-                <div className="space-y-4">
-                  <div>
-                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                      Email *
-                    </label>
-                    <input
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      type="email"
-                      required
-                      placeholder="Email"
-                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                      Nama Lengkap *
-                    </label>
-                    <input
-                      name="contactFullName"
-                      value={formData.contactFullName}
-                      onChange={handleInputChange}
-                      type="text"
-                      required
-                      placeholder="Nama Lengkap"
-                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                      Nomor Telepon *
-                    </label>
-                    <input
-                      name="contactPhone"
-                      value={formData.contactPhone}
-                      onChange={handleInputChange}
-                      type="tel"
-                      required
-                      pattern="[0-9]*"
-                      placeholder="Nomor Telepon"
-                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                      Asal Sekolah
-                    </label>
-                    <input
-                      name="contactSchool"
-                      value={formData.contactSchool}
-                      onChange={handleInputChange}
-                      type="text"
-                      placeholder="Asal Sekolah"
-                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                      Asal Daerah *
-                    </label>
-                    <input
-                      name="contactRegion"
-                      value={formData.contactRegion}
-                      onChange={handleInputChange}
-                      type="text"
-                      required
-                      placeholder="Asal Daerah"
-                      className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                    />
-                  </div>
-                </div>
-              ) : null}
-
-              {step === "TALKSHOW" ? (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 rounded-xl bg-[#FFEBB8]/30 px-4 py-3">
-                    <input
-                      id="wantsTalkshow"
-                      name="wantsTalkshow"
-                      type="checkbox"
-                      checked={formData.wantsTalkshow}
-                      onChange={handleInputChange}
-                      className="h-5 w-5"
-                    />
-                    <label
-                      htmlFor="wantsTalkshow"
-                      className="mb-1 text-lg font-bold text-[#FFEBB8]"
-                    >
-                      Mau ikut talkshow?
-                    </label>
-                  </div>
-
-                  {formData.wantsTalkshow ? (
-                    <>
-                      <div>
-                        <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                          Pilih Sesi Talkshow *
-                        </label>
-                        <div className="relative">
-                          <select
-                            name="sessionCode"
-                            value={formData.sessionCode}
-                            onChange={handleInputChange}
-                            disabled={isLoadingSessions}
-                            className="w-full cursor-pointer appearance-none rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                          >
-                            <option value="">Pilih Sesi</option>
-                            {sessionOptions.map((s) => (
-                              <option key={s.code} value={s.code}>
-                                {s.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                          Harapan Ikut Talkshow *
-                        </label>
-                        <textarea
-                          name="talkshowExpectation"
-                          value={formData.talkshowExpectation}
-                          onChange={handleInputChange}
-                          rows={3}
-                          required
-                          placeholder="Harapan Ikut Talkshow"
-                          className="w-full resize-none rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                        />
-                      </div>
-                    </>
-                  ) : null}
-                </div>
-              ) : null}
-
-              {step === "PARTICIPANTS" ? (
-                <div className="space-y-4">
-                  <div className="pt-2">
-                    <h2 className="font-body text-xl font-bold text-[#FFEBB8]">
-                      Data Pengunjung
-                    </h2>
-                    <p className="font-bold text-[#FFEBB8]/90"></p>
-                  </div>
-
-                  <div className="rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-4">
-                    <div className="flex gap-2 overflow-x-auto pb-1 *:shrink-0">
-                      {participants.map((_, idx) => {
-                        const active = idx === activeParticipantIndex;
-                        return (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => setActiveParticipantIndex(idx)}
-                            className={`shrink-0 rounded-lg border px-3 py-1 text-[11px] font-bold transition ${
-                              active
-                                ? "border-[#FFEBB8] bg-[#302A77] text-[#FFEBB8]"
-                                : "border-[#FFEBB8]/30 bg-[#FFEBB8]/10 text-[#FFEBB8] hover:bg-[#FFEBB8]/20"
-                            }`}
-                          >
-                            Pengunjung {idx + 1}
-                          </button>
-                        );
-                      })}
-                      <button
-                        type="button"
-                        onClick={addParticipant}
-                        className="rounded-xl bg-[#FFEBB8] px-4 py-1.5 text-xs font-bold text-[#B64556] hover:bg-[#FFEBB8]/90"
-                      >
-                        + Pengunjung
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border-2 border-[#FFEBB8]/30 bg-[#FFEBB8]/10 p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-lg font-bold text-[#FFEBB8]">
-                        Pengunjung {activeParticipantIndex + 1}
-                      </p>
-                      {participants.length > 1 ? (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            removeParticipant(activeParticipantIndex)
-                          }
-                          className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-4 py-1.5 text-xs font-bold text-[#FFEBB8] hover:bg-[#1B165E]"
-                        >
-                          Hapus
-                        </button>
-                      ) : null}
-                    </div>
-
-                    <div className="space-y-3">
+              <div className="mt-6 pr-1">
+                {step === "CONTACT" ? (
+                  <div className="space-y-4">
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Email *
+                      </label>
                       <input
-                        value={activeParticipant.fullName}
-                        onChange={(e) =>
-                          handleParticipantChange(
-                            activeParticipantIndex,
-                            "fullName",
-                            e.target.value,
-                          )
-                        }
-                        type="text"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        type="email"
                         required
-                        placeholder="Nama Lengkap *"
+                        placeholder="Email"
                         className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                       />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Nama Lengkap *
+                      </label>
                       <input
-                        value={activeParticipant.phone}
-                        onChange={(e) =>
-                          handleParticipantChange(
-                            activeParticipantIndex,
-                            "phone",
-                            e.target.value,
-                          )
-                        }
+                        name="contactFullName"
+                        value={formData.contactFullName}
+                        onChange={handleInputChange}
+                        type="text"
+                        required
+                        placeholder="Nama Lengkap"
+                        className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Nomor Telepon *
+                      </label>
+                      <input
+                        name="contactPhone"
+                        value={formData.contactPhone}
+                        onChange={handleInputChange}
                         type="tel"
                         required
                         pattern="[0-9]*"
-                        placeholder="Nomor Telepon *"
+                        placeholder="Nomor Telepon"
                         className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                       />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Asal Sekolah
+                      </label>
                       <input
-                        value={activeParticipant.school}
-                        onChange={(e) =>
-                          handleParticipantChange(
-                            activeParticipantIndex,
-                            "school",
-                            e.target.value,
-                          )
-                        }
+                        name="contactSchool"
+                        value={formData.contactSchool}
+                        onChange={handleInputChange}
                         type="text"
                         placeholder="Asal Sekolah"
                         className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                       />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Asal Daerah *
+                      </label>
                       <input
-                        value={activeParticipant.region}
-                        onChange={(e) =>
-                          handleParticipantChange(
-                            activeParticipantIndex,
-                            "region",
-                            e.target.value,
-                          )
-                        }
+                        name="contactRegion"
+                        value={formData.contactRegion}
+                        onChange={handleInputChange}
                         type="text"
                         required
-                        placeholder="Asal Daerah *"
+                        placeholder="Asal Daerah"
+                        className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Nama Orang Tua / Wali *
+                      </label>
+                      <input
+                        name="parentName"
+                        value={formData.parentName}
+                        onChange={handleInputChange}
+                        type="text"
+                        required
+                        placeholder="Nama Orang Tua"
+                        className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                        Nomor Telepon Orang Tua / Wali *
+                      </label>
+                      <input
+                        name="parentPhone"
+                        value={formData.parentPhone}
+                        onChange={handleInputChange}
+                        type="tel"
+                        required
+                        pattern="[0-9]*"
+                        placeholder="Nomor Telepon Orang Tua"
                         className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                       />
                     </div>
                   </div>
-                </div>
-              ) : null}
+                ) : null}
 
-              {step === "REVIEW" ? (
-                <form
-                  id="rsvp-review-form"
-                  className="space-y-4"
-                  onSubmit={handleSubmit}
-                >
-                  <div className="rounded-2xl bg-white/80 p-4 text-[#302A77] shadow">
-                    <p className="font-bold">Email: {formData.email}</p>
-                    <p className="font-bold">
-                      Nama: {formData.contactFullName}
-                    </p>
-                    <p className="font-bold">
-                      Telepon: {formData.contactPhone}
-                    </p>
-                    <p className="font-bold">
-                      Sekolah: {formData.contactSchool}
-                    </p>
-                    <p className="font-bold">
-                      Daerah: {formData.contactRegion}
-                    </p>
-                    <p className="font-bold">
-                      Ikut talkshow: {formData.wantsTalkshow ? "Ya" : "Tidak"}
-                    </p>
+                {step === "TALKSHOW" ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 rounded-xl bg-[#FFEBB8]/30 px-4 py-3">
+                      <input
+                        id="wantsTalkshow"
+                        name="wantsTalkshow"
+                        type="checkbox"
+                        checked={formData.wantsTalkshow}
+                        onChange={handleInputChange}
+                        className="h-5 w-5"
+                      />
+                      <label
+                        htmlFor="wantsTalkshow"
+                        className="mb-1 text-lg font-bold text-[#FFEBB8]"
+                      >
+                        Mau ikut talkshow?
+                      </label>
+                    </div>
+
                     {formData.wantsTalkshow ? (
                       <>
-                        <p className="font-bold">
-                          Sesi: {formData.sessionCode}
-                        </p>
-                        <p className="font-bold">
-                          Harapan: {formData.talkshowExpectation}
-                        </p>
+                        <div>
+                          <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                            Pilih Sesi Talkshow *
+                          </label>
+                          <div className="relative">
+                            <select
+                              name="sessionCode"
+                              value={formData.sessionCode}
+                              onChange={handleInputChange}
+                              disabled={isLoadingSessions}
+                              className="w-full cursor-pointer appearance-none rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                            >
+                              <option value="">Pilih Sesi</option>
+                              {sessionOptions.map((s) => (
+                                <option key={s.code} value={s.code}>
+                                  {s.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
+                            Harapan Ikut Talkshow *
+                          </label>
+                          <textarea
+                            name="talkshowExpectation"
+                            value={formData.talkshowExpectation}
+                            onChange={handleInputChange}
+                            rows={3}
+                            required
+                            placeholder="Harapan Ikut Talkshow"
+                            className="w-full resize-none rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                          />
+                        </div>
                       </>
                     ) : null}
-                    <p className="font-bold">
-                      Jumlah pengunjung: {participants.length}
-                    </p>
                   </div>
-                </form>
-              ) : null}
-            </div>
+                ) : null}
 
-            <div className="pt-6">
-              {step === "CONTACT" ? (
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const missing = getMissingContactFields();
-                      if (missing.length) {
-                        toast.info("Lengkapi data yang dibutuhkan");
-                        return;
-                      }
-                      setStep("TALKSHOW");
-                    }}
-                    aria-disabled={!canNextFromContact}
-                    className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromContact ? "opacity-60" : ""}`}
-                  >
-                    Next
-                  </button>
-                </div>
-              ) : null}
+                {step === "PARTICIPANTS" ? (
+                  <div className="space-y-4">
+                    <div className="pt-2">
+                      <h2 className="font-body text-xl font-bold text-[#FFEBB8]">
+                        Data Pengunjung
+                      </h2>
+                      <p className="font-bold text-[#FFEBB8]/90"></p>
+                    </div>
 
-              {step === "TALKSHOW" ? (
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setStep("CONTACT")}
-                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const missing = getMissingTalkshowFields();
-                      if (missing.length) {
-                        toast.info("Lengkapi data yang dibutuhkan");
-                        return;
-                      }
-                      setStep("PARTICIPANTS");
-                    }}
-                    aria-disabled={!canNextFromTalkshow}
-                    className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromTalkshow ? "opacity-60" : ""}`}
-                  >
-                    Next
-                  </button>
-                </div>
-              ) : null}
+                    <div className="rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-4">
+                      <div className="flex gap-2 overflow-x-auto pb-1 *:shrink-0">
+                        {participants.map((_, idx) => {
+                          const active = idx === activeParticipantIndex;
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => setActiveParticipantIndex(idx)}
+                              className={`shrink-0 rounded-lg border px-3 py-1 text-[11px] font-bold transition ${
+                                active
+                                  ? "border-[#FFEBB8] bg-[#302A77] text-[#FFEBB8]"
+                                  : "border-[#FFEBB8]/30 bg-[#FFEBB8]/10 text-[#FFEBB8] hover:bg-[#FFEBB8]/20"
+                              }`}
+                            >
+                              Pengunjung {idx + 1}
+                            </button>
+                          );
+                        })}
+                        <button
+                          type="button"
+                          onClick={addParticipant}
+                          className="rounded-xl bg-[#FFEBB8] px-4 py-1.5 text-xs font-bold text-[#B64556] hover:bg-[#FFEBB8]/90"
+                        >
+                          + Pengunjung
+                        </button>
+                      </div>
+                    </div>
 
-              {step === "PARTICIPANTS" ? (
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setStep("TALKSHOW")}
-                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const incomplete = getFirstIncompleteParticipant();
-                      if (incomplete) {
-                        setActiveParticipantIndex(incomplete.index);
-                        toast.info("Lengkapi data yang dibutuhkan");
-                        return;
-                      }
-                      setStep("REVIEW");
-                    }}
-                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
-                  >
-                    Next
-                  </button>
-                </div>
-              ) : null}
+                    <div className="rounded-2xl border-2 border-[#FFEBB8]/30 bg-[#FFEBB8]/10 p-4">
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-lg font-bold text-[#FFEBB8]">
+                          Pengunjung {activeParticipantIndex + 1}
+                        </p>
+                        {participants.length > 1 ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              removeParticipant(activeParticipantIndex)
+                            }
+                            className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-4 py-1.5 text-xs font-bold text-[#FFEBB8] hover:bg-[#1B165E]"
+                          >
+                            Hapus
+                          </button>
+                        ) : null}
+                      </div>
 
-              {step === "REVIEW" ? (
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setStep("PARTICIPANTS")}
-                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    form="rsvp-review-form"
-                    disabled={isSubmitting}
-                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] disabled:opacity-60"
-                  >
-                    {isSubmitting ? "Memproses..." : "Submit"}
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="success"
-            className="flex w-full flex-col items-center px-2 pb-20"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-          >
-            <h1 className="font-subheading text-center leading-tight font-extrabold text-[#302a77] drop-shadow-md">
-              Reservasi Tiket Berhasil!
-            </h1>
+                      <div className="space-y-3">
+                        <input
+                          value={activeParticipant.email}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "email",
+                              e.target.value,
+                            )
+                          }
+                          type="email"
+                          required
+                          placeholder="Email *"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
+                        <input
+                          value={activeParticipant.fullName}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "fullName",
+                              e.target.value,
+                            )
+                          }
+                          type="text"
+                          required
+                          placeholder="Nama Lengkap *"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
+                        <input
+                          value={activeParticipant.phone}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "phone",
+                              e.target.value,
+                            )
+                          }
+                          type="tel"
+                          required
+                          pattern="[0-9]*"
+                          placeholder="Nomor Telepon *"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
+                        <input
+                          value={activeParticipant.school}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "school",
+                              e.target.value,
+                            )
+                          }
+                          type="text"
+                          placeholder="Asal Sekolah"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
+                        <input
+                          value={activeParticipant.region}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "region",
+                              e.target.value,
+                            )
+                          }
+                          type="text"
+                          required
+                          placeholder="Asal Daerah *"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
 
-            <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
-              Lihat reservasi pada halaman profil kamu
-            </p>
+                {step === "TERMS" ? (
+                  <div className="space-y-4">
+                    <TermsAndConditions />
+                    <div className="flex items-start gap-3 rounded-xl bg-[#FFEBB8]/30 px-4 py-3">
+                      <input
+                        id="acceptedTerms"
+                        name="acceptedTerms"
+                        type="checkbox"
+                        checked={formData.acceptedTerms}
+                        onChange={handleInputChange}
+                        className="mt-1 h-5 w-5 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="acceptedTerms"
+                        className="cursor-pointer text-sm font-bold text-[#FFEBB8]"
+                      >
+                        Saya telah membaca dan menyetujui syarat dan ketentuan
+                        yang berlaku
+                      </label>
+                    </div>
+                  </div>
+                ) : null}
 
-            <button
-              type="button"
-              onClick={() => navigate("/profile")}
-              className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                {step === "REVIEW" ? (
+                  <form
+                    id="rsvp-review-form"
+                    className="space-y-4"
+                    onSubmit={handleSubmit}
+                  >
+                    <div className="rounded-2xl bg-white/80 p-4 text-[#302A77] shadow">
+                      <p className="font-bold">Email: {formData.email}</p>
+                      <p className="font-bold">
+                        Nama: {formData.contactFullName}
+                      </p>
+                      <p className="font-bold">
+                        Telepon: {formData.contactPhone}
+                      </p>
+                      <p className="font-bold">
+                        Sekolah: {formData.contactSchool}
+                      </p>
+                      <p className="font-bold">
+                        Daerah: {formData.contactRegion}
+                      </p>
+                      <p className="font-bold">
+                        Nama Orang Tua: {formData.parentName}
+                      </p>
+                      <p className="font-bold">
+                        Nomor Telepon Orang Tua: {formData.parentPhone}
+                      </p>
+                      <p className="font-bold">
+                        Ikut talkshow: {formData.wantsTalkshow ? "Ya" : "Tidak"}
+                      </p>
+                      {formData.wantsTalkshow ? (
+                        <>
+                          <p className="font-bold">
+                            Sesi: {formData.sessionCode}
+                          </p>
+                          <p className="font-bold">
+                            Harapan: {formData.talkshowExpectation}
+                          </p>
+                        </>
+                      ) : null}
+                      <p className="font-bold">
+                        Jumlah pengunjung: {participants.length}
+                      </p>
+                    </div>
+                  </form>
+                ) : null}
+              </div>
+
+              <div className="pt-6">
+                {step === "CONTACT" ? (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const missing = getMissingContactFields();
+                        if (missing.length) {
+                          toast.info("Lengkapi data yang dibutuhkan");
+                          return;
+                        }
+                        setStep("TALKSHOW");
+                      }}
+                      aria-disabled={!canNextFromContact}
+                      className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromContact ? "opacity-60" : ""}`}
+                    >
+                      Next
+                    </button>
+                  </div>
+                ) : null}
+
+                {step === "TALKSHOW" ? (
+                  <div className="flex justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setStep("CONTACT")}
+                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const missing = getMissingTalkshowFields();
+                        if (missing.length) {
+                          toast.info("Lengkapi data yang dibutuhkan");
+                          return;
+                        }
+                        setStep("PARTICIPANTS");
+                      }}
+                      aria-disabled={!canNextFromTalkshow}
+                      className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromTalkshow ? "opacity-60" : ""}`}
+                    >
+                      Next
+                    </button>
+                  </div>
+                ) : null}
+
+                {step === "PARTICIPANTS" ? (
+                  <div className="flex justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setStep("TALKSHOW")}
+                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const incomplete = getFirstIncompleteParticipant();
+                        if (incomplete) {
+                          setActiveParticipantIndex(incomplete.index);
+                          toast.info("Lengkapi data yang dibutuhkan");
+                          return;
+                        }
+                        setStep("TERMS");
+                      }}
+                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                    >
+                      Next
+                    </button>
+                  </div>
+                ) : null}
+
+                {step === "TERMS" ? (
+                  <div className="flex justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setStep("PARTICIPANTS")}
+                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!formData.acceptedTerms) {
+                          toast.info(
+                            "Harap setujui syarat dan ketentuan untuk melanjutkan",
+                          );
+                          return;
+                        }
+                        setStep("REVIEW");
+                      }}
+                      disabled={!formData.acceptedTerms}
+                      className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!formData.acceptedTerms ? "opacity-60" : ""}`}
+                    >
+                      Next
+                    </button>
+                  </div>
+                ) : null}
+
+                {step === "REVIEW" ? (
+                  <div className="flex justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setStep("TERMS")}
+                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      form="rsvp-review-form"
+                      disabled={isSubmitting}
+                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] disabled:opacity-60"
+                    >
+                      {isSubmitting ? "Memproses..." : "Submit"}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="success"
+              className="flex w-full flex-col items-center px-2 pb-20"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
             >
-              Ke Profil
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <h1 className="font-subheading text-center leading-tight font-extrabold text-[#302a77] drop-shadow-md">
+                Reservasi Tiket Berhasil!
+              </h1>
+
+              <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
+                Lihat reservasi pada halaman profil kamu
+              </p>
+
+              <button
+                type="button"
+                onClick={() => navigate("/profile")}
+                className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+              >
+                Ke Profil
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
