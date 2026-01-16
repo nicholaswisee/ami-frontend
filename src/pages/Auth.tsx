@@ -24,7 +24,6 @@ export default function AuthPage() {
         });
         if (data?.error) {
           toast.error("Kredensial salah.");
-          window.location.href = `${window.location.origin}/`;
           return;
         }
         if (data?.url) {
@@ -74,11 +73,11 @@ export default function AuthPage() {
           </p>
           <div className="space-y-2">
             <label className="text-[16px] font-bold text-[#FFDB8C] lg:text-[24px]">
-              Username
+              Email
             </label>
             <input
-              type="text"
-              placeholder="Username"
+              type="email"
+              placeholder="Email"
               value={formData.email}
               onChange={(e) => {
                 setFormData((prev) => ({ ...prev, email: e.target.value }));
