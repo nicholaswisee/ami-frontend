@@ -47,7 +47,7 @@ export const ScannerRoute = ({ children }: { children: ReactNode }) => {
 
   if (isAllowed === null) return null;
   if (!isAllowed) {
-    toast.error("Akses khusus panitia scanner.");
+    toast.info("Halaman yang kamu cari tidak ditemukan.");
     return <Navigate to="/" replace />;
   }
 

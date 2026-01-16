@@ -33,6 +33,11 @@ const navOpts = [
     url: "/faq",
   },
   {
+    icon: "/flower/flower01.webp",
+    label: "Lost & Found",
+    url: "/lostnfound",
+  },
+  {
     icon: "/flower/flower04.webp",
     label: "Merch",
     url: "https://findmi.akumasukitb.com",
@@ -85,8 +90,8 @@ export default function Navbar() {
       ...navOpts,
       {
         icon: "/flower/flower01.webp",
-        label: "Scanner",
-        url: "/scanner",
+        label: "Dashboard",
+        url: "/dashboard",
       },
     ];
   }, [isScannerAllowed]);

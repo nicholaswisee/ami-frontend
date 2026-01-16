@@ -1,11 +1,7 @@
-import { Link } from "react-router";
+import { Navigate } from "react-router";
+import { toast } from "sonner";
 
 export default function NotFoundPage() {
-  return (
-    <section>
-      <h1>404</h1>
-      <p>Halaman yang kamu cari tidak ditemukan.</p>
-      <Link to="/">Kembali ke beranda</Link>
-    </section>
-  );
+  toast.info("Halaman yang kamu cari tidak ditemukan.");
+  return <Navigate to="/" replace />;
 }

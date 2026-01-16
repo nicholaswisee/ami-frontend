@@ -16,6 +16,8 @@ import RsvpPage from "./pages/Rsvp";
 import ScannerPage from "./pages/Scanner";
 import NotFoundPage from "./pages/NotFound";
 import FaqPage from "./pages/Faq";
+import LostNFoundPage from "./pages/LostNFound";
+import LostNFoundAdminPage from "./pages/LostNFoundAdmin";
 
 createRoot(document.getElementById("root")!).render(
   <SessionProvider>
@@ -36,6 +38,15 @@ createRoot(document.getElementById("root")!).render(
           />
           <Route path="auth" element={<AuthPage />} />
           <Route path="faq" element={<FaqPage />} />
+          <Route path="lostnfound" element={<LostNFoundPage />} />
+          <Route
+            path="lostnfound/admin"
+            element={
+              <ScannerRoute>
+                <LostNFoundAdminPage />
+              </ScannerRoute>
+            }
+          />
           <Route
             path="profile"
             element={
