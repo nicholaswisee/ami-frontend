@@ -139,13 +139,13 @@ export default function Navbar() {
         <a href="/" className="h-18 w-18">
           <img src="/logo.png" alt="Logo AMI 2026" />
         </a>
-        <div className="mx-8 flex items-center gap-4 text-[#ffeabb] max-lg:hidden">
+        <div className="mx-8 flex flex-nowrap items-center gap-4 overflow-x-auto text-[#ffeabb] max-lg:hidden">
           {navItems.map((n) =>
             n.external ? (
               <a
                 key={n.label}
                 href={n.url}
-                className="flex h-12 items-center gap-2 rounded-xl border-2 border-transparent bg-[#1b165e]/20 p-2"
+                className="flex h-12 flex-shrink-0 items-center gap-2 rounded-xl border-2 border-transparent bg-[#1b165e]/20 p-2 whitespace-nowrap"
               >
                 <img src={n.icon} className="w-8" alt="Icon" />
                 <span className="font-body font-bold">{n.label}</span>
@@ -155,7 +155,7 @@ export default function Navbar() {
                 key={n.label}
                 to={n.url}
                 className={({ isActive }) =>
-                  `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2`
+                  `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 flex-shrink-0 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2 whitespace-nowrap`
                 }
               >
                 <img src={n.icon} className="w-8" alt="Icon" />
