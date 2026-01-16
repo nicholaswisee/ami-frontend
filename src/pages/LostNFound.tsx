@@ -113,22 +113,32 @@ export default function LostNFoundPage() {
             </p>
           </motion.button>
           <div className="flex gap-2">
-            {user && (
-              <motion.button
-                onClick={() => setShowReportForm(true)}
-                className="font-body rounded-lg px-3 py-2 font-bold text-[#5a1130] shadow-lg"
-                style={{
-                  background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
-                  border: "2px solid #FFB366",
-                }}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
-              >
-                Lapor Barang
-              </motion.button>
-            )}
+            <motion.button
+              onClick={() => {
+                if (!user) {
+                  toast.info("Login terlebih dahulu.");
+                  return;
+                }
+                if (new Date() < new Date(2026, 1, 14)) {
+                  toast.info(
+                    "Laporan barang dapat digunakan pada ITB Day ya, Luminettes!.",
+                  );
+                  return;
+                }
+                setShowReportForm(true);
+              }}
+              className="font-body rounded-lg px-3 py-2 font-bold text-[#5a1130] shadow-lg"
+              style={{
+                background: "linear-gradient(to bottom,#FFD88C,#FFB366)",
+                border: "2px solid #FFB366",
+              }}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
+            >
+              Lapor Barang
+            </motion.button>
             {isScanner && (
               <motion.button
                 onClick={() => navigate("/lostnfound/admin")}
@@ -316,7 +326,7 @@ export default function LostNFoundPage() {
       {/* Image Preview Modal */}
       {previewImage && (
         <div
-          className="fixed inset-0 z-[150] flex items-center justify-center bg-black/90 p-4"
+          className="fixed inset-0 z-150 flex items-center justify-center bg-black/90 p-4"
           onClick={() => setPreviewImage(null)}
         >
           <div className="relative max-h-[90vh] max-w-[90vw]">

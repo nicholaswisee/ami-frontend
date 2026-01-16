@@ -18,6 +18,7 @@ import NotFoundPage from "./pages/NotFound";
 import FaqPage from "./pages/Faq";
 import LostNFoundPage from "./pages/LostNFound";
 import LostNFoundAdminPage from "./pages/LostNFoundAdmin";
+import Dashboard from "./pages/Dashboard";
 
 createRoot(document.getElementById("root")!).render(
   <SessionProvider>
@@ -60,6 +61,14 @@ createRoot(document.getElementById("root")!).render(
             element={
               <ScannerRoute>
                 <ScannerPage />
+              </ScannerRoute>
+            }
+          />
+          <Route
+            path="dashboard"
+            element={
+              <ScannerRoute>
+                <Dashboard />
               </ScannerRoute>
             }
           />

@@ -34,7 +34,7 @@ const sponsors: sponsorsItem[] = [
 export default function Footer() {
   return (
     <footer className="bg-purple relative z-50 flex w-full flex-col gap-y-2 p-6 text-[#ffeabb]">
-      <a href="/">
+      <a href="/" className="w-fit">
         <img
           src="/logo.png"
           alt="Logo AMI 2026"
