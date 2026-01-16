@@ -188,6 +188,11 @@ export default function ScannerPage() {
           <p className="mt-2 text-sm text-[#5A5A5A]">
             Scan QR tiket di dalam frame untuk mengonfirmasi kehadiran.
           </p>
+          <a href="/dashboard">
+            <h2 className="font-body mt-3 text-xl font-semibold text-blue-500 underline">
+              Kembali ke Dashboard
+            </h2>
+          </a>
         </div>
 
         <div className="relative mt-8 overflow-hidden rounded-[36px] border border-[#E3E1DA] bg-white p-6 shadow-[0_30px_70px_rgba(31,31,31,0.08)]">
