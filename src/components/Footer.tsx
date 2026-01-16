@@ -20,6 +20,17 @@ const socials: { icon: IconType; label: string; url: string }[] = [
   },
 ];
 
+type sponsorsItem = {
+  name: string;
+  size: number;
+  url: string;
+};
+
+const sponsors: sponsorsItem[] = [
+  { name: "Casio", size: 1, url: "/sponsors/casio-xs.webp" },
+  { name: "Zebra", size: 1, url: "/sponsors/zebra-xs.webp" },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-purple relative z-50 flex w-full flex-col gap-y-2 p-6 text-[#ffeabb]">
@@ -30,7 +41,25 @@ export default function Footer() {
           className="order-1 aspect-square w-24 lg:w-36"
         />
       </a>
-      <div className="order-2 flex gap-4 max-lg:order-3 max-lg:mt-4 max-lg:justify-between">
+      <div className="spacey-0">
+        <p className="font-body font-semibold">Sponsored by</p>
+        <div className="flex justify-start gap-4">
+          {sponsors.map((item, i) => (
+            <div
+              key={i}
+              style={{ width: `${100 * item.size}px` }}
+              className={`relative flex aspect-square items-center justify-center`}
+            >
+              <img
+                src={item.url}
+                alt={item.name}
+                className="bg-white object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="order-3 flex gap-4 max-lg:order-4 max-lg:mt-4 max-lg:justify-between">
         {socials.map((s, i) => (
           <a
             href={s.url}
@@ -43,8 +72,8 @@ export default function Footer() {
           </a>
         ))}
       </div>
-      <div className="order-3 flex max-lg:order-2 max-lg:flex-col lg:items-center lg:justify-between">
-        <a href="/faq" className="font-semibold">
+      <div className="order-4 flex max-lg:order-3 max-lg:flex-col lg:items-center lg:justify-between">
+        <a href="/faq" className="font-semibold underline">
           FAQ
         </a>
         <p className="max-w-md max-md:max-w-2xs max-md:text-xs lg:max-w-lg lg:text-end">
