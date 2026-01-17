@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { useReservations } from "../hooks/useReservations";
 import { useReservationDetails } from "../hooks/queries";
 
@@ -96,16 +95,16 @@ export default function ProfilePage() {
     }
   }, [activeReservation]);
 
-  useEffect(() => {
-    const hasSeenUpdate = sessionStorage.getItem("hasSeenReservationUpdate");
-    if (!hasSeenUpdate) {
-      toast.info(
-        "Terdapat pembaruan reservasi tiket ITB Day, Bagi Luminettes yang telah mengisi sebelum pukul 21.00 tanggal 15/01/2026 dapat reservasi kembali ya!",
-        { duration: 8000 },
-      );
-      sessionStorage.setItem("hasSeenReservationUpdate", "true");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const hasSeenUpdate = sessionStorage.getItem("hasSeenReservationUpdate");
+  //   if (!hasSeenUpdate) {
+  //     toast.info(
+  //       "Terdapat pembaruan reservasi tiket ITB Day, Bagi Luminettes yang telah mengisi sebelum pukul 21.00 tanggal 15/01/2026 dapat reservasi kembali ya!",
+  //       { duration: 8000 },
+  //     );
+  //     sessionStorage.setItem("hasSeenReservationUpdate", "true");
+  //   }
+  // }, []);
 
   const openTicket = (reservation: Reservation) => {
     setActiveReservation(reservation);
