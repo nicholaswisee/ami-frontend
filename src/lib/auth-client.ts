@@ -1,4 +1,9 @@
-import { authConfigManager, signIn, signOut, useSession } from "@hono/auth-js/react";
+import {
+  authConfigManager,
+  signIn,
+  signOut,
+  useSession,
+} from "@hono/auth-js/react";
 import { env } from "../env";
 
 const apiUrl = new URL(env.API_URL);
