@@ -60,7 +60,7 @@ export default function AuthPage() {
   };
   return (
     <section className="bg-mixed relative flex min-h-screen w-full items-center justify-center p-6">
-      <div className="relative max-w-96 overflow-hidden rounded-2xl border-2 border-[#ffd88c] shadow-md lg:max-w-150">
+      <div className="relative my-6 max-w-96 overflow-hidden rounded-2xl border-2 border-[#ffd88c] shadow-md lg:max-w-150">
         <div className="absolute inset-0 bg-[#B64556]"></div>
         <div className="relative space-y-4 px-5 py-10 lg:px-16 lg:py-20">
           <div className="space-y-0 text-center">
