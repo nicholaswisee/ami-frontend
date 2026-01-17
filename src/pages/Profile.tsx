@@ -96,10 +96,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const hasSeenUpdate = sessionStorage.getItem("hasSeenReservationUpdate");
-    if (hasSeenUpdate || !hasSeenUpdate) {
+    if (!hasSeenUpdate) {
       toast.info(
         "Terdapat pembaruan reservasi tiket ITB Day, Bagi Luminettes yang telah mengisi sebelum pukul 21.00 tanggal 15/01/2026 dapat reservasi kembali ya!",
-        { duration: 12000 },
+        { duration: 8000 },
       );
       sessionStorage.setItem("hasSeenReservationUpdate", "true");
     }
