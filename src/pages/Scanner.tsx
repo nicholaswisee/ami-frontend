@@ -175,10 +175,20 @@ export default function ScannerPage() {
   }, [selectedCamera]);
 
   useEffect(() => {
-    if (!selectedCamera || !hasCamera || !autoStartRef.current) return;
-    autoStartRef.current = false;
-    void startScanner();
-  }, [hasCamera, selectedCamera, startScanner]);
+    if (!selectedCamera || !hasCamera) return;
+
+    // Auto-start on initial load
+    if (autoStartRef.current) {
+      autoStartRef.current = false;
+      void startScanner();
+      return;
+    }
+
+    // Restart scanner when camera changes while scanning
+    if (isScanning) {
+      void startScanner();
+    }
+  }, [hasCamera, selectedCamera, startScanner, isScanning]);
 
   return (
     <section className="flex min-h-screen w-full flex-col items-center bg-[#F6F5F1] px-4 pt-12 pb-10 text-[#1F1F1F]">
@@ -231,10 +241,10 @@ export default function ScannerPage() {
             </div>
             <button
               className="rounded-full border border-[#D8D5CD] bg-[#F4F2EC] px-4 py-2 text-xs font-semibold text-[#2A2A2A] transition hover:bg-[#ECE9E2] disabled:opacity-60"
-              onClick={() => void startScanner()}
-              disabled={!hasCamera || isScanning || isSubmitting}
+              onClick={() => (isScanning ? stopScanner() : void startScanner())}
+              disabled={!hasCamera || isSubmitting}
             >
-              {isScanning ? "Memindai..." : "Scan Lagi"}
+              {isScanning ? "Berhenti" : "Mulai"}
             </button>
           </div>
           <div className="mt-4 space-y-2 text-sm text-[#5A5A5A]">
@@ -258,7 +268,7 @@ export default function ScannerPage() {
               className="mt-2 w-full rounded-2xl border border-[#D8D5CD] bg-[#F9F7F2] px-3 py-2 text-sm text-[#2A2A2A]"
               value={selectedCamera}
               onChange={(event) => setSelectedCamera(event.target.value)}
-              disabled={!hasCamera || isScanning}
+              disabled={!hasCamera}
             >
               {cameras.map((camera) => (
                 <option key={camera.deviceId} value={camera.deviceId}>
