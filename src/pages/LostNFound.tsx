@@ -7,6 +7,7 @@ import Badge from "@/components/Badge";
 import { env } from "@/env";
 import { useAuthStore } from "@/store/authStore";
 import { useCloudinaryUpload } from "@/hooks/useCloudinaryUpload";
+import { useScannerAccess } from "@/hooks/useScannerAccess";
 import type {
   LostFoundReport,
   CreateLostFoundReport,
@@ -16,11 +17,12 @@ import type {
 export default function LostNFoundPage() {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuthStore();
+  const { data: scannerAllowed } = useScannerAccess(isAuthenticated);
   const [reports, setReports] = useState<LostFoundReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<LostFoundType | "ALL">("ALL");
   const [showReportForm, setShowReportForm] = useState(false);
-  const [isScanner, setIsScanner] = useState(false);
+  const isScanner = Boolean(scannerAllowed);
   const [previewImage, setPreviewImage] = useState<{
     url: string;
     itemType: string;
@@ -28,23 +30,7 @@ export default function LostNFoundPage() {
 
   useEffect(() => {
     fetchReports();
-    checkScannerAccess();
   }, []);
-
-  const checkScannerAccess = async () => {
-    if (!isAuthenticated) return;
-    try {
-      const res = await fetch(`${env.API_URL}/scanner/access`, {
-        credentials: "include",
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setIsScanner(data.allowed);
-      }
-    } catch (error) {
-      console.error("Error checking scanner access:", error);
-    }
-  };
 
   const fetchReports = async () => {
     try {

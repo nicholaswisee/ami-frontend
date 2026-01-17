@@ -5,6 +5,7 @@ import { env } from "../env";
 import { useAuthStore } from "../store/authStore";
 import { AnimatePresence, motion } from "framer-motion";
 import TermsAndConditions from "../components/TermsAndConditions";
+import { useSessions } from "../hooks/useSessions";
 
 type EventSessionCode = "1" | "2";
 type TicketStatus = "PENDING" | "CONFIRMED";
@@ -41,6 +42,7 @@ type Reservation = {
 export default function RsvpPage() {
   const { isAuthenticated, isPending, user } = useAuthStore();
   const navigate = useNavigate();
+  const { data: sessionsData, isLoading: isLoadingSessions } = useSessions();
 
   type Step =
     | "CONTACT"
@@ -53,8 +55,6 @@ export default function RsvpPage() {
   const [step, setStep] = useState<Step>("CONTACT");
   const [, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoadingSessions, setIsLoadingSessions] = useState(false);
-  const [sessions, setSessions] = useState<EventSession[]>([]);
   const [, setCreatedReservation] = useState<Reservation | null>(null);
   const [isFirstParticipantSynced, setIsFirstParticipantSynced] =
     useState(true);
@@ -93,12 +93,13 @@ export default function RsvpPage() {
   const [activeParticipantIndex, setActiveParticipantIndex] = useState(0);
 
   const sessionOptions = useMemo(() => {
+    const sessions = sessionsData?.sessions ?? [];
     if (sessions.length > 0) return sessions;
     return [
       { id: "1", code: "1" as const, name: "Sesi 1", description: null },
       { id: "2", code: "2" as const, name: "Sesi 2", description: null },
     ];
-  }, [sessions]);
+  }, [sessionsData]);
 
   useEffect(() => {
     if (!user) return;
@@ -132,27 +133,6 @@ export default function RsvpPage() {
     formData.contactRegion,
     isFirstParticipantSynced,
   ]);
-
-  useEffect(() => {
-    const run = async () => {
-      setIsLoadingSessions(true);
-      try {
-        const res = await fetch(`${env.API_URL}/sessions`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (!res.ok) return;
-        const json = (await res.json()) as { sessions: EventSession[] };
-        setSessions(json.sessions ?? []);
-      } catch {
-        // ignore: UI falls back to static session options
-      } finally {
-        setIsLoadingSessions(false);
-      }
-    };
-
-    void run();
-  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<

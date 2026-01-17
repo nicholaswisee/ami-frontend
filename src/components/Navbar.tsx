@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { NavLink } from "react-router";
 import { useAuthStore } from "../store/authStore";
 import { CgProfile } from "react-icons/cg";
-import { env } from "../env";
+import { useScannerAccess } from "../hooks/useScannerAccess";
 
 const navOpts = [
   {
@@ -48,44 +48,14 @@ const navOpts = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAuthStore();
-  const [isScannerAllowed, setIsScannerAllowed] = useState(false);
+  const { data: isScannerAllowed } = useScannerAccess(isAuthenticated);
   const mobileListRef = useRef<HTMLDivElement | null>(null);
   const mobileItemRefs = useRef<
     Array<HTMLAnchorElement | HTMLDivElement | null>
   >([]);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setIsScannerAllowed(false);
-      return;
-    }
-    let active = true;
-    const run = async () => {
-      try {
-        const res = await fetch(`${env.API_URL}/scanner/access`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (!active) return;
-        if (!res.ok) {
-          setIsScannerAllowed(false);
-          return;
-        }
-        const json = (await res.json()) as { allowed?: boolean };
-        setIsScannerAllowed(Boolean(json.allowed));
-      } catch {
-        if (active) setIsScannerAllowed(false);
-      }
-    };
-
-    void run();
-    return () => {
-      active = false;
-    };
-  }, [isAuthenticated]);
-
   const navItems = useMemo(() => {
-    if (!isScannerAllowed) return navOpts;
+    if (!Boolean(isScannerAllowed)) return navOpts;
     return [
       ...navOpts,
       {
@@ -145,7 +115,7 @@ export default function Navbar() {
               <a
                 key={n.label}
                 href={n.url}
-                className="flex h-12 flex-shrink-0 items-center gap-2 rounded-xl border-2 border-transparent bg-[#1b165e]/20 p-2 whitespace-nowrap"
+                className="flex h-12 shrink-0 items-center gap-2 rounded-xl border-2 border-transparent bg-[#1b165e]/20 p-2 whitespace-nowrap"
               >
                 <img src={n.icon} className="w-8" alt="Icon" />
                 <span className="font-body font-bold">{n.label}</span>
@@ -155,7 +125,7 @@ export default function Navbar() {
                 key={n.label}
                 to={n.url}
                 className={({ isActive }) =>
-                  `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 flex-shrink-0 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2 whitespace-nowrap`
+                  `${isActive ? "border-[#ffeabb]" : "border-transparent"} flex h-12 shrink-0 items-center gap-2 rounded-xl border-2 bg-[#1b165e]/20 p-2 whitespace-nowrap`
                 }
               >
                 <img src={n.icon} className="w-8" alt="Icon" />

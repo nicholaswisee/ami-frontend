@@ -4,8 +4,9 @@ import { useNavigate } from "react-router";
 import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
-import { env } from "../env";
 import { toast } from "sonner";
+import { useReservations } from "../hooks/useReservations";
+import { useReservationDetails } from "../hooks/queries";
 
 type TicketStatus = "PENDING" | "CONFIRMED";
 type Participant = {
@@ -21,17 +22,17 @@ type Reservation = {
   email: string;
   contactFullName: string;
   contactPhone: string;
-  contactSchool: string;
+  contactSchool: string | null;
   contactRegion: string;
   parentName: string;
   parentPhone: string;
   wantsTalkshow: boolean;
   talkshowExpectation: string | null;
-  createdAt: string;
+  createdAt: string | Date;
   participants?: Participant[];
   session: null | {
     id: string;
-    code: "1" | "2";
+    code: string;
     name: string;
     description: string | null;
   };
@@ -69,20 +70,21 @@ function TicketBarcode({
 export default function ProfilePage() {
   const { user, logOut } = useAuthStore();
   const navigate = useNavigate();
+  const { data: reservationsData, isLoading: isLoadingReservations } =
+    useReservations();
 
   const [activeReservation, setActiveReservation] =
     useState<Reservation | null>(null);
-  const [activeParticipants, setActiveParticipants] = useState<Participant[]>(
-    [],
-  );
-  const [isLoadingParticipants, setIsLoadingParticipants] = useState(false);
+  const { data: reservationDetails, isFetching: isFetchingReservationDetails } =
+    useReservationDetails(activeReservation?.id, Boolean(activeReservation));
+  const activeParticipants = reservationDetails?.participants ?? [];
+  const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
   // const formatDate = (value: string) =>
   //   new Date(value).toLocaleDateString("id-ID", {
   //     dateStyle: "medium",
   //   });
 
-  const [isLoadingReservations, setIsLoadingReservations] = useState(false);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const reservations = reservationsData?.reservations ?? [];
 
   useEffect(() => {
     if (activeReservation) {
@@ -105,43 +107,8 @@ export default function ProfilePage() {
     }
   }, []);
 
-  useEffect(() => {
-    const run = async () => {
-      setIsLoadingReservations(true);
-      try {
-        const res = await fetch(`${env.API_URL}/reservations`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (!res.ok) return;
-        const json = (await res.json()) as { reservations: Reservation[] };
-        setReservations(json.reservations ?? []);
-      } finally {
-        setIsLoadingReservations(false);
-      }
-    };
-
-    void run();
-  }, []);
-
-  const openTicket = async (reservation: Reservation) => {
+  const openTicket = (reservation: Reservation) => {
     setActiveReservation(reservation);
-    setActiveParticipants([]);
-    setIsLoadingParticipants(true);
-    try {
-      const res = await fetch(`${env.API_URL}/reservations/${reservation.id}`, {
-        method: "GET",
-        credentials: "include",
-      });
-      if (!res.ok) return;
-      const json = (await res.json()) as {
-        reservation: Reservation & { participants?: Participant[] };
-      };
-      setActiveReservation(json.reservation);
-      setActiveParticipants(json.reservation.participants ?? []);
-    } finally {
-      setIsLoadingParticipants(false);
-    }
   };
 
   return (
@@ -313,7 +280,7 @@ export default function ProfilePage() {
 
             <div className="space-y-2 rounded-2xl border border-gray-200 px-4 py-3 text-xs tracking-wide text-gray-500">
               <p>Pengunjung</p>
-              {isLoadingParticipants ? (
+              {isFetchingReservationDetails ? (
                 <p className="text-sm font-semibold text-gray-800">
                   Memuat pengunjung...
                 </p>
@@ -322,7 +289,7 @@ export default function ProfilePage() {
                   Tidak ada pengunjung terdaftar.
                 </p>
               ) : (
-                <ul className="space-y-1 text-sm text-gray-800">
+                <ul className="max-h-[13lvh] space-y-1 overflow-y-auto text-sm text-gray-800">
                   {activeParticipants.map((p) => (
                     <li
                       key={p.id}
@@ -349,11 +316,9 @@ export default function ProfilePage() {
             <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
             <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
               <h4
-                className={`font-body font-bold ${activeReservation?.status === "PENDING" ? "text-yellow-500" : "text-green-500"}`}
+                className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-yellow-500" : "text-green-500"}`}
               >
-                {activeReservation?.status === "PENDING"
-                  ? "Menunggu"
-                  : "Terkonfirmasi"}
+                {ticketStatus === "PENDING" ? "Menunggu" : "Terkonfirmasi"}
               </h4>
               <TicketBarcode
                 value={activeReservation?.barcode || ""}
