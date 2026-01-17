@@ -103,9 +103,9 @@ export default function AcaraPage() {
               {carouselItems.map((item) => (
                 <CarouselItem
                   key={item.title}
-                  className="flex basis-full justify-center pl-4 md:basis-1/2 lg:basis-1/3"
+                  className="flex min-w-0 basis-full justify-center pl-4 md:basis-1/2 lg:basis-1/3"
                 >
-                  <div className="h-full p-1">
+                  <div className="h-full w-full px-2">
                     <AcaraCard
                       title={item.title}
                       description={item.description}
@@ -327,7 +327,7 @@ const AcaraCard = ({
   imageUrl: string;
 }) => {
   return (
-    <div className="relative mx-0 flex h-full w-full max-w-[18rem] flex-col items-center rounded-3xl border-4 border-[#FF9955] bg-[#FFC76E] p-4 text-center shadow-md shadow-[#590844] md:mx-4 md:w-72">
+    <div className="relative mx-auto flex h-full w-full max-w-[18rem] flex-col items-center rounded-3xl border-4 border-[#FF9955] bg-[#FFC76E] p-4 text-center shadow-md shadow-[#590844]">
       <div className="mb-3 flex aspect-4/3 w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-300">
         <img
           src={imageUrl}
