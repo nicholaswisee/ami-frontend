@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuthStore } from "@/store/authStore";
-import type { User, ParticipantCounts } from "@/types/dashboard";
 import {
-  handleFetchData,
-  handleRefreshScanners,
+  useScannerUsers,
+  useParticipantCounts,
+  queryKeys,
+} from "@/hooks/useDashboard";
+import { useQueryClient } from "@tanstack/react-query";
+import {
   handleAddScannerRole,
   handleRemoveScannerRole,
   handleExportParticipants,
@@ -11,44 +14,26 @@ import {
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuthStore();
-  const [scannerUsers, setScannerUsers] = useState<User[]>([]);
-  const [participantCounts, setParticipantCounts] = useState<ParticipantCounts>(
-    {
-      total: 0,
-      pending: 0,
-      confirmed: 0,
-    },
-  );
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: scannersData, isLoading: loadingScanners } = useScannerUsers();
+  const { data: countsData, isLoading: loadingCounts } = useParticipantCounts();
+
+  const scannerUsers = scannersData ?? [];
+  const participantCounts = countsData ?? {
+    total: 0,
+    pending: 0,
+    confirmed: 0,
+  };
+  const loading = loadingScanners || loadingCounts;
+
   const [scannerEmail, setScannerEmail] = useState("");
   const [addingScanner, setAddingScanner] = useState(false);
   const [removingEmail, setRemovingEmail] = useState<string | null>(null);
   const [exportingParticipants, setExportingParticipants] = useState(false);
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    const controller = new AbortController();
-    fetchData(controller.signal);
-    return () => controller.abort();
-  }, [isAuthenticated]);
-
-  const fetchData = async (
-    signal?: AbortSignal,
-    opts?: { silent?: boolean },
-  ) => {
-    await handleFetchData({
-      signal,
-      opts,
-      setLoading,
-      setRefreshing,
-      setScannerUsers,
-      setParticipantCounts,
-    });
-  };
-
   const refreshScanners = async () => {
-    await handleRefreshScanners({ setScannerUsers });
+    await queryClient.invalidateQueries({ queryKey: queryKeys.scannerUsers });
   };
 
   const addScannerRole = async (e: React.FormEvent) => {
@@ -107,11 +92,18 @@ export default function Dashboard() {
 
           <button
             type="button"
-            onClick={() => fetchData(undefined, { silent: true })}
-            disabled={refreshing}
+            onClick={() => {
+              queryClient.invalidateQueries({
+                queryKey: queryKeys.scannerUsers,
+              });
+              queryClient.invalidateQueries({
+                queryKey: queryKeys.participantCounts,
+              });
+            }}
+            disabled={loading}
             className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-60"
           >
-            {refreshing ? "Refreshing..." : "Refresh"}
+            {loading ? "Refreshing..." : "Refresh"}
           </button>
         </div>
 

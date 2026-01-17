@@ -3,6 +3,9 @@ import "./style.css";
 import "./lib/auth-client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { SessionProvider } from "@hono/auth-js/react";
+import { QueryClient } from "@tanstack/react-query";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { ProtectedRoute } from "./utils/protectedRoute";
 import { ScannerRoute } from "./utils/scannerRoute";
 import App from "./App";
@@ -20,61 +23,92 @@ import LostNFoundPage from "./pages/LostNFound";
 import LostNFoundAdminPage from "./pages/LostNFoundAdmin";
 import Dashboard from "./pages/Dashboard";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: (failureCount, error) => {
+        // Don't retry on 4xx errors
+        if (error && typeof error === "object" && "status" in error) {
+          const status = error.status as number;
+          if (status >= 400 && status < 500) return false;
+        }
+        return failureCount < 2;
+      },
+      staleTime: 5 * 60 * 1000, // 5 minutes default
+      gcTime: 10 * 60 * 1000, // 10 minutes default
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
+
+// Create persister for localStorage
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
+
 createRoot(document.getElementById("root")!).render(
-  <SessionProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<HomePage />} />
-          <Route path="itb-day" element={<ItbDayPage />} />
-          <Route path="acara" element={<AcaraPage />} />
-          <Route path="oleat" element={<OleatPage />} />
-          <Route
-            path="rsvp"
-            element={
-              <ProtectedRoute>
-                <RsvpPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="auth" element={<AuthPage />} />
-          <Route path="faq" element={<FaqPage />} />
-          <Route path="lostnfound" element={<LostNFoundPage />} />
-          <Route
-            path="lostnfound/admin"
-            element={
-              <ScannerRoute>
-                <LostNFoundAdminPage />
-              </ScannerRoute>
-            }
-          />
-          <Route
-            path="profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="scanner"
-            element={
-              <ScannerRoute>
-                <ScannerPage />
-              </ScannerRoute>
-            }
-          />
-          <Route
-            path="dashboard"
-            element={
-              <ScannerRoute>
-                <Dashboard />
-              </ScannerRoute>
-            }
-          />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </SessionProvider>,
+  <PersistQueryClientProvider
+    client={queryClient}
+    persistOptions={{ persister }}
+  >
+    <SessionProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<HomePage />} />
+            <Route path="itb-day" element={<ItbDayPage />} />
+            <Route path="acara" element={<AcaraPage />} />
+            <Route path="oleat" element={<OleatPage />} />
+            <Route
+              path="rsvp"
+              element={
+                <ProtectedRoute>
+                  <RsvpPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="auth" element={<AuthPage />} />
+            <Route path="faq" element={<FaqPage />} />
+            <Route path="lostnfound" element={<LostNFoundPage />} />
+            <Route
+              path="lostnfound/admin"
+              element={
+                <ScannerRoute>
+                  <LostNFoundAdminPage />
+                </ScannerRoute>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="scanner"
+              element={
+                <ScannerRoute>
+                  <ScannerPage />
+                </ScannerRoute>
+              }
+            />
+            <Route
+              path="dashboard"
+              element={
+                <ScannerRoute>
+                  <Dashboard />
+                </ScannerRoute>
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </SessionProvider>
+  </PersistQueryClientProvider>,
 );
