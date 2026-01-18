@@ -1,11 +1,12 @@
 import { CgProfile } from "react-icons/cg";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router";
-import { IoIosArrowBack, IoIosLogOut } from "react-icons/io";
+import { IoIosArrowBack, IoIosLogOut, IoIosRefresh } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
 import { useReservations } from "../hooks/useReservations";
-import { useReservationDetails } from "../hooks/queries";
+import { useReservationDetails, queryKeys } from "../hooks/queries";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TicketStatus = "PENDING" | "CONFIRMED";
 type Participant = {
@@ -69,6 +70,7 @@ function TicketBarcode({
 export default function ProfilePage() {
   const { user, logOut } = useAuthStore();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data: reservationsData, isLoading: isLoadingReservations } =
     useReservations();
 
@@ -78,6 +80,14 @@ export default function ProfilePage() {
     useReservationDetails(activeReservation?.id, Boolean(activeReservation));
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
+
+  // Manual refresh function for ticket status
+  const refreshTicketStatus = async () => {
+    if (!activeReservation?.id) return;
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.reservationDetails(activeReservation.id),
+    });
+  };
   // const formatDate = (value: string) =>
   //   new Date(value).toLocaleDateString("id-ID", {
   //     dateStyle: "medium",
@@ -314,11 +324,28 @@ export default function ProfilePage() {
             </div>
             <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
             <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
-              <h4
-                className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-yellow-500" : "text-green-500"}`}
-              >
-                {ticketStatus === "PENDING" ? "Menunggu" : "Terkonfirmasi"}
-              </h4>
+              <div className="flex w-full flex-col items-center justify-between">
+                
+                {ticketStatus === "PENDING" && (
+                  <button
+                    onClick={refreshTicketStatus}
+                    disabled={isFetchingReservationDetails}
+                    className="flex items-center gap-1 rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200 disabled:opacity-50"
+                    title="Refresh status tiket"
+                  >
+                    <IoIosRefresh
+                      className={isFetchingReservationDetails ? "animate-spin" : ""}
+                      size={14}
+                    />
+                    Refresh
+                  </button>
+                )}
+                <h4
+                  className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-yellow-500" : "text-green-500"}`}
+                >
+                  {ticketStatus === "PENDING" ? "Menunggu" : "Terkonfirmasi"}
+                </h4>
+              </div>
               <TicketBarcode
                 value={activeReservation?.barcode || ""}
                 className="h-auto w-full"

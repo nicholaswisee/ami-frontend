@@ -102,14 +102,9 @@ export function useReservationDetails(id?: string | null, enabled = true) {
       return res.reservation;
     },
     enabled: enabled && Boolean(id),
-    staleTime: 60 * 60 * 1000, // 1 hour
-    gcTime: 2 * 60 * 60 * 1000, // 2 hours
-    refetchInterval: (query) => {
-      if (!enabled || !id) return false;
-      const status = (query.state.data as { status?: string } | undefined)
-        ?.status;
-      return status !== "CONFIRMED" ? 10 * 1000 : false;
-    },
+    // Backend cache is 2 minutes, so 30s staleTime allows fresh data on manual refresh
+    staleTime: 30 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
   });
 }
