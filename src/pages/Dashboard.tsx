@@ -219,9 +219,9 @@ export default function Dashboard() {
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
                   <span className="font-medium">Talkshow</span> — Total:{" "}
-                  {participantCounts.talkshow.total} | Sesi 1:{" "}
-                  {participantCounts.talkshow.session1} | Sesi 2:{" "}
-                  {participantCounts.talkshow.session2}
+                  {participantCounts.talkshow?.total ?? 0} | Sesi 1:{" "}
+                  {participantCounts.talkshow?.session1 ?? 0} | Sesi 2:{" "}
+                  {participantCounts.talkshow?.session2 ?? 0}
                 </p>
               </div>
               <button
