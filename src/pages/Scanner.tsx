@@ -236,7 +236,7 @@ export default function ScannerPage() {
             <div>
               <p className="text-xs text-[#7A7A7A]">Status Scan</p>
               <p className="mt-1 text-lg font-semibold text-[#1F1F1F]">
-                {confirmedStatus === "CONFIRMED" ? "Terkonfirmasi" : "Menunggu"}
+                {confirmedStatus === "CONFIRMED" ? "Sudah Hadir" : "Terdaftar"}
               </p>
             </div>
             <button

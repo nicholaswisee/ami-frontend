@@ -197,11 +197,11 @@ export default function ProfilePage() {
                           {r.contactFullName}
                         </p>
                         <p
-                          className={`text-xs font-semibold ${r.status === "PENDING" ? "text-yellow-300" : "text-green-300"}`}
+                          className={`text-xs font-semibold ${r.status === "PENDING" ? "text-green-300" : "text-blue-300"}`}
                         >
                           {r.status === "PENDING"
-                            ? "Menunggu"
-                            : "Terkonfirmasi"}
+                            ? "Terdaftar"
+                            : "Sudah Hadir"}
                         </p>
                       </div>
                       <button
@@ -341,9 +341,9 @@ export default function ProfilePage() {
                   </button>
                 )}
                 <h4
-                  className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-yellow-500" : "text-green-500"}`}
+                  className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-green-500" : "text-blue-500"}`}
                 >
-                  {ticketStatus === "PENDING" ? "Menunggu" : "Terkonfirmasi"}
+                  {ticketStatus === "PENDING" ? "Terdaftar" : "Sudah Hadir"}
                 </h4>
               </div>
               <TicketBarcode

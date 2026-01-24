@@ -208,8 +208,8 @@ export default function Dashboard() {
                   Jumlah Reservasi
                 </h2>
                 <p className="mt-1 text-sm text-gray-600">
-                  Total: {participantCounts.total} | Menunggu:{" "}
-                  {participantCounts.pending} | Terkonfirmasi:{" "}
+                  Total: {participantCounts.total} | Terdaftar:{" "}
+                  {participantCounts.pending} | Sudah Hadir:{" "}
                   {participantCounts.confirmed}
                 </p>
               </div>
