@@ -38,11 +38,21 @@ export function useParticipantCounts() {
           total: number;
           pending: number;
           confirmed: number;
+          talkshow?: {
+            total: number;
+            session1: number;
+            session2: number;
+          };
         }>("/admin/reservation-participants/counts")
         .then((res) => ({
           total: res.total ?? 0,
           pending: res.pending ?? 0,
           confirmed: res.confirmed ?? 0,
+          talkshow: {
+            total: res.talkshow?.total ?? 0,
+            session1: res.talkshow?.session1 ?? 0,
+            session2: res.talkshow?.session2 ?? 0,
+          },
         })),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes

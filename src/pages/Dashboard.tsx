@@ -24,6 +24,11 @@ export default function Dashboard() {
     total: 0,
     pending: 0,
     confirmed: 0,
+    talkshow: {
+      total: 0,
+      session1: 0,
+      session2: 0,
+    },
   };
   const loading = loadingScanners || loadingCounts;
 
@@ -211,6 +216,12 @@ export default function Dashboard() {
                   Total: {participantCounts.total} | Terdaftar:{" "}
                   {participantCounts.pending} | Sudah Hadir:{" "}
                   {participantCounts.confirmed}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  <span className="font-medium">Talkshow</span> — Total:{" "}
+                  {participantCounts.talkshow.total} | Sesi 1:{" "}
+                  {participantCounts.talkshow.session1} | Sesi 2:{" "}
+                  {participantCounts.talkshow.session2}
                 </p>
               </div>
               <button
