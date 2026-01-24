@@ -218,7 +218,7 @@ export default function Dashboard() {
                   {participantCounts.confirmed}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  <span className="font-medium">Talkshow</span> — Total:{" "}
+                  Talkshow: Total:{" "}
                   {participantCounts.talkshow?.total ?? 0} | Sesi 1:{" "}
                   {participantCounts.talkshow?.session1 ?? 0} | Sesi 2:{" "}
                   {participantCounts.talkshow?.session2 ?? 0}
