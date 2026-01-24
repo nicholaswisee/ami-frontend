@@ -51,12 +51,22 @@ export const fetchParticipantCounts = async (
     total?: number;
     pending?: number;
     confirmed?: number;
+    talkshow?: {
+      total?: number;
+      session1?: number;
+      session2?: number;
+    };
   }>(res);
 
   return {
     total: data?.total ?? 0,
     pending: data?.pending ?? 0,
     confirmed: data?.confirmed ?? 0,
+    talkshow: {
+      total: data?.talkshow?.total ?? 0,
+      session1: data?.talkshow?.session1 ?? 0,
+      session2: data?.talkshow?.session2 ?? 0,
+    },
   };
 };
 
