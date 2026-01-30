@@ -27,8 +27,11 @@ type sponsorsItem = {
 };
 
 const sponsors: sponsorsItem[] = [
+  { name: "Bantex", size: 3, url: "/sponsors/bantex-m.webp" },
+  { name: "Telkom", size: 2, url: "/sponsors/telkom-s.webp" },
   { name: "Casio", size: 1, url: "/sponsors/casio-xs.webp" },
   { name: "Zebra", size: 1, url: "/sponsors/zebra-xs.webp" },
+  { name: "Cekrek in", size: 1, url: "/sponsors/cekrekin-xs.webp" },
 ];
 
 export default function Footer() {
