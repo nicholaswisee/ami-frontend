@@ -6,6 +6,9 @@ import { queryKeys } from "../hooks/queries";
 export type AuthUser = Session["user"];
 export type AuthSessionData = Session;
 
+// Key used by @tanstack/query-sync-storage-persister
+const REACT_QUERY_OFFLINE_CACHE_KEY = "REACT_QUERY_OFFLINE_CACHE";
+
 export const useAuthStore = () => {
   const { data, status } = authClient.useSession();
   const queryClient = useQueryClient();
@@ -17,6 +20,14 @@ export const useAuthStore = () => {
     queryClient.removeQueries({ queryKey: ["reservationDetails"] }); // Partial match for all reservation details
     queryClient.removeQueries({ queryKey: queryKeys.scannerUsers });
     queryClient.removeQueries({ queryKey: queryKeys.participantCounts });
+    
+    // Also clear localStorage persisted cache to prevent stale data on next login
+    try {
+      localStorage.removeItem(REACT_QUERY_OFFLINE_CACHE_KEY);
+    } catch (e) {
+      console.warn("Failed to clear localStorage cache:", e);
+    }
+    
     return authClient.signOut({ callbackUrl });
   };
 
