@@ -105,7 +105,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-purple fixed top-0 z-50 flex h-18 w-full px-3 py-1">
+      <nav className="bg-purple fixed top-0 z-60 flex h-18 w-full px-3 py-1">
         <a href="/" className="h-18 w-18">
           <img src="/logo.png" alt="Logo AMI 2026" />
         </a>

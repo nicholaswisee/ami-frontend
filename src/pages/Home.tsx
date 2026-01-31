@@ -257,43 +257,48 @@ export default function HomePage() {
           >
             Kilas Balik ITB Day
           </motion.h1>
-          <div className="relative z-10 mx-auto mt-12 grid w-full max-w-5xl grid-cols-1 gap-10 px-4 pb-28 md:grid-cols-3 md:place-items-center md:gap-16 md:pb-10">
-            {itbDayEvents.map((event, index) => (
-              <motion.div
-                key={event.thumbnail}
-                className="flex w-full items-center justify-center"
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.45,
-                  ease: "easeOut",
-                  delay: 0.06 + index * 0.05,
-                }}
-              >
-                <div className="relative aspect-4/5 w-full max-w-65 shadow-xl md:max-w-[320px]">
-                  <img
-                    src="/flower/flower01.webp"
-                    alt=""
-                    draggable="false"
-                    className="absolute -top-8 -right-3 h-14 w-14"
-                  />
-                  <img
-                    src={event.thumbnail}
-                    alt=""
-                    draggable="false"
-                    className="h-full w-full rounded-2xl object-cover"
-                    loading="lazy"
-                  />
-                  <img
-                    src="/flower/flower01.webp"
-                    alt=""
-                    draggable="false"
-                    className="absolute -bottom-8 -left-3 h-14 w-14"
-                  />
-                </div>
-              </motion.div>
-            ))}
+          <div className="relative z-10 mx-auto mt-12 grid w-full max-w-5xl grid-cols-2 justify-items-center gap-x-6 gap-y-10 px-4 pb-28 md:grid-cols-3 md:place-items-center md:gap-16 md:pb-10">
+            {itbDayEvents.map((event, index) => {
+              const isLastAndAlone =
+                index === itbDayEvents.length - 1 &&
+                itbDayEvents.length % 2 === 1;
+              return (
+                <motion.div
+                  key={event.thumbnail}
+                  className={`flex w-full items-center justify-center ${isLastAndAlone ? "col-span-2 md:col-span-1" : ""}`}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: 0.45,
+                    ease: "easeOut",
+                    delay: 0.06 + index * 0.05,
+                  }}
+                >
+                  <div className="relative aspect-4/5 w-full max-w-40 shadow-xl md:max-w-[320px]">
+                    <img
+                      src="/flower/flower01.webp"
+                      alt=""
+                      draggable="false"
+                      className="absolute -top-8 -right-3 h-14 w-14"
+                    />
+                    <img
+                      src={event.thumbnail}
+                      alt=""
+                      draggable="false"
+                      className="h-full w-full rounded-2xl border-2 border-[#FFC76E] object-cover"
+                      loading="lazy"
+                    />
+                    <img
+                      src="/flower/flower01.webp"
+                      alt=""
+                      draggable="false"
+                      className="absolute -bottom-8 -left-3 h-14 w-14"
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
