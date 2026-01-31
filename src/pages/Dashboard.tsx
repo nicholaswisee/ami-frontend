@@ -16,8 +16,8 @@ export default function Dashboard() {
   const { isAuthenticated } = useAuthStore();
   const queryClient = useQueryClient();
 
-  const { data: scannersData, isLoading: loadingScanners } = useScannerUsers();
-  const { data: countsData, isLoading: loadingCounts } = useParticipantCounts();
+  const { data: scannersData, isLoading: loadingScanners } = useScannerUsers(isAuthenticated);
+  const { data: countsData, isLoading: loadingCounts } = useParticipantCounts(isAuthenticated);
 
   const scannerUsers = scannersData ?? [];
   const participantCounts = countsData ?? {

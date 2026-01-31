@@ -68,16 +68,16 @@ function TicketBarcode({
 }
 
 export default function ProfilePage() {
-  const { user, logOut } = useAuthStore();
+  const { user, logOut, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: reservationsData, isLoading: isLoadingReservations } =
-    useReservations();
+    useReservations(isAuthenticated);
 
   const [activeReservation, setActiveReservation] =
     useState<Reservation | null>(null);
   const { data: reservationDetails, isFetching: isFetchingReservationDetails } =
-    useReservationDetails(activeReservation?.id, Boolean(activeReservation));
+    useReservationDetails(activeReservation?.id, isAuthenticated && Boolean(activeReservation));
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
 

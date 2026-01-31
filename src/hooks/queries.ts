@@ -13,13 +13,14 @@ export const queryKeys = {
 } as const;
 
 // Queries
-export function useScannerUsers() {
+export function useScannerUsers(enabled = true) {
   return useQuery({
     queryKey: queryKeys.scannerUsers,
     queryFn: () =>
       apiClient
         .get<{ data: User[] }>("/admin/users/scanners")
         .then((res) => res.data ?? []),
+    enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
     retry: (failureCount, error) => {
@@ -29,7 +30,7 @@ export function useScannerUsers() {
   });
 }
 
-export function useParticipantCounts() {
+export function useParticipantCounts(enabled = true) {
   return useQuery({
     queryKey: queryKeys.participantCounts,
     queryFn: () =>
@@ -54,6 +55,7 @@ export function useParticipantCounts() {
             session2: res.talkshow?.session2 ?? 0,
           },
         })),
+    enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
     retry: 1,
@@ -61,7 +63,7 @@ export function useParticipantCounts() {
   });
 }
 
-export function useReservations() {
+export function useReservations(enabled = true) {
   return useQuery({
     queryKey: queryKeys.reservations,
     queryFn: () =>
@@ -88,6 +90,7 @@ export function useReservations() {
           } | null;
         }>;
       }>("/reservations"),
+    enabled,
     staleTime: 30 * 1000, // 30 seconds
     gcTime: 5 * 60 * 1000, // 5 minutes
     retry: 2,
