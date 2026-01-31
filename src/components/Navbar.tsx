@@ -55,7 +55,8 @@ export default function Navbar() {
   >([]);
 
   const navItems = useMemo(() => {
-    if (!Boolean(isScannerAllowed)) return navOpts;
+    // Must be authenticated AND have scanner access to see Dashboard
+    if (!isAuthenticated || !Boolean(isScannerAllowed)) return navOpts;
     return [
       ...navOpts,
       {
@@ -64,7 +65,7 @@ export default function Navbar() {
         url: "/dashboard",
       },
     ];
-  }, [isScannerAllowed]);
+  }, [isAuthenticated, isScannerAllowed]);
 
   useEffect(() => {
     if (!isOpen) return;
