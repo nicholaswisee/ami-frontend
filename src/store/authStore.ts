@@ -11,8 +11,12 @@ export const useAuthStore = () => {
   const queryClient = useQueryClient();
 
   const logOut = (callbackUrl = window.location.origin) => {
-    // Invalidate scanner access cache on logout
-    void queryClient.invalidateQueries({ queryKey: queryKeys.scannerAccess });
+    // Remove all user-specific caches on logout
+    queryClient.removeQueries({ queryKey: queryKeys.scannerAccess });
+    queryClient.removeQueries({ queryKey: queryKeys.reservations });
+    queryClient.removeQueries({ queryKey: ["reservationDetails"] }); // Partial match for all reservation details
+    queryClient.removeQueries({ queryKey: queryKeys.scannerUsers });
+    queryClient.removeQueries({ queryKey: queryKeys.participantCounts });
     return authClient.signOut({ callbackUrl });
   };
 
