@@ -54,6 +54,12 @@ const sponsors: sponsorsItem[] = [
     url: "/sponsors/cekrekin-xs.webp",
     background: false,
   },
+  {
+    name: "Kratingdaeng",
+    size: 1,
+    url: "/sponsors/kratingdaeng-xs.webp",
+    background: false,
+  },
 ];
 
 export default function Footer() {
