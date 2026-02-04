@@ -1,16 +1,21 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { apiClient, ApiError } from "@/lib/api";
+import { useReservationCacheStore } from "@/store/reservationCacheStore";
 import type { User } from "@/types/dashboard";
 
 // Query keys
 export const queryKeys = {
   scannerUsers: ["scannerUsers"] as const,
   participantCounts: ["participantCounts"] as const,
-  reservations: ["reservations"] as const,
+  reservations: (userId?: string) => ["reservations", userId] as const,
   reservationDetails: (id: string) => ["reservationDetails", id] as const,
   sessions: ["sessions"] as const,
   scannerAccess: ["scannerAccess"] as const,
 } as const;
+
+// Cache TTL for localStorage (5 minutes)
+const CACHE_TTL_MS = 5 * 60 * 1000;
 
 // Queries
 export function useScannerUsers(enabled = true) {
@@ -63,70 +68,143 @@ export function useParticipantCounts(enabled = true) {
   });
 }
 
-export function useReservations(enabled = true) {
-  return useQuery({
-    queryKey: queryKeys.reservations,
-    queryFn: () =>
-      apiClient.get<{
-        reservations: Array<{
-          id: string;
-          email: string;
-          contactFullName: string;
-          contactPhone: string;
-          contactSchool: string | null;
-          contactRegion: string;
-          parentName: string;
-          parentPhone: string;
-          wantsTalkshow: boolean;
-          talkshowExpectation: string | null;
-          barcode: string;
-          status: "PENDING" | "CONFIRMED";
-          createdAt: string | Date;
-          session: {
-            id: string;
-            code: string;
-            name: string;
-            description: string | null;
-          } | null;
-        }>;
-      }>("/reservations"),
+type ReservationData = {
+  reservations: Array<{
+    id: string;
+    email: string;
+    contactFullName: string;
+    contactPhone: string;
+    contactSchool: string | null;
+    contactRegion: string;
+    parentName: string;
+    parentPhone: string;
+    wantsTalkshow: boolean;
+    talkshowExpectation: string | null;
+    barcode: string;
+    status: "PENDING" | "CONFIRMED";
+    createdAt: string | Date;
+    session: {
+      id: string;
+      code: string;
+      name: string;
+      description: string | null;
+    } | null;
+  }>;
+};
+
+export function useReservations(enabled = true, userId?: string) {
+  const { getReservations, setReservations, isCacheValid } =
+    useReservationCacheStore();
+
+  // Get cached data if available and valid
+  const cachedReservations = userId ? getReservations(userId) : null;
+  const hasFreshCache = userId ? isCacheValid(userId, CACHE_TTL_MS) : false;
+
+  const query = useQuery({
+    queryKey: queryKeys.reservations(userId),
+    queryFn: () => apiClient.get<ReservationData>("/reservations"),
     enabled,
+    // Use cached data as initial data for instant display
+    initialData:
+      hasFreshCache && cachedReservations
+        ? { reservations: cachedReservations }
+        : undefined,
+    // If we have fresh cache, mark as not stale initially
+    initialDataUpdatedAt: hasFreshCache ? Date.now() : undefined,
     staleTime: 30 * 1000, // 30 seconds
     gcTime: 5 * 60 * 1000, // 5 minutes
     retry: 2,
   });
+
+  // Update Zustand cache when data is fetched
+  useEffect(() => {
+    if (
+      query.data?.reservations &&
+      userId &&
+      query.isFetched &&
+      !query.isPlaceholderData
+    ) {
+      setReservations(userId, query.data.reservations);
+    }
+  }, [
+    query.data,
+    userId,
+    query.isFetched,
+    query.isPlaceholderData,
+    setReservations,
+  ]);
+
+  return query;
 }
 
-export function useReservationDetails(id?: string | null, enabled = true) {
-  return useQuery({
+type ReservationDetailsData = {
+  status?: "PENDING" | "CONFIRMED";
+  wantsTalkshow?: boolean;
+  session?: {
+    id: string;
+    code: string;
+    name: string;
+    description: string | null;
+  } | null;
+  participants?: Array<{
+    id: string;
+    fullName: string;
+    school: string;
+    region: string;
+  }>;
+};
+
+export function useReservationDetails(
+  id?: string | null,
+  enabled = true,
+  userId?: string,
+) {
+  const { getReservationDetails, setReservationDetails, isCacheValid } =
+    useReservationCacheStore();
+
+  // Get cached details if available
+  const cachedDetails = userId && id ? getReservationDetails(userId, id) : null;
+  const hasFreshCache = userId ? isCacheValid(userId, CACHE_TTL_MS) : false;
+
+  const query = useQuery({
     queryKey: queryKeys.reservationDetails(id ?? ""),
     queryFn: async () => {
       const res = await apiClient.get<{
-        reservation: {
-          status?: "PENDING" | "CONFIRMED";
-          wantsTalkshow?: boolean;
-          session?: {
-            id: string;
-            code: string;
-            name: string;
-            description: string | null;
-          } | null;
-          participants?: Array<{
-            id: string;
-            fullName: string;
-            school: string;
-            region: string;
-          }>;
-        };
+        reservation: ReservationDetailsData;
       }>(`/reservations/${encodeURIComponent(id ?? "")}`);
       return res.reservation;
     },
     enabled: enabled && Boolean(id),
+    // Use cached data as initial data for instant display
+    initialData: hasFreshCache && cachedDetails ? cachedDetails : undefined,
+    initialDataUpdatedAt: hasFreshCache ? Date.now() : undefined,
     // Backend cache is 2 minutes, so 30s staleTime allows fresh data on manual refresh
     staleTime: 30 * 1000, // 30 seconds
     gcTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
   });
+
+  // Update Zustand cache when data is fetched
+  useEffect(() => {
+    if (
+      query.data &&
+      userId &&
+      id &&
+      query.isFetched &&
+      !query.isPlaceholderData
+    ) {
+      setReservationDetails(userId, id, query.data);
+    }
+  }, [
+    query.data,
+    userId,
+    id,
+    query.isFetched,
+    query.isPlaceholderData,
+    setReservationDetails,
+  ]);
+
+  return query;
 }
 
 export function useSessions() {

@@ -72,7 +72,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: reservationsData, isLoading: isLoadingReservations } =
-    useReservations(isAuthenticated);
+    useReservations(isAuthenticated, user?.id);
 
   const [activeReservation, setActiveReservation] =
     useState<Reservation | null>(null);
@@ -80,6 +80,7 @@ export default function ProfilePage() {
     useReservationDetails(
       activeReservation?.id,
       isAuthenticated && Boolean(activeReservation),
+      user?.id,
     );
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
