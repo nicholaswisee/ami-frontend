@@ -104,6 +104,13 @@ export function useReservationDetails(id?: string | null, enabled = true) {
       const res = await apiClient.get<{
         reservation: {
           status?: "PENDING" | "CONFIRMED";
+          wantsTalkshow?: boolean;
+          session?: {
+            id: string;
+            code: string;
+            name: string;
+            description: string | null;
+          } | null;
           participants?: Array<{
             id: string;
             fullName: string;

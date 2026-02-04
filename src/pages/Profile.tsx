@@ -77,9 +77,16 @@ export default function ProfilePage() {
   const [activeReservation, setActiveReservation] =
     useState<Reservation | null>(null);
   const { data: reservationDetails, isFetching: isFetchingReservationDetails } =
-    useReservationDetails(activeReservation?.id, isAuthenticated && Boolean(activeReservation));
+    useReservationDetails(
+      activeReservation?.id,
+      isAuthenticated && Boolean(activeReservation),
+    );
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
+  const activeSession =
+    reservationDetails?.session ?? activeReservation?.session;
+  const activeWantsTalkshow =
+    reservationDetails?.wantsTalkshow ?? activeReservation?.wantsTalkshow;
 
   // Manual refresh function for ticket status
   const refreshTicketStatus = async () => {
@@ -199,9 +206,7 @@ export default function ProfilePage() {
                         <p
                           className={`text-xs font-semibold ${r.status === "PENDING" ? "text-green-300" : "text-blue-300"}`}
                         >
-                          {r.status === "PENDING"
-                            ? "Terdaftar"
-                            : "Sudah Hadir"}
+                          {r.status === "PENDING" ? "Terdaftar" : "Sudah Hadir"}
                         </p>
                       </div>
                       <button
@@ -316,16 +321,12 @@ export default function ProfilePage() {
 
             <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
               <p className="font-semibold text-gray-900">
-                {activeReservation?.wantsTalkshow
-                  ? "Talkshow"
-                  : "Tidak ikut talkshow"}{" "}
-                {activeReservation?.session?.name}
+                {activeWantsTalkshow ? "Talkshow" : ""} {activeSession?.name}
               </p>
             </div>
             <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
             <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
               <div className="flex w-full flex-col items-center justify-between">
-                
                 {ticketStatus === "PENDING" && (
                   <button
                     onClick={refreshTicketStatus}
@@ -334,7 +335,9 @@ export default function ProfilePage() {
                     title="Refresh status tiket"
                   >
                     <IoIosRefresh
-                      className={isFetchingReservationDetails ? "animate-spin" : ""}
+                      className={
+                        isFetchingReservationDetails ? "animate-spin" : ""
+                      }
                       size={14}
                     />
                     Refresh
