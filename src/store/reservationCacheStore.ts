@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 // Types
 type TicketStatus = "PENDING" | "CONFIRMED";
@@ -164,6 +164,7 @@ export const useReservationCacheStore = create<ReservationCacheState>()(
     }),
     {
       name: "reservation-cache", // localStorage key
+      storage: createJSONStorage(() => localStorage), // Explicitly use localStorage
       partialize: (state) => ({ cache: state.cache }), // Only persist cache data
     },
   ),

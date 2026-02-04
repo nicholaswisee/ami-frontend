@@ -116,23 +116,12 @@ export function useReservations(enabled = true, userId?: string) {
     retry: 2,
   });
 
-  // Update Zustand cache when data is fetched
+  // Update Zustand cache when data is fetched from API
   useEffect(() => {
-    if (
-      query.data?.reservations &&
-      userId &&
-      query.isFetched &&
-      !query.isPlaceholderData
-    ) {
+    if (query.data?.reservations && userId && query.isSuccess) {
       setReservations(userId, query.data.reservations);
     }
-  }, [
-    query.data,
-    userId,
-    query.isFetched,
-    query.isPlaceholderData,
-    setReservations,
-  ]);
+  }, [query.data, userId, query.isSuccess, setReservations]);
 
   return query;
 }
@@ -184,25 +173,12 @@ export function useReservationDetails(
     retry: 1,
   });
 
-  // Update Zustand cache when data is fetched
+  // Update Zustand cache when data is fetched from API
   useEffect(() => {
-    if (
-      query.data &&
-      userId &&
-      id &&
-      query.isFetched &&
-      !query.isPlaceholderData
-    ) {
+    if (query.data && userId && id && query.isSuccess) {
       setReservationDetails(userId, id, query.data);
     }
-  }, [
-    query.data,
-    userId,
-    id,
-    query.isFetched,
-    query.isPlaceholderData,
-    setReservationDetails,
-  ]);
+  }, [query.data, userId, id, query.isSuccess, setReservationDetails]);
 
   return query;
 }
