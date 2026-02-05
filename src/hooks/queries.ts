@@ -209,8 +209,8 @@ export function useScannerAccess(enabled = true) {
         .get<{ allowed: boolean }>("/scanner/access")
         .then((res) => Boolean(res.allowed)),
     enabled,
-    staleTime: 1000 * 60 * 60 * 24, // 24 hours
-    gcTime: 1000 * 60 * 60 * 24, // 24 hours
+    staleTime: 1000 * 60 * 5, // 5 minutes (matches backend cache)
+    gcTime: 1000 * 60 * 10, // 10 minutes
     retry: 1,
   });
 }
