@@ -209,9 +209,11 @@ export function useScannerAccess(enabled = true) {
         .get<{ allowed: boolean }>("/scanner/access")
         .then((res) => Boolean(res.allowed)),
     enabled,
-    staleTime: 1000 * 60 * 5, // 5 minutes (matches backend cache)
+    staleTime: 1000 * 60 * 2, // 2 minutes (shorter to catch role changes faster)
     gcTime: 1000 * 60 * 10, // 10 minutes
     retry: 1,
+    refetchOnMount: true, // Always refetch when component mounts (catches role changes from other devices)
+    refetchOnWindowFocus: true, // Refetch when user returns to the tab
   });
 }
 

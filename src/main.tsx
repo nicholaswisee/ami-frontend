@@ -44,6 +44,30 @@ const queryClient = new QueryClient({
   },
 });
 
+// Cleanup old cache
+try {
+  const REACT_QUERY_OFFLINE_CACHE = "REACT_QUERY_OFFLINE_CACHE";
+  const cached = window.localStorage.getItem(REACT_QUERY_OFFLINE_CACHE);
+  if (cached) {
+    const parsed = JSON.parse(cached);
+    if (parsed.clientState?.queries) {
+      // Remove scanner-related queries from cache
+      parsed.clientState.queries = parsed.clientState.queries.filter(
+        (query: any) => {
+          const queryKey = query?.queryKey?.[0];
+          return queryKey !== "scannerAccess" && queryKey !== "scannerUsers";
+        },
+      );
+      window.localStorage.setItem(
+        REACT_QUERY_OFFLINE_CACHE,
+        JSON.stringify(parsed),
+      );
+    }
+  }
+} catch (error) {
+  console.debug("Could not clean up cached scanner data:", error);
+}
+
 // Create persister for localStorage
 const persister = createSyncStoragePersister({
   storage: window.localStorage,
@@ -52,7 +76,16 @@ const persister = createSyncStoragePersister({
 createRoot(document.getElementById("root")!).render(
   <PersistQueryClientProvider
     client={queryClient}
-    persistOptions={{ persister }}
+    persistOptions={{
+      persister,
+      dehydrateOptions: {
+        shouldDehydrateQuery: (query) => {
+          if (query.queryKey[0] === "scannerAccess") return false;
+          if (query.queryKey[0] === "scannerUsers") return false;
+          return true;
+        },
+      },
+    }}
   >
     <SessionProvider>
       <BrowserRouter>
