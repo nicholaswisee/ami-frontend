@@ -322,7 +322,9 @@ export default function ProfilePage() {
 
             <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
               <p className="font-semibold text-gray-900">
-                {activeWantsTalkshow ? "Talkshow" : ""} {activeSession?.name}
+                {activeWantsTalkshow
+                  ? "Talkshow " + activeSession?.name
+                  : "Tidak Ikut Talkshow"}
               </p>
             </div>
             <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
