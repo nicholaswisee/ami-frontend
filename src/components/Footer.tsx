@@ -41,9 +41,21 @@ const sponsors: sponsorsItem[] = [
     background: false,
   },
   {
+    name: "Garuda Food",
+    size: 3,
+    url: "/sponsors/garudafood-m.webp",
+    background: false,
+  },
+  {
     name: "Telkom",
     size: 2,
     url: "/sponsors/telkom-s.webp",
+    background: false,
+  },
+  {
+    name: "IA ITB KSA",
+    size: 2,
+    url: "/sponsors/iaitbksa-s.webp",
     background: false,
   },
   { name: "Casio", size: 1, url: "/sponsors/casio-xs.webp", background: true },
