@@ -35,6 +35,18 @@ const sponsors: sponsorsItem[] = [
     background: false,
   },
   {
+    name: "Ruang Guru",
+    size: 6,
+    url: "/sponsors/ruangguru-l.webp",
+    background: false,
+  },
+  {
+    name: "Medco Energi",
+    size: 6,
+    url: "/sponsors/medcoenergi-l.webp",
+    background: false,
+  },
+  {
     name: "Bantex",
     size: 3,
     url: "/sponsors/bantex-m.webp",
@@ -72,6 +84,8 @@ const sponsors: sponsorsItem[] = [
     url: "/sponsors/kratingdaeng-xs.webp",
     background: false,
   },
+  { name: "KAI", size: 1, url: "/sponsors/kai-xs.webp", background: true },
+  { name: "GPC", size: 1, url: "/sponsors/gpc-xs.webp", background: false },
 ];
 
 export default function Footer() {
@@ -88,7 +102,7 @@ export default function Footer() {
         <p className="font-body mb-2 text-lg font-bold">Sponsored by</p>
         <div className="flex flex-col gap-3">
           {/* First row: larger sponsors (size > 3) */}
-          <div className="flex flex-wrap items-center justify-start gap-1">
+          <div className="flex flex-wrap items-center justify-start gap-1 gap-x-3">
             {sponsors
               .filter((item) => item.size > 3)
               .map((item, i) => (
