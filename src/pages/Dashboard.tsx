@@ -10,6 +10,7 @@ import {
   handleAddScannerRole,
   handleRemoveScannerRole,
   handleExportParticipants,
+  handleExportTalkshow,
 } from "@/utils/dashboardHandlers";
 
 export default function Dashboard() {
@@ -36,6 +37,7 @@ export default function Dashboard() {
   const [addingScanner, setAddingScanner] = useState(false);
   const [removingEmail, setRemovingEmail] = useState<string | null>(null);
   const [exportingParticipants, setExportingParticipants] = useState(false);
+  const [exportingTalkshow, setExportingTalkshow] = useState(false);
 
   const refreshScanners = async () => {
     await queryClient.invalidateQueries({ queryKey: queryKeys.scannerUsers });
@@ -61,6 +63,10 @@ export default function Dashboard() {
 
   const exportParticipants = async () => {
     await handleExportParticipants({ setExportingParticipants });
+  };
+
+  const exportTalkshow = async () => {
+    await handleExportTalkshow({ setExportingTalkshow });
   };
 
   if (!isAuthenticated) {
@@ -224,14 +230,24 @@ export default function Dashboard() {
                   {participantCounts.talkshow?.session2 ?? 0}
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={exportParticipants}
-                disabled={exportingParticipants}
-                className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-60"
-              >
-                {exportingParticipants ? "Exporting..." : "Export Pengunjung"}
-              </button>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={exportParticipants}
+                  disabled={exportingParticipants}
+                  className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-60"
+                >
+                  {exportingParticipants ? "Exporting..." : "Export Pengunjung"}
+                </button>
+                <button
+                  type="button"
+                  onClick={exportTalkshow}
+                  disabled={exportingTalkshow}
+                  className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-60"
+                >
+                  {exportingTalkshow ? "Exporting..." : "Export Talkshow"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
