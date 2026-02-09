@@ -234,14 +234,14 @@ export default function AcaraPage() {
 
           <div className="my-8 flex items-center justify-center md:my-5">
             <motion.button
-              onClick={() => navigate("/rsvp")}
+              onClick={() => navigate("/talkshow")}
               className="mt-6 rounded-2xl border-4 border-[#C62D76] bg-linear-to-b from-[#AC166C] to-[#6F0E4E] px-8 pt-3 pb-4 text-xl font-extrabold tracking-wide text-[#FFDB8C] shadow-[0px_2px_0px_0px_#F3414E] transition-all duration-200 hover:brightness-110"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             >
-              RSVP ITB Day
+              Registrasi Talkshow
             </motion.button>
           </div>
         </motion.section>

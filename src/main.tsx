@@ -22,6 +22,7 @@ import FaqPage from "./pages/Faq";
 import LostNFoundPage from "./pages/LostNFound";
 import LostNFoundAdminPage from "./pages/LostNFoundAdmin";
 import Dashboard from "./pages/Dashboard";
+import TalkshowPage from "./pages/Talkshow";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -100,6 +101,14 @@ createRoot(document.getElementById("root")!).render(
               element={
                 <ProtectedRoute>
                   <RsvpPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="talkshow"
+              element={
+                <ProtectedRoute>
+                  <TalkshowPage />
                 </ProtectedRoute>
               }
             />

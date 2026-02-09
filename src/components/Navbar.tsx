@@ -23,6 +23,11 @@ const navOpts = [
     url: "/rsvp",
   },
   {
+    icon: "/flower/flower01.webp",
+    label: "Talkshow",
+    url: "/talkshow",
+  },
+  {
     icon: "/flower/flower04.webp",
     label: "Oleat",
     url: "/oleat",
