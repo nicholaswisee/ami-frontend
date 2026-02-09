@@ -31,6 +31,7 @@ type Reservation = {
 type ReservationDetails = {
   status?: TicketStatus;
   wantsTalkshow?: boolean;
+  talkshowExpectation?: string | null;
   session?: Session | null;
   participants?: Array<{
     id: string;
@@ -40,8 +41,29 @@ type ReservationDetails = {
   }>;
 };
 
+type TalkshowRegistration = {
+  id: string;
+  email: string;
+  fullName: string;
+  school: string | null;
+  region: string;
+  expectation: string;
+  status: TicketStatus;
+  createdAt: string;
+  reservationId: string;
+  participants?: Array<{
+    id: string;
+    fullName: string;
+    email: string;
+    school: string | null;
+    region: string;
+  }>;
+  session: Session;
+};
+
 type UserCache = {
   reservations: Reservation[];
+  talkshowRegistrations: TalkshowRegistration[];
   details: Record<string, ReservationDetails>; // keyed by reservation id
   updatedAt: number;
 };
@@ -53,6 +75,13 @@ type ReservationCacheState = {
   // Actions
   setReservations: (userId: string, reservations: Reservation[]) => void;
   getReservations: (userId: string) => Reservation[] | null;
+  setTalkshowRegistrations: (
+    userId: string,
+    registrations: TalkshowRegistration[],
+  ) => void;
+  getTalkshowRegistrations: (
+    userId: string,
+  ) => TalkshowRegistration[] | null;
   setReservationDetails: (
     userId: string,
     reservationId: string,
@@ -103,6 +132,7 @@ export const useReservationCacheStore = create<ReservationCacheState>()(
 
           newCache[userId] = {
             reservations,
+            talkshowRegistrations: newCache[userId]?.talkshowRegistrations ?? [],
             details: newCache[userId]?.details ?? {},
             updatedAt: Date.now(),
           };
@@ -115,6 +145,29 @@ export const useReservationCacheStore = create<ReservationCacheState>()(
         const userCache = get().cache[userId];
         if (!userCache) return null;
         return userCache.reservations;
+      },
+
+      setTalkshowRegistrations: (userId, talkshowRegistrations) => {
+        set((state) => {
+          const userCache = state.cache[userId];
+          if (!userCache) return state;
+          return {
+            cache: {
+              ...state.cache,
+              [userId]: {
+                ...userCache,
+                talkshowRegistrations,
+                updatedAt: Date.now(),
+              },
+            },
+          };
+        });
+      },
+
+      getTalkshowRegistrations: (userId) => {
+        const userCache = get().cache[userId];
+        if (!userCache) return null;
+        return userCache.talkshowRegistrations;
       },
 
       setReservationDetails: (userId, reservationId, details) => {
