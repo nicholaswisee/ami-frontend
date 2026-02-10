@@ -13,7 +13,7 @@ import {
 import { motion } from "framer-motion";
 
 // Set to true to enable talkshow registration
-const TALKSHOW_REGISTRATION_OPEN = false;
+const TALKSHOW_REGISTRATION_OPEN = true;
 
 export default function TalkshowPage() {
   const { isAuthenticated, isPending, user } = useAuthStore();
