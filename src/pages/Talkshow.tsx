@@ -278,7 +278,7 @@ export default function TalkshowPage() {
         )} */}
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4 pr-1">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 md:grid-cols-2">
             <div>
               <p className="mb-1 text-center text-sm font-bold text-[#FFEBB8]">
                 Sesi 1 (09.10 - 11.10)
