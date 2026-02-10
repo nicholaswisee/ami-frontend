@@ -5,7 +5,11 @@ import { IoIosArrowBack, IoIosLogOut, IoIosRefresh } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
 import { useReservations } from "../hooks/useReservations";
-import { useReservationDetails, queryKeys } from "../hooks/queries";
+import {
+  useReservationDetails,
+  useTalkshowRegistrations,
+  queryKeys,
+} from "../hooks/queries";
 import { useQueryClient } from "@tanstack/react-query";
 
 type TicketStatus = "PENDING" | "CONFIRMED";
@@ -73,6 +77,11 @@ export default function ProfilePage() {
   const queryClient = useQueryClient();
   const { data: reservationsData, isLoading: isLoadingReservations } =
     useReservations(isAuthenticated, user?.id);
+  const { data: talkshowData } = useTalkshowRegistrations(
+    isAuthenticated,
+    user?.id,
+  );
+  const talkshowRegistrations = talkshowData?.registrations ?? [];
 
   const [activeReservation, setActiveReservation] =
     useState<Reservation | null>(null);
@@ -84,10 +93,6 @@ export default function ProfilePage() {
     );
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
-  const activeSession =
-    reservationDetails?.session ?? activeReservation?.session;
-  const activeWantsTalkshow =
-    reservationDetails?.wantsTalkshow ?? activeReservation?.wantsTalkshow;
 
   // Manual refresh function for ticket status
   const refreshTicketStatus = async () => {
@@ -145,7 +150,7 @@ export default function ProfilePage() {
         </h1>
         <div className="justify-self-end" />
       </div>
-      <div className="flex w-full max-w-5xl flex-col items-start gap-6 lg:flex-row">
+      <div className="flex w-full max-w-5xl flex-col items-start gap-6">
         <div className="relative w-full space-y-4 overflow-hidden rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
           <div className="w-full rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-5">
             <div className="flex items-center gap-4">
@@ -175,52 +180,104 @@ export default function ProfilePage() {
             Keluar
           </button>
         </div>
-        <div className="relative w-full overflow-hidden rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
-          <div className="w-full rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-5 pt-0">
-            <div className="my-2 flex items-center justify-between gap-3">
-              <h2 className="font-body font-bold">Tiket Kamu</h2>
-            </div>
-            {isLoadingReservations ? (
-              <p className="mt-2 text-sm opacity-90">Memuat...</p>
-            ) : reservations.length === 0 ? (
-              <div className="mt-3 space-y-3 text-sm">
-                {/* <p className="opacity-90">Belum ada tiket.</p> */}
-                <button
-                  onClick={() => navigate("/rsvp")}
-                  className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-4 py-2 font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
-                >
-                  Reservasi tiketmu sekarang!
-                </button>
+        <div className="flex w-full gap-6 *:h-fit max-sm:flex-col">
+          <div className="relative w-full overflow-hidden rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
+            <div className="w-full rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-5 pt-0">
+              <div className="my-2 flex items-center justify-between gap-3">
+                <h2 className="font-body font-bold">Talkshow</h2>
               </div>
-            ) : (
-              <div className="mt-3 grid gap-4">
-                {reservations.map((r) => (
-                  <div
-                    key={r.id}
-                    className="border-b border-b-amber-200/50 p-4"
-                  >
-                    <div className="mt-3 flex items-start justify-between gap-3">
-                      <div className="min-w-0 space-y-1 text-sm">
-                        <p className="leading-tight font-semibold">
-                          {r.contactFullName}
-                        </p>
-                        <p
-                          className={`text-xs font-semibold ${r.status === "PENDING" ? "text-green-300" : "text-blue-300"}`}
-                        >
-                          {r.status === "PENDING" ? "Terdaftar" : "Sudah Hadir"}
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => void openTicket(r)}
-                        className="shrink-0 rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-3 py-1 font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+              {talkshowRegistrations.length > 0 ? (
+                <div className="mt-3 space-y-3">
+                  {talkshowRegistrations.map((reg) => (
+                    <div
+                      key={reg.id}
+                      className="border-b border-b-amber-200/50 p-2"
+                    >
+                      <p className="font-semibold">
+                        {reg.session?.name ?? "Talkshow"}
+                      </p>
+                      <p
+                        className={`text-xs font-semibold ${reg.status === "PENDING" ? "text-green-300" : "text-blue-300"}`}
                       >
-                        Lihat Tiket
-                      </button>
+                        {reg.status === "PENDING" ? "Terdaftar" : "Sudah Hadir"}
+                      </p>
+                      {reg.participants && reg.participants.length > 0 ? (
+                        <ul className="mt-2 space-y-1 text-sm opacity-90">
+                          {reg.participants.map((p, i) => (
+                            <li key={p.id}>
+                              {i + 1}. {p.fullName}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              ) : reservations.length > 0 ? (
+                <div className="mt-3">
+                  <button
+                    onClick={() => navigate("/talkshow")}
+                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-4 py-2 font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                  >
+                    Daftar Talkshow
+                  </button>
+                </div>
+              ) : (
+                <p className="mt-3 text-sm opacity-90">
+                  Reservasi tiket terlebih dahulu untuk daftar talkshow.
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="relative w-full overflow-hidden rounded-[30px] border-4 border-[#FFEBB8]/20 bg-[#B64556] p-8 shadow-2xl">
+            <div className="w-full rounded-2xl border-2 border-[#FFEBB8]/20 bg-[#FFEBB8]/10 p-5 pt-0">
+              <div className="my-2 flex items-center justify-between gap-3">
+                <h2 className="font-body font-bold">Tiket Kamu</h2>
               </div>
-            )}
+              {isLoadingReservations ? (
+                <p className="mt-2 text-sm opacity-90">Memuat...</p>
+              ) : reservations.length === 0 ? (
+                <div className="mt-3 space-y-3 text-sm">
+                  {/* <p className="opacity-90">Belum ada tiket.</p> */}
+                  <button
+                    onClick={() => navigate("/rsvp")}
+                    className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-4 py-2 font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                  >
+                    Reservasi tiketmu sekarang!
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-3 grid gap-4">
+                  {reservations.map((r) => (
+                    <div
+                      key={r.id}
+                      className="border-b border-b-amber-200/50 p-4"
+                    >
+                      <div className="mt-3 flex items-start justify-between gap-3">
+                        <div className="min-w-0 space-y-1 text-sm">
+                          <p className="leading-tight font-semibold">
+                            {r.contactFullName}
+                          </p>
+                          <p
+                            className={`text-xs font-semibold ${r.status === "PENDING" ? "text-green-300" : "text-blue-300"}`}
+                          >
+                            {r.status === "PENDING"
+                              ? "Terdaftar"
+                              : "Sudah Hadir"}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => void openTicket(r)}
+                          className="shrink-0 rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-3 py-1 font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                        >
+                          Lihat Tiket
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -320,13 +377,11 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
+            {/* <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
               <p className="font-semibold text-gray-900">
-                {activeWantsTalkshow
-                  ? "Talkshow " + activeSession?.name
-                  : "Tidak Ikut Talkshow"}
+                {ticketTalkshowLabel}
               </p>
-            </div>
+            </div> */}
             <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
             <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
               <div className="flex w-full flex-col items-center justify-between">

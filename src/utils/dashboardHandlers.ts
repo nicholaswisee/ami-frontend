@@ -6,6 +6,7 @@ import {
   addScannerRoleApi,
   removeScannerRoleApi,
   exportParticipantsApi,
+  exportTalkshowApi,
 } from "./dashboardApi";
 
 interface FetchDataOptions {
@@ -159,5 +160,26 @@ export const handleExportParticipants = async ({
     );
   } finally {
     setExportingParticipants(false);
+  }
+};
+
+interface ExportTalkshowOptions {
+  setExportingTalkshow: (exporting: boolean) => void;
+}
+
+export const handleExportTalkshow = async ({
+  setExportingTalkshow,
+}: ExportTalkshowOptions) => {
+  try {
+    setExportingTalkshow(true);
+    await exportTalkshowApi();
+    toast.success("Talkshow berhasil diekspor");
+  } catch (error) {
+    console.error("Error exporting talkshow:", error);
+    toast.error(
+      error instanceof Error ? error.message : "Gagal mengekspor talkshow",
+    );
+  } finally {
+    setExportingTalkshow(false);
   }
 };

@@ -1,27 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { env } from "../env";
 import { useAuthStore } from "../store/authStore";
 import { AnimatePresence, motion } from "framer-motion";
 import TermsAndConditions from "../components/TermsAndConditions";
-import { useSessions } from "../hooks/useSessions";
 
-type EventSessionCode = "1" | "2";
 type TicketStatus = "PENDING" | "CONFIRMED";
-
-type EventSession = {
-  id: string;
-  code: EventSessionCode;
-  name: string;
-  description: string | null;
-};
 
 type ReservationParticipant = {
   id: string;
   fullName: string;
   school: string;
   region: string;
+  grade?: string | null;
+  interestFacultyJurusan?: string | null;
 };
 
 type Reservation = {
@@ -30,27 +23,17 @@ type Reservation = {
   contactFullName: string;
   contactSchool: string;
   contactRegion: string;
-  wantsTalkshow: boolean;
-  talkshowExpectation: string | null;
   barcode: string;
   status: TicketStatus;
   createdAt: string;
-  session: EventSession | null;
   participants: ReservationParticipant[];
 };
 
 export default function RsvpPage() {
   const { isAuthenticated, isPending, user } = useAuthStore();
   const navigate = useNavigate();
-  const { data: sessionsData, isLoading: isLoadingSessions } = useSessions();
 
-  type Step =
-    | "CONTACT"
-    | "TALKSHOW"
-    | "PARTICIPANTS"
-    | "TERMS"
-    | "REVIEW"
-    | "SUCCESS";
+  type Step = "CONTACT" | "PARTICIPANTS" | "TERMS" | "REVIEW" | "SUCCESS";
 
   const [step, setStep] = useState<Step>("CONTACT");
   const [, setIsSuccess] = useState(false);
@@ -67,9 +50,6 @@ export default function RsvpPage() {
     contactRegion: "",
     parentName: "",
     parentPhone: "",
-    sessionCode: "" as "" | EventSessionCode,
-    wantsTalkshow: false,
-    talkshowExpectation: "",
     acceptedTerms: false,
   });
 
@@ -80,6 +60,8 @@ export default function RsvpPage() {
       phone: string;
       school: string;
       region: string;
+      grade: string;
+      interestFacultyJurusan: string;
     }>
   >([
     {
@@ -88,18 +70,11 @@ export default function RsvpPage() {
       phone: "",
       school: "",
       region: "",
+      grade: "",
+      interestFacultyJurusan: "",
     },
   ]);
   const [activeParticipantIndex, setActiveParticipantIndex] = useState(0);
-
-  const sessionOptions = useMemo(() => {
-    const sessions = sessionsData?.sessions ?? [];
-    if (sessions.length > 0) return sessions;
-    return [
-      { id: "1", code: "1" as const, name: "Sesi 1", description: null },
-      { id: "2", code: "2" as const, name: "Sesi 2", description: null },
-    ];
-  }, [sessionsData]);
 
   useEffect(() => {
     if (!user) return;
@@ -155,7 +130,14 @@ export default function RsvpPage() {
 
   const handleParticipantChange = (
     index: number,
-    key: "fullName" | "email" | "phone" | "school" | "region",
+    key:
+      | "fullName"
+      | "email"
+      | "phone"
+      | "school"
+      | "region"
+      | "grade"
+      | "interestFacultyJurusan",
     value: string,
   ) => {
     if (index === 0 && isFirstParticipantSynced) {
@@ -182,6 +164,8 @@ export default function RsvpPage() {
         phone: "",
         school: "",
         region: "",
+        grade: "",
+        interestFacultyJurusan: "",
       },
     ]);
     setActiveParticipantIndex((prev) => prev + 1);
@@ -214,16 +198,6 @@ export default function RsvpPage() {
       return;
     }
 
-    if (formData.wantsTalkshow && !formData.talkshowExpectation.trim()) {
-      toast.error("Harapan ikut talkshow wajib diisi jika kamu ikut talkshow.");
-      return;
-    }
-
-    if (formData.wantsTalkshow && !formData.sessionCode) {
-      toast.error("Pilih sesi talkshow terlebih dahulu.");
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const res = await fetch(`${env.API_URL}/reservations`, {
@@ -238,13 +212,7 @@ export default function RsvpPage() {
           contactRegion: formData.contactRegion,
           parentName: formData.parentName,
           parentPhone: formData.parentPhone,
-          wantsTalkshow: formData.wantsTalkshow,
-          talkshowExpectation: formData.wantsTalkshow
-            ? formData.talkshowExpectation
-            : undefined,
-          sessionCode: formData.wantsTalkshow
-            ? formData.sessionCode
-            : undefined,
+          wantsTalkshow: false,
           acceptedTerms: formData.acceptedTerms,
           participants,
         }),
@@ -292,17 +260,14 @@ export default function RsvpPage() {
     formData.parentName.trim() &&
     formData.parentPhone.trim();
 
-  const canNextFromTalkshow =
-    !formData.wantsTalkshow ||
-    (Boolean(formData.sessionCode) &&
-      Boolean(formData.talkshowExpectation.trim()));
-
   const activeParticipant = participants[activeParticipantIndex] ?? {
     fullName: "",
     email: "",
     phone: "",
     school: "",
     region: "",
+    grade: "",
+    interestFacultyJurusan: "",
   };
 
   const getMissingContactFields = () => {
@@ -313,14 +278,6 @@ export default function RsvpPage() {
     if (!formData.contactRegion.trim()) missing.push("Asal Daerah");
     if (!formData.parentName.trim()) missing.push("Nama Orang Tua");
     if (!formData.parentPhone.trim()) missing.push("Nomor Telepon Orang Tua");
-    return missing;
-  };
-
-  const getMissingTalkshowFields = () => {
-    const missing: string[] = [];
-    if (!formData.wantsTalkshow) return missing;
-    if (!formData.sessionCode) missing.push("Sesi Talkshow");
-    if (!formData.talkshowExpectation.trim()) missing.push("Harapan Talkshow");
     return missing;
   };
 
@@ -485,68 +442,6 @@ export default function RsvpPage() {
                   </div>
                 ) : null}
 
-                {step === "TALKSHOW" ? (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 rounded-xl bg-[#FFEBB8]/30 px-4 py-3">
-                      <input
-                        id="wantsTalkshow"
-                        name="wantsTalkshow"
-                        type="checkbox"
-                        checked={formData.wantsTalkshow}
-                        onChange={handleInputChange}
-                        className="h-5 w-5"
-                      />
-                      <label
-                        htmlFor="wantsTalkshow"
-                        className="mb-1 text-lg font-bold text-[#FFEBB8]"
-                      >
-                        Mau ikut talkshow?
-                      </label>
-                    </div>
-
-                    {formData.wantsTalkshow ? (
-                      <>
-                        <div>
-                          <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                            Pilih Sesi Talkshow *
-                          </label>
-                          <div className="relative">
-                            <select
-                              name="sessionCode"
-                              value={formData.sessionCode}
-                              onChange={handleInputChange}
-                              disabled={isLoadingSessions}
-                              className="w-full cursor-pointer appearance-none rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                            >
-                              <option value="">Pilih Sesi</option>
-                              {sessionOptions.map((s) => (
-                                <option key={s.code} value={s.code}>
-                                  {s.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="mb-1 ml-1 block text-lg font-bold text-[#FFEBB8]">
-                            Harapan Ikut Talkshow *
-                          </label>
-                          <textarea
-                            name="talkshowExpectation"
-                            value={formData.talkshowExpectation}
-                            onChange={handleInputChange}
-                            rows={3}
-                            required
-                            placeholder="Harapan Ikut Talkshow"
-                            className="w-full resize-none rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
-                          />
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-                ) : null}
-
                 {step === "PARTICIPANTS" ? (
                   <div className="space-y-4">
                     <div className="pt-2">
@@ -674,6 +569,32 @@ export default function RsvpPage() {
                           placeholder="Asal Daerah *"
                           className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
                         />
+                        <input
+                          value={activeParticipant.grade ?? ""}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "grade",
+                              e.target.value,
+                            )
+                          }
+                          type="text"
+                          placeholder="Kelas berapa?"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
+                        <input
+                          value={activeParticipant.interestFacultyJurusan ?? ""}
+                          onChange={(e) =>
+                            handleParticipantChange(
+                              activeParticipantIndex,
+                              "interestFacultyJurusan",
+                              e.target.value,
+                            )
+                          }
+                          type="text"
+                          placeholder="Minat ke Fakultas / Jurusan apa?"
+                          className="w-full rounded-xl bg-[#FFEBB8] px-5 py-3 text-lg font-bold text-[#B64556] placeholder-[#B64556]/60 shadow-inner focus:ring-4 focus:ring-[#D97D68] focus:outline-none"
+                        />
                       </div>
                     </div>
                   </div>
@@ -729,19 +650,6 @@ export default function RsvpPage() {
                         Nomor Telepon Orang Tua: {formData.parentPhone}
                       </p>
                       <p className="font-bold">
-                        Ikut talkshow: {formData.wantsTalkshow ? "Ya" : "Tidak"}
-                      </p>
-                      {formData.wantsTalkshow ? (
-                        <>
-                          <p className="font-bold">
-                            Sesi: {formData.sessionCode}
-                          </p>
-                          <p className="font-bold">
-                            Harapan: {formData.talkshowExpectation}
-                          </p>
-                        </>
-                      ) : null}
-                      <p className="font-bold">
                         Jumlah pengunjung: {participants.length}
                       </p>
                     </div>
@@ -760,37 +668,10 @@ export default function RsvpPage() {
                           toast.info("Lengkapi data yang dibutuhkan");
                           return;
                         }
-                        setStep("TALKSHOW");
+                        setStep("PARTICIPANTS");
                       }}
                       aria-disabled={!canNextFromContact}
                       className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromContact ? "opacity-60" : ""}`}
-                    >
-                      Next
-                    </button>
-                  </div>
-                ) : null}
-
-                {step === "TALKSHOW" ? (
-                  <div className="flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setStep("CONTACT")}
-                      className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
-                    >
-                      Back
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const missing = getMissingTalkshowFields();
-                        if (missing.length) {
-                          toast.info("Lengkapi data yang dibutuhkan");
-                          return;
-                        }
-                        setStep("PARTICIPANTS");
-                      }}
-                      aria-disabled={!canNextFromTalkshow}
-                      className={`rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E] ${!canNextFromTalkshow ? "opacity-60" : ""}`}
                     >
                       Next
                     </button>
@@ -801,7 +682,7 @@ export default function RsvpPage() {
                   <div className="flex justify-between">
                     <button
                       type="button"
-                      onClick={() => setStep("TALKSHOW")}
+                      onClick={() => setStep("CONTACT")}
                       className="rounded-xl border-2 border-[#FFEBB8] bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
                     >
                       Back
@@ -886,17 +767,26 @@ export default function RsvpPage() {
                 Reservasi Tiket Berhasil!
               </h1>
 
-              <p className="mb-8 text-lg font-bold tracking-wide text-[#302A77]">
+              <p className="mb-6 text-lg font-bold tracking-wide text-[#302A77]">
                 Lihat reservasi pada halaman profil kamu
               </p>
 
-              <button
-                type="button"
-                onClick={() => navigate("/profile")}
-                className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
-              >
-                Ke Profil
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => navigate("/profile")}
+                  className="rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-1.5 text-xs font-bold text-[#FFEBB8] shadow-lg transition-all hover:bg-[#1B165E]"
+                >
+                  Ke Profil
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate("/talkshow")}
+                  className="rounded-xl border-2 bg-[#FFEBB8] px-6 py-1.5 text-xs font-bold text-[#B64556] shadow-lg transition-all hover:bg-[#FFEBB8]/90"
+                >
+                  Daftar Talkshow
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

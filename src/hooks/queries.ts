@@ -11,6 +11,9 @@ export const queryKeys = {
   reservations: (userId?: string) => ["reservations", userId] as const,
   reservationDetails: (id: string) => ["reservationDetails", id] as const,
   sessions: ["sessions"] as const,
+  talkshowRegistrations: (userId?: string) =>
+    ["talkshowRegistrations", userId] as const,
+  talkshowCounts: ["talkshowCounts"] as const,
   scannerAccess: ["scannerAccess"] as const,
 } as const;
 
@@ -129,6 +132,7 @@ export function useReservations(enabled = true, userId?: string) {
 type ReservationDetailsData = {
   status?: "PENDING" | "CONFIRMED";
   wantsTalkshow?: boolean;
+  talkshowExpectation?: string | null;
   session?: {
     id: string;
     code: string;
@@ -155,7 +159,7 @@ export function useReservationDetails(
   const cachedDetails = userId && id ? getReservationDetails(userId, id) : null;
   const hasFreshCache = userId ? isCacheValid(userId, CACHE_TTL_MS) : false;
 
-  const query = useQuery({
+  const query = useQuery<ReservationDetailsData>({
     queryKey: queryKeys.reservationDetails(id ?? ""),
     queryFn: async () => {
       const res = await apiClient.get<{
@@ -165,7 +169,7 @@ export function useReservationDetails(
     },
     enabled: enabled && Boolean(id),
     // Use cached data as initial data for instant display
-    initialData: hasFreshCache && cachedDetails ? cachedDetails : undefined,
+    initialData: hasFreshCache && cachedDetails ? (cachedDetails as ReservationDetailsData) : undefined,
     initialDataUpdatedAt: hasFreshCache ? Date.now() : undefined,
     // Backend cache is 2 minutes, so 30s staleTime allows fresh data on manual refresh
     staleTime: 30 * 1000, // 30 seconds
@@ -198,6 +202,119 @@ export function useSessions() {
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 2, // 2 hours
     retry: 2,
+  });
+}
+
+type TalkshowRegistrationItem = {
+  id: string;
+  email: string;
+  fullName: string;
+  school: string | null;
+  region: string;
+  expectation: string;
+  status: "PENDING" | "CONFIRMED";
+  createdAt: string;
+  reservationId: string;
+  participants?: Array<{
+    id: string;
+    fullName: string;
+    email: string;
+    school: string | null;
+    region: string;
+  }>;
+  session: {
+    id: string;
+    code: string;
+    name: string;
+    description: string | null;
+  };
+};
+
+export function useTalkshowRegistrations(enabled = true, userId?: string) {
+  const {
+    getTalkshowRegistrations,
+    setTalkshowRegistrations,
+    isCacheValid,
+  } = useReservationCacheStore();
+
+  const cached = userId ? getTalkshowRegistrations(userId) : null;
+  const hasFreshCache = userId ? isCacheValid(userId, CACHE_TTL_MS) : false;
+
+  const query = useQuery({
+    queryKey: queryKeys.talkshowRegistrations(userId),
+    queryFn: () =>
+      apiClient.get<{ registrations: TalkshowRegistrationItem[] }>("/talkshow"),
+    enabled: enabled && Boolean(userId),
+    initialData:
+      hasFreshCache && cached
+        ? { registrations: cached }
+        : undefined,
+    initialDataUpdatedAt: hasFreshCache ? Date.now() : undefined,
+    staleTime: 30 * 1000,
+    gcTime: 5 * 60 * 1000,
+    retry: 2,
+  });
+
+  useEffect(() => {
+    if (query.data?.registrations && userId && query.isSuccess) {
+      setTalkshowRegistrations(userId, query.data.registrations);
+    }
+  }, [query.data, userId, query.isSuccess, setTalkshowRegistrations]);
+
+  return query;
+}
+
+export function useTalkshowCounts(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.talkshowCounts,
+    queryFn: () =>
+      apiClient.get<{
+        total: number;
+        session1: number;
+        session2: number;
+      }>("/talkshow/counts"),
+    enabled,
+    staleTime: 30 * 1000,
+    gcTime: 2 * 60 * 1000,
+    retry: 2,
+  });
+}
+
+export function useCreateTalkshowRegistration(userId?: string) {
+  const queryClient = useQueryClient();
+  const { setTalkshowRegistrations } = useReservationCacheStore();
+
+  return useMutation({
+    mutationFn: (body: {
+      reservationId: string;
+      sessionCode: "1" | "2";
+      email: string;
+      fullName: string;
+      school?: string;
+      region: string;
+      expectation: string;
+      participants: Array<{
+        fullName: string;
+        email: string;
+        school?: string;
+        region: string;
+      }>;
+    }) =>
+      apiClient.post<{
+        registration: TalkshowRegistrationItem;
+      }>("/talkshow", body),
+    onSuccess: (data, _variables) => {
+      if (userId && data?.registration) {
+        setTalkshowRegistrations(userId, [data.registration]);
+      }
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.talkshowRegistrations(userId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reservations(userId),
+      });
+      queryClient.invalidateQueries({ queryKey: queryKeys.talkshowCounts });
+    },
   });
 }
 

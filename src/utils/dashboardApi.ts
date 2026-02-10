@@ -128,3 +128,24 @@ export const exportParticipantsApi = async (): Promise<void> => {
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
 };
+
+export const exportTalkshowApi = async (): Promise<void> => {
+  const res = await fetch(`${env.API_URL}/admin/talkshow/export`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const data = await safeJson<{ error?: string }>(res);
+    throw new Error(data?.error || "Gagal mengekspor talkshow");
+  }
+
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `talkshow-export-${new Date().toISOString().split("T")[0]}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
