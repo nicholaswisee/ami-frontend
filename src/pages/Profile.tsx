@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import { IoIosArrowBack, IoIosLogOut, IoIosRefresh } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import html2canvas from "html2canvas-pro";
 import { useReservations } from "../hooks/useReservations";
 import {
   useReservationDetails,
@@ -93,6 +95,13 @@ export default function ProfilePage() {
     );
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
+  const ticketRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    toast.info(
+      "Unduh tiket ITB Day pada halaman profil dengan melihat tiket lalu menekan tombol unduh tiket, see ya Luminettes!",
+    );
+  }, []);
 
   // Manual refresh function for ticket status
   const refreshTicketStatus = async () => {
@@ -107,6 +116,114 @@ export default function ProfilePage() {
   //   });
 
   const reservations = reservationsData?.reservations ?? [];
+
+  const downloadTicketAsJpeg = async () => {
+    if (!ticketRef.current || !activeReservation) {
+      return;
+    }
+
+    const node = ticketRef.current;
+
+    // Temporarily expand scrollable visitor lists so export shows all entries
+    const scrollLists =
+      Array.from(node.querySelectorAll<HTMLElement>("[data-ticket-scroll]")) ??
+      [];
+    const previousScrollStyles = scrollLists.map((el) =>
+      el.getAttribute("style"),
+    );
+
+    scrollLists.forEach((el) => {
+      el.style.maxHeight = "none";
+      el.style.overflowY = "visible";
+    });
+
+    // Temporarily reveal export-only talkshow blocks
+    const talkshowBlocks =
+      Array.from(
+        node.querySelectorAll<HTMLElement>("[data-export-talkshow]"),
+      ) ?? [];
+    const previousTalkshowStyles = talkshowBlocks.map((el) =>
+      el.getAttribute("style"),
+    );
+
+    talkshowBlocks.forEach((el) => {
+      el.style.display = "block";
+    });
+
+    // Temporarily hide elements that shouldn't appear in export
+    const noExportEls =
+      Array.from(node.querySelectorAll<HTMLElement>("[data-no-export]")) ?? [];
+    const previousNoExportStyles = noExportEls.map((el) =>
+      el.getAttribute("style"),
+    );
+    noExportEls.forEach((el) => {
+      el.style.display = "none";
+    });
+
+    try {
+      // Ensure fonts are loaded before capturing
+      await document.fonts.ready;
+
+      // html2canvas-pro reads computed styles directly from the DOM,
+      // so Tailwind v4, CSS variables, and custom fonts are all captured.
+      const canvas = await html2canvas(node, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+
+      // Convert canvas to JPEG blob and download
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `ticket-${activeReservation.barcode || "itb-day"}.jpg`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        },
+        "image/jpeg",
+        0.95,
+      );
+    } catch (error) {
+      console.error("Failed to download ticket as JPEG", error);
+    } finally {
+      // Restore scroll list styles
+      scrollLists.forEach((el, index) => {
+        const prev = previousScrollStyles[index];
+        if (prev === null || prev === undefined) {
+          el.removeAttribute("style");
+        } else {
+          el.setAttribute("style", prev);
+        }
+      });
+
+      // Restore talkshow block styles
+      talkshowBlocks.forEach((el, index) => {
+        const prev = previousTalkshowStyles[index];
+        if (prev === null || prev === undefined) {
+          el.removeAttribute("style");
+        } else {
+          el.setAttribute("style", prev);
+        }
+      });
+
+      // Restore no-export element styles
+      noExportEls.forEach((el, index) => {
+        const prev = previousNoExportStyles[index];
+        if (prev === null || prev === undefined) {
+          el.removeAttribute("style");
+        } else {
+          el.setAttribute("style", prev);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     if (activeReservation) {
@@ -298,122 +415,168 @@ export default function ProfilePage() {
             Tutup
           </button>
 
-          <div className="mt-3 space-y-4 bg-white px-6 py-5">
-            <div className="text-center">
-              <h2 className="font-body font-extrabold text-gray-900">
-                ITB DAY 2026
-              </h2>
-              <p className="text-md">14 Februari 2026</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
-              <div>
-                <p>Nama</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.contactFullName}
-                </p>
+          <div ref={ticketRef} className="mt-3 space-y-4 bg-white px-6 py-5">
+            <div>
+              <div className="text-center">
+                <h2 className="font-body font-extrabold text-gray-900">
+                  ITB DAY 2026
+                </h2>
+                <p className="text-md">14 Februari 2026</p>
               </div>
-              <div className="text-right">
-                <p>Nomor Telepon</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.contactPhone}
-                </p>
+              <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
+                <div>
+                  <p>Nama</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activeReservation?.contactFullName}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p>Nomor Telepon</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activeReservation?.contactPhone}
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
-              <div>
-                <p>Nama Orang Tua</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.parentName}
-                </p>
+              <div className="grid grid-cols-2 gap-3 text-xs tracking-wide text-gray-500">
+                <div>
+                  <p>Nama Orang Tua</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activeReservation?.parentName}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p>Nomor Telepon Orang Tua</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activeReservation?.parentPhone}
+                  </p>
+                </div>
               </div>
-              <div className="text-right">
-                <p>Nomor Telepon Orang Tua</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.parentPhone}
-                </p>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-1 gap-3 text-xs tracking-wide text-gray-500 sm:grid-cols-2">
-              <div>
-                <p>Email</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.email}
-                </p>
+              <div className="grid grid-cols-1 gap-3 text-xs tracking-wide text-gray-500 sm:grid-cols-2">
+                <div>
+                  <p>Email</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activeReservation?.email}
+                  </p>
+                </div>
+                <div className="sm:text-right">
+                  <p>Sekolah / Daerah</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {activeReservation?.contactSchool || "-"} /{" "}
+                    {activeReservation?.contactRegion}
+                  </p>
+                </div>
               </div>
-              <div className="sm:text-right">
-                <p>Sekolah / Daerah</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {activeReservation?.contactSchool || "-"} /{" "}
-                  {activeReservation?.contactRegion}
-                </p>
-              </div>
-            </div>
 
-            <div className="space-y-2 rounded-2xl border border-gray-200 px-4 py-3 text-xs tracking-wide text-gray-500">
-              <p>Pengunjung</p>
-              {isFetchingReservationDetails ? (
-                <p className="text-sm font-semibold text-gray-800">
-                  Memuat pengunjung...
-                </p>
-              ) : activeParticipants.length === 0 ? (
-                <p className="text-sm text-gray-700">
-                  Tidak ada pengunjung terdaftar.
-                </p>
-              ) : (
-                <ul className="max-h-[13lvh] space-y-1 overflow-y-auto text-sm text-gray-800">
-                  {activeParticipants.map((p) => (
-                    <li
-                      key={p.id}
-                      className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2"
-                    >
-                      <span className="font-semibold">{p.fullName}</span>
-                      <span className="text-xs tracking-wide text-gray-600">
-                        {p.region}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {/* <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
-              <p className="font-semibold text-gray-900">
-                {ticketTalkshowLabel}
-              </p>
-            </div> */}
-            <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
-            <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
-              <div className="flex w-full flex-col items-center justify-between">
-                {ticketStatus === "PENDING" && (
-                  <button
-                    onClick={refreshTicketStatus}
-                    disabled={isFetchingReservationDetails}
-                    className="flex items-center gap-1 rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200 disabled:opacity-50"
-                    title="Refresh status tiket"
-                  >
-                    <IoIosRefresh
-                      className={
-                        isFetchingReservationDetails ? "animate-spin" : ""
-                      }
-                      size={14}
-                    />
-                    Refresh
-                  </button>
-                )}
-                <h4
-                  className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-green-500" : "text-blue-500"}`}
+              {talkshowRegistrations.length > 0 && (
+                <div
+                  data-export-talkshow
+                  className="mt-3 hidden text-xs tracking-wide text-gray-500"
                 >
-                  {ticketStatus === "PENDING" ? "Terdaftar" : "Sudah Hadir"}
-                </h4>
+                  <p className="text-sm font-semibold text-gray-900">
+                    Talkshow
+                  </p>
+                  <ul className="mt-1 space-y-1 text-sm text-gray-900">
+                    {talkshowRegistrations.map((reg, index) => {
+                      const sessionName =
+                        reg.session?.name ?? `Sesi ${index + 1}`;
+                      const registeredCount =
+                        reg.participants && reg.participants.length > 0
+                          ? reg.participants.length
+                          : 1;
+
+                      return (
+                        <li
+                          key={reg.id}
+                          className="flex items-center justify-between gap-2"
+                        >
+                          <span>{sessionName}</span>
+                          <span className="text-xs font-medium text-gray-600">
+                            {registeredCount} peserta
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+
+              <div className="mt-3 space-y-2 rounded-2xl border border-gray-200 px-4 py-3 text-xs tracking-wide text-gray-500">
+                <p>Pengunjung</p>
+                {isFetchingReservationDetails ? (
+                  <p className="text-sm font-semibold text-gray-800">
+                    Memuat pengunjung...
+                  </p>
+                ) : activeParticipants.length === 0 ? (
+                  <p className="text-sm text-gray-700">
+                    Tidak ada pengunjung terdaftar.
+                  </p>
+                ) : (
+                  <ul
+                    data-ticket-scroll
+                    className="max-h-[13lvh] space-y-1 overflow-y-auto text-sm text-gray-800"
+                  >
+                    {activeParticipants.map((p) => (
+                      <li
+                        key={p.id}
+                        className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2"
+                      >
+                        <span className="font-semibold">{p.fullName}</span>
+                        <span className="text-xs tracking-wide text-gray-600">
+                          {p.region}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              <TicketBarcode
-                value={activeReservation?.barcode || ""}
-                className="h-auto w-full"
-              />
-              <p className="text-xs font-semibold tracking-widest text-gray-700">
-                {activeReservation?.barcode}
-              </p>
+              <div data-no-export className="mt-4 flex justify-center">
+                <button
+                  onClick={downloadTicketAsJpeg}
+                  disabled={!activeReservation}
+                  className="text-md w-full rounded-lg border border-gray-300 bg-gray-50 px-6 py-2 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Unduh Tiket (JPG)
+                </button>
+              </div>
+              {/* <div className="rounded-2xl border border-gray-300 px-4 py-3 text-xs tracking-wide text-gray-500">
+                <p className="font-semibold text-gray-900">
+                  {ticketTalkshowLabel}
+                </p>
+              </div> */}
+              <div className="-mx-4 mt-10 h-2 w-[calc(100%+2rem)] border-t-2 border-dotted border-gray-300"></div>
+              <div className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-3">
+                <div className="flex w-full flex-col items-center justify-between">
+                  {ticketStatus === "PENDING" && (
+                    <button
+                      onClick={refreshTicketStatus}
+                      disabled={isFetchingReservationDetails}
+                      className="flex items-center gap-1 rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200 disabled:opacity-50"
+                      title="Refresh status tiket"
+                    >
+                      <IoIosRefresh
+                        className={
+                          isFetchingReservationDetails ? "animate-spin" : ""
+                        }
+                        size={14}
+                      />
+                      Refresh
+                    </button>
+                  )}
+                  <h4
+                    className={`font-body font-bold ${ticketStatus === "PENDING" ? "text-green-500" : "text-blue-500"}`}
+                  >
+                    {ticketStatus === "PENDING" ? "Terdaftar" : "Sudah Hadir"}
+                  </h4>
+                </div>
+                <TicketBarcode
+                  value={activeReservation?.barcode || ""}
+                  className="h-auto w-full"
+                />
+                <p className="text-xs font-semibold tracking-widest text-gray-700">
+                  {activeReservation?.barcode}
+                </p>
+              </div>
             </div>
           </div>
         </div>
