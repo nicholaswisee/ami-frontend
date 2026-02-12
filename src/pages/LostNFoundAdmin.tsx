@@ -57,6 +57,32 @@ export default function LostNFoundAdmin() {
     }
   };
 
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const deleteReport = async (id: string) => {
+    if (!confirm("Yakin ingin menghapus laporan ini?")) return;
+    try {
+      setDeletingId(id);
+      const res = await fetch(`${env.API_URL}/lostnfound/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        toast.success("Laporan berhasil dihapus");
+        setReports((prev) => prev.filter((r) => r.id !== id));
+      } else {
+        const data = await res.json();
+        toast.error(data.error || "Gagal menghapus laporan");
+      }
+    } catch (error) {
+      console.error("Error deleting report:", error);
+      toast.error("Terjadi kesalahan");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   const getStatusText = (status: string) => {
     switch (status) {
       case "REPORTED":
@@ -321,6 +347,28 @@ export default function LostNFoundAdmin() {
                           }}
                         >
                           Sudah Diambil
+                        </button>
+                      </div>
+                      <div className="mt-4 flex justify-end border-t border-[#FFEBB8]/10 pt-3">
+                        <button
+                          onClick={() => deleteReport(report.id)}
+                          disabled={deletingId === report.id}
+                          className="font-body rounded-lg px-4 py-2 text-sm font-semibold shadow-lg transition-all"
+                          style={{
+                            background:
+                              "linear-gradient(to bottom, #FF6B6B, #D32F2F)",
+                            border: "2px solid #D32F2F",
+                            color: "#fff",
+                            cursor:
+                              deletingId === report.id
+                                ? "not-allowed"
+                                : "pointer",
+                            opacity: deletingId === report.id ? 0.6 : 1,
+                          }}
+                        >
+                          {deletingId === report.id
+                            ? "Menghapus..."
+                            : "Hapus Laporan"}
                         </button>
                       </div>
                     </div>
