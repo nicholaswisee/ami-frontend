@@ -1,6 +1,8 @@
 import Badge from "@/components/Badge";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const itbDayEvents: Array<{
   thumbnail: string;
@@ -35,6 +37,12 @@ const itbDayEvents: Array<{
 ];
 
 export default function HomePage() {
+  useEffect(() => {
+    toast.info(
+      "Unduh tiket ITB Day pada halaman profil dengan melihat tiket lalu menekan tombol unduh tiket, see ya Luminettes!",
+    );
+  }, []);
+
   // const treeOpacityLeft = useTransform(scrollY, [0, 700], [0, 1]);
   // const treeXLeft = useTransform(scrollY, [0, 700], [-120, 0]);
   // const treeYLeft = useTransform(scrollY, [0, 700], [20, 0]);

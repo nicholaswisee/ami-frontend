@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { IoIosArrowBack, IoIosLogOut, IoIosRefresh } from "react-icons/io";
 import QRCode from "qrcode";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import html2canvas from "html2canvas-pro";
 import { useReservations } from "../hooks/useReservations";
 import {
@@ -95,6 +96,12 @@ export default function ProfilePage() {
   const activeParticipants = reservationDetails?.participants ?? [];
   const ticketStatus = reservationDetails?.status ?? activeReservation?.status;
   const ticketRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    toast.info(
+      "Unduh tiket ITB Day pada halaman profil dengan melihat tiket lalu menekan tombol unduh tiket, see ya Luminettes!",
+    );
+  }, []);
 
   // Manual refresh function for ticket status
   const refreshTicketStatus = async () => {
