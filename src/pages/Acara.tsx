@@ -31,17 +31,17 @@ export default function AcaraPage() {
       imageUrl: "/acara/diseminasi.webp",
     },
   ];
-  const talkshowItems = [
-    {
-      title: "Talkshow AMI 2026",
-      desc: "Jadwal dan narasumber sedang disiapkan. Stay tuned ya, Luminettes!",
-      imageUrl: "/itbday/talkshow.webp",
-      sourceName: "Segera Hadir",
-      sourceDesc: "Narasumber",
-      time: "14 Feb, 2026",
-      place: "ITB Day",
-    },
-  ];
+  // const talkshowItems = [
+  //   {
+  //     title: "Talkshow AMI 2026",
+  //     desc: "Jadwal dan narasumber sedang disiapkan. Stay tuned ya, Luminettes!",
+  //     imageUrl: "/itbday/talkshow.webp",
+  //     sourceName: "Segera Hadir",
+  //     sourceDesc: "Narasumber",
+  //     time: "14 Feb, 2026",
+  //     place: "ITB Day",
+  //   },
+  // ];
   const navigate = useNavigate();
 
   const [acaraApi, setAcaraApi] = React.useState<CarouselApi | null>(null);
@@ -186,22 +186,20 @@ export default function AcaraPage() {
               className="w-full"
             >
               <CarouselContent>
-                {talkshowItems.map((item) => (
-                  <CarouselItem
-                    key={item.title}
-                    className="flex basis-full justify-center"
-                  >
-                    <TalkshowCard
-                      title={item.title}
-                      desc={item.desc}
-                      imageUrl={item.imageUrl}
-                      sourceName={item.sourceName}
-                      sourceDesc={item.sourceDesc}
-                      time={item.time}
-                      place={item.place}
-                    />
-                  </CarouselItem>
-                ))}
+                <CarouselItem className="flex basis-full justify-center lg:basis-1/2">
+                  <img
+                    src={`/talkshow/poster-sesi1.webp`}
+                    alt={`Sesi 1`}
+                    className="max-h-[70vh] w-auto max-w-full object-contain"
+                  />
+                </CarouselItem>
+                <CarouselItem className="flex basis-full justify-center lg:basis-1/2">
+                  <img
+                    src={`/talkshow/poster-sesi2.webp`}
+                    alt={`Sesi 2`}
+                    className="max-h-[70vh] w-auto max-w-full object-contain"
+                  />
+                </CarouselItem>
               </CarouselContent>
 
               {/* previous button */}
@@ -347,82 +345,82 @@ const AcaraCard = ({
   );
 };
 
-const TalkshowCard = ({
-  title,
-  desc,
-  imageUrl,
-  sourceName,
-  sourceDesc,
-  time,
-  place,
-}: {
-  title: string;
-  desc: string;
-  imageUrl: string;
-  sourceName: string;
-  sourceDesc: string;
-  time: string;
-  place: string;
-}) => {
-  return (
-    <div className="relative w-full max-w-5xl overflow-hidden rounded-3xl border-4 border-[#302A77] bg-linear-to-t from-[#302A77] to-[#6E46B2] p-6 sm:mx-16 md:p-8">
-      <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row-reverse">
-        {/* judul & desc */}
-        <div className="flex w-full grow flex-col content-between justify-start gap-6 text-center md:text-left">
-          <div className="w-full rounded-xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-8 py-2 text-center">
-            <h3 className="font-body text-xl font-extrabold tracking-wide text-[#87095A] uppercase max-sm:text-base">
-              {title}
-            </h3>
-          </div>
+// const TalkshowCard = ({
+//   title,
+//   desc,
+//   imageUrl,
+//   sourceName,
+//   sourceDesc,
+//   time,
+//   place,
+// }: {
+//   title: string;
+//   desc: string;
+//   imageUrl: string;
+//   sourceName: string;
+//   sourceDesc: string;
+//   time: string;
+//   place: string;
+// }) => {
+//   return (
+//     <div className="relative w-full max-w-5xl overflow-hidden rounded-3xl border-4 border-[#302A77] bg-linear-to-t from-[#302A77] to-[#6E46B2] p-6 sm:mx-16 md:p-8">
+//       <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row-reverse">
+//         {/* judul & desc */}
+//         <div className="flex w-full grow flex-col content-between justify-start gap-6 text-center md:text-left">
+//           <div className="w-full rounded-xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-8 py-2 text-center">
+//             <h3 className="font-body text-xl font-extrabold tracking-wide text-[#87095A] uppercase max-sm:text-base">
+//               {title}
+//             </h3>
+//           </div>
 
-          <p className="px-2 text-justify text-sm leading-relaxed font-semibold text-[#FFEABB] max-md:text-center">
-            {desc}
-          </p>
-        </div>
+//           <p className="px-2 text-justify text-sm leading-relaxed font-semibold text-[#FFEABB] max-md:text-center">
+//             {desc}
+//           </p>
+//         </div>
 
-        {/* img */}
-        <div className="mx-auto w-full max-w-xs shrink-0 md:mx-8 md:w-1/3 md:max-w-none">
-          <div className="flex aspect-square items-center justify-center rounded-2xl bg-gray-300">
-            <img
-              src={imageUrl}
-              alt={title}
-              className="h-full w-full rounded-2xl object-cover"
-            />
-          </div>
-        </div>
-      </div>
+//         {/* img */}
+//         <div className="mx-auto w-full max-w-xs shrink-0 md:mx-8 md:w-1/3 md:max-w-none">
+//           <div className="flex aspect-square items-center justify-center rounded-2xl bg-gray-300">
+//             <img
+//               src={imageUrl}
+//               alt={title}
+//               className="h-full w-full rounded-2xl object-cover"
+//             />
+//           </div>
+//         </div>
+//       </div>
 
-      {/* narasumber dan waktu */}
-      <div className="z-10 mt-8 flex w-full items-center justify-evenly gap-4 max-sm:flex-row md:gap-6">
-        <div className="z-10 w-full max-w-xs rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-6 py-4 text-center shadow-md sm:max-w-56 sm:flex-1">
-          <p className="block text-xl font-extrabold text-[#590844] max-sm:text-base">
-            {sourceName}
-          </p>
-          <p className="text-lg font-semibold text-[#AC166C] max-sm:text-xs">
-            {sourceDesc}
-          </p>
-        </div>
+//       {/* narasumber dan waktu */}
+//       <div className="z-10 mt-8 flex w-full items-center justify-evenly gap-4 max-sm:flex-row md:gap-6">
+//         <div className="z-10 w-full max-w-xs rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-6 py-4 text-center shadow-md sm:max-w-56 sm:flex-1">
+//           <p className="block text-xl font-extrabold text-[#590844] max-sm:text-base">
+//             {sourceName}
+//           </p>
+//           <p className="text-lg font-semibold text-[#AC166C] max-sm:text-xs">
+//             {sourceDesc}
+//           </p>
+//         </div>
 
-        <div className="z-10 w-full max-w-xs rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-6 py-4 text-center shadow-md sm:max-w-56 sm:flex-1 md:max-w-40">
-          <p className="block text-xl font-extrabold text-[#590844] max-sm:text-base">
-            {time}
-          </p>
-          <p className="text-lg font-semibold text-[#AC166C] max-sm:text-xs">
-            {place}
-          </p>
-        </div>
-      </div>
+//         <div className="z-10 w-full max-w-xs rounded-3xl border-4 border-[#FFC76E] bg-linear-to-b from-[#FFDB8C] to-[#FFC76E] px-6 py-4 text-center shadow-md sm:max-w-56 sm:flex-1 md:max-w-40">
+//           <p className="block text-xl font-extrabold text-[#590844] max-sm:text-base">
+//             {time}
+//           </p>
+//           <p className="text-lg font-semibold text-[#AC166C] max-sm:text-xs">
+//             {place}
+//           </p>
+//         </div>
+//       </div>
 
-      <img
-        src="/rock-1.png"
-        alt="Decorative Rock Left"
-        className="pointer-events-none absolute bottom-0 left-0 z-0 w-16 opacity-80 md:w-32 md:opacity-100"
-      />
-      <img
-        src="/rock-2.png"
-        alt="Decorative Rock Right"
-        className="pointer-events-none absolute right-0 bottom-0 z-0 w-16 opacity-80 md:w-32 md:opacity-100"
-      />
-    </div>
-  );
-};
+//       <img
+//         src="/rock-1.png"
+//         alt="Decorative Rock Left"
+//         className="pointer-events-none absolute bottom-0 left-0 z-0 w-16 opacity-80 md:w-32 md:opacity-100"
+//       />
+//       <img
+//         src="/rock-2.png"
+//         alt="Decorative Rock Right"
+//         className="pointer-events-none absolute right-0 bottom-0 z-0 w-16 opacity-80 md:w-32 md:opacity-100"
+//       />
+//     </div>
+//   );
+// };
