@@ -7,7 +7,7 @@ import {
   useReservations,
   useTalkshowRegistrations,
   // useTalkshowCounts,
-  useCreateTalkshowRegistration,
+  // useCreateTalkshowRegistration,
   useSessions,
 } from "../hooks/queries";
 import { motion } from "framer-motion";
@@ -43,7 +43,7 @@ export default function TalkshowPage() {
     { id: "2", code: "2", name: "Sesi 2", description: null },
   ];
 
-  const createTalkshow = useCreateTalkshowRegistration(userId);
+  // const createTalkshow = useCreateTalkshowRegistration(userId);
 
   const [formData, setFormData] = useState({
     sessionCode: "" as "" | "1" | "2",
@@ -53,7 +53,7 @@ export default function TalkshowPage() {
     Array<{ fullName: string; email: string; school: string; region: string }>
   >([{ fullName: "", email: "", school: "", region: "" }]);
   const [activeParticipantIndex, setActiveParticipantIndex] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!user && !firstReservation) return;
@@ -130,63 +130,64 @@ export default function TalkshowPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!TALKSHOW_REGISTRATION_OPEN) {
-      toast.info(
-        "Registrasi ulang talkshow akan dibuka segera ya, Luminettes!",
-      );
-      return;
-    }
-    if (!firstReservation?.id) {
-      toast.error("Reservasi tidak ditemukan.");
-      return;
-    }
-    if (!formData.sessionCode) {
-      toast.error("Pilih sesi talkshow.");
-      return;
-    }
-    if (!formData.expectation.trim()) {
-      toast.error("Harapan ikut talkshow wajib diisi.");
-      return;
-    }
-    const validParticipants = participants.filter(
-      (p) => p.fullName.trim() && p.email.trim() && p.region.trim(),
-    );
-    if (validParticipants.length === 0) {
-      toast.error("Lengkapi data minimal satu peserta (nama, email, daerah).");
-      return;
-    }
-    const first = validParticipants[0]!;
-    setIsSubmitting(true);
-    try {
-      await createTalkshow.mutateAsync({
-        reservationId: firstReservation.id,
-        sessionCode: formData.sessionCode as "1" | "2",
-        email: first.email,
-        fullName: first.fullName,
-        school: first.school || undefined,
-        region: first.region,
-        expectation: formData.expectation,
-        participants: validParticipants.map((p) => ({
-          fullName: p.fullName,
-          email: p.email,
-          school: p.school || undefined,
-          region: p.region,
-        })),
-      });
-      toast.success("Pendaftaran talkshow berhasil!");
-      navigate("/profile");
-    } catch (err: unknown) {
-      const message =
-        err &&
-        typeof err === "object" &&
-        "message" in err &&
-        typeof err.message === "string"
-          ? err.message
-          : "Gagal mendaftar. Coba lagi.";
-      toast.error(message);
-    } finally {
-      setIsSubmitting(false);
-    }
+    toast.info("Kuota talkshow sudah terpenuhi.");
+    // if (!TALKSHOW_REGISTRATION_OPEN) {
+    //   toast.info(
+    //     "Registrasi ulang talkshow akan dibuka segera ya, Luminettes!",
+    //   );
+    //   return;
+    // }
+    // if (!firstReservation?.id) {
+    //   toast.error("Reservasi tidak ditemukan.");
+    //   return;
+    // }
+    // if (!formData.sessionCode) {
+    //   toast.error("Pilih sesi talkshow.");
+    //   return;
+    // }
+    // if (!formData.expectation.trim()) {
+    //   toast.error("Harapan ikut talkshow wajib diisi.");
+    //   return;
+    // }
+    // const validParticipants = participants.filter(
+    //   (p) => p.fullName.trim() && p.email.trim() && p.region.trim(),
+    // );
+    // if (validParticipants.length === 0) {
+    //   toast.error("Lengkapi data minimal satu peserta (nama, email, daerah).");
+    //   return;
+    // }
+    // const first = validParticipants[0]!;
+    // setIsSubmitting(true);
+    // try {
+    //   await createTalkshow.mutateAsync({
+    //     reservationId: firstReservation.id,
+    //     sessionCode: formData.sessionCode as "1" | "2",
+    //     email: first.email,
+    //     fullName: first.fullName,
+    //     school: first.school || undefined,
+    //     region: first.region,
+    //     expectation: formData.expectation,
+    //     participants: validParticipants.map((p) => ({
+    //       fullName: p.fullName,
+    //       email: p.email,
+    //       school: p.school || undefined,
+    //       region: p.region,
+    //     })),
+    //   });
+    //   toast.success("Pendaftaran talkshow berhasil!");
+    //   navigate("/profile");
+    // } catch (err: unknown) {
+    //   const message =
+    //     err &&
+    //     typeof err === "object" &&
+    //     "message" in err &&
+    //     typeof err.message === "string"
+    //       ? err.message
+    //       : "Gagal mendaftar. Coba lagi.";
+    //   toast.error(message);
+    // } finally {
+    //   setIsSubmitting(false);
+    // }
   };
 
   if (isPending) return <div className="bg-mixed min-h-lvh w-full" />;
@@ -450,10 +451,12 @@ export default function TalkshowPage() {
           <div className="pt-4">
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={true}
+              // disabled={isSubmitting}
               className="w-full rounded-xl border-2 border-[#FFEBB8] bg-[#302A77] px-6 py-3 text-sm font-bold text-[#FFEBB8] shadow-lg hover:bg-[#1B165E] disabled:opacity-60"
             >
-              {isSubmitting ? "Memproses..." : "Daftar Talkshow"}
+              {/* {isSubmitting ? "Memproses..." : "Daftar Talkshow"} */}
+              Registrasi Ditutup
             </button>
           </div>
         </form>
