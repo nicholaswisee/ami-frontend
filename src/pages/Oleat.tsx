@@ -57,7 +57,7 @@ export default function OleatPage() {
             </motion.a>
           </div>
           <motion.div
-            className="h-96 overflow-hidden rounded-2xl border-4 border-[#5a1130] shadow-lg"
+            className="h-auto overflow-hidden rounded-2xl border-4 border-[#5a1130] shadow-lg"
             style={{
               boxShadow: "0px 3px 0px #F3414E",
               border: "4px solid transparent",
@@ -71,14 +71,15 @@ export default function OleatPage() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.16 }}
           >
-            <iframe
+            {/* <iframe
               title="Peta ITB Ganesha"
               src="https://www.openstreetmap.org/export/embed.html?bbox=107.608371%2C-6.892925%2C107.612371%2C-6.888925&layer=mapnik&marker=-6.890925%2C107.610371"
               className="h-full w-full"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-            />
+            /> */}
+            <img src="/oleat/oleat.webp" alt="Peta ITB Day" />
           </motion.div>
         </motion.div>
 
