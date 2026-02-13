@@ -41,6 +41,9 @@ export default function HomePage() {
     toast.info(
       "Unduh tiket ITB Day pada halaman profil dengan melihat tiket lalu menekan tombol unduh tiket, see ya Luminettes!",
     );
+    toast.info(
+      "Bagi Luminettes yang berpartisipasi dalam talkshow namun belum hadir di Auditorium Labtek XIX Gedung Freeport SBM ITB 10 menit setelah open gate berakhir maka RSVP talkshownya akan dibatalkan dan kursinya akan diberikan bagi peserta yang hadir di tempat registrasi.",
+    );
   }, []);
 
   // const treeOpacityLeft = useTransform(scrollY, [0, 700], [0, 1]);

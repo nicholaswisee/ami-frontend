@@ -15,6 +15,9 @@ export default function App() {
             color: "#ffdb8c",
           },
         }}
+        expand
+        visibleToasts={5}
+        duration={50000}
         closeButton={true}
         position="bottom-right"
       />
