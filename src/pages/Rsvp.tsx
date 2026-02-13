@@ -199,6 +199,8 @@ export default function RsvpPage() {
     }
 
     setIsSubmitting(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30_000);
     try {
       const res = await fetch(`${env.API_URL}/reservations`, {
         method: "POST",
@@ -216,7 +218,10 @@ export default function RsvpPage() {
           acceptedTerms: formData.acceptedTerms,
           participants,
         }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (res.status === 401) {
         toast.error("Silakan login terlebih dahulu.");
@@ -242,8 +247,13 @@ export default function RsvpPage() {
       setStep("SUCCESS");
       window.scrollTo(0, 0);
       toast.success("Pemesanan tiket berhasil!");
-    } catch {
-      toast.error("Gagal membuat reservasi. Coba lagi.");
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === "AbortError") {
+        toast.error("Koneksi terlalu lambat. Coba lagi.");
+      } else {
+        toast.error("Gagal membuat reservasi. Coba lagi.");
+      }
     } finally {
       setIsSubmitting(false);
     }

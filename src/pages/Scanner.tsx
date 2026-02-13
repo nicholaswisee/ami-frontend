@@ -3,10 +3,10 @@ import {
   type IScannerControls,
 } from "@zxing/browser";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-// import { IoIosArrowBack, IoIosClose } from "react-icons/io";
-// import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { env } from "../env";
+
+const SCAN_TIMEOUT_MS = 10_000;
 
 type CameraOption = {
   deviceId: string;
@@ -26,13 +26,14 @@ type ScanResponse = {
 };
 
 export default function ScannerPage() {
-  // const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const readerRef = useRef<BrowserMultiFormatReader | null>(null);
   const controlsRef = useRef<IScannerControls | null>(null);
   const autoStartRef = useRef(true);
   const submittingRef = useRef(false);
   const lastScanRef = useRef<{ value: string; at: number } | null>(null);
+  const scanQueueRef = useRef<string[]>([]);
+  const processingQueueRef = useRef(false);
 
   const [cameras, setCameras] = useState<CameraOption[]>([]);
   const [selectedCamera, setSelectedCamera] = useState<string>("");
@@ -40,6 +41,7 @@ export default function ScannerPage() {
   const [scanError, setScanError] = useState<string | null>(null);
   const [scanResult, setScanResult] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [queueLength, setQueueLength] = useState(0);
   const [confirmedStatus, setConfirmedStatus] = useState<
     "CONFIRMED" | "PENDING" | null
   >(null);
@@ -53,10 +55,13 @@ export default function ScannerPage() {
   }, []);
 
   const submitScan = useCallback(async (barcode: string) => {
-    if (submittingRef.current) return;
     submittingRef.current = true;
     setIsSubmitting(true);
     setConfirmedStatus(null);
+    setScanResult(barcode);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), SCAN_TIMEOUT_MS);
 
     try {
       const res = await fetch(`${env.API_URL}/scanner/scan`, {
@@ -66,7 +71,10 @@ export default function ScannerPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ barcode }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (res.ok) {
         const json = (await res.json()) as ScanResponse;
@@ -92,14 +100,51 @@ export default function ScannerPage() {
 
       toast.error("Gagal mengonfirmasi tiket.");
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Gagal mengonfirmasi tiket.";
-      toast.error(message);
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === "AbortError") {
+        toast.error("Koneksi timeout. Coba scan ulang.");
+      } else {
+        const message =
+          error instanceof Error ? error.message : "Gagal mengonfirmasi tiket.";
+        toast.error(message);
+      }
     } finally {
       submittingRef.current = false;
       setIsSubmitting(false);
     }
   }, []);
+
+  const processQueue = useCallback(async () => {
+    if (processingQueueRef.current || submittingRef.current) return;
+    processingQueueRef.current = true;
+
+    while (scanQueueRef.current.length > 0) {
+      const nextBarcode = scanQueueRef.current.shift()!;
+      setQueueLength(scanQueueRef.current.length);
+      await submitScan(nextBarcode);
+    }
+
+    processingQueueRef.current = false;
+    setQueueLength(0);
+  }, [submitScan]);
+
+  const enqueueScan = useCallback(
+    (barcode: string) => {
+      // Dedup: skip if already in queue
+      if (scanQueueRef.current.includes(barcode)) return;
+
+      // Dedup: skip if same barcode scanned recently
+      const now = Date.now();
+      const last = lastScanRef.current;
+      if (last?.value === barcode && now - last.at < 2500) return;
+
+      lastScanRef.current = { value: barcode, at: now };
+      scanQueueRef.current.push(barcode);
+      setQueueLength(scanQueueRef.current.length);
+      void processQueue();
+    },
+    [processQueue],
+  );
 
   const startScanner = useCallback(async () => {
     if (!readerRef.current || !videoRef.current) return;
@@ -115,14 +160,7 @@ export default function ScannerPage() {
         (result, error) => {
           if (result) {
             const text = result.getText();
-            const now = Date.now();
-            const last = lastScanRef.current;
-            const isDuplicate = last?.value === text && now - last.at < 2500;
-            if (!isDuplicate && !submittingRef.current) {
-              lastScanRef.current = { value: text, at: now };
-              setScanResult(text);
-              void submitScan(text);
-            }
+            enqueueScan(text);
             return;
           }
           if (error && error.name !== "NotFoundException") {
@@ -137,7 +175,7 @@ export default function ScannerPage() {
       console.log(scanError);
       setIsScanning(false);
     }
-  }, [selectedCamera, stopScanner, submitScan]);
+  }, [selectedCamera, stopScanner, enqueueScan]);
 
   useEffect(() => {
     readerRef.current = new BrowserMultiFormatReader();
@@ -257,9 +295,21 @@ export default function ScannerPage() {
             <div className="flex items-center justify-between">
               <span>Mode</span>
               <span className="font-semibold text-[#1F1F1F]">
-                {isSubmitting ? "Mengirim..." : "Otomatis"}
+                {isSubmitting
+                  ? queueLength > 0
+                    ? `Mengirim... (${queueLength} antrian)`
+                    : "Mengirim..."
+                  : "Otomatis"}
               </span>
             </div>
+            {queueLength > 0 && !isSubmitting && (
+              <div className="flex items-center justify-between">
+                <span>Antrian</span>
+                <span className="font-semibold text-amber-600">
+                  {queueLength} scan tertunda
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="mt-4">
