@@ -86,6 +86,7 @@ const sponsors: sponsorsItem[] = [
   },
   { name: "KAI", size: 1, url: "/sponsors/kai-xs.webp", background: true },
   { name: "GPC", size: 1, url: "/sponsors/gpc-xs.webp", background: false },
+  { name: "IOM", size: 1, url: "/sponsors/iom-xs.webp", background: false },
 ];
 
 export default function Footer() {
